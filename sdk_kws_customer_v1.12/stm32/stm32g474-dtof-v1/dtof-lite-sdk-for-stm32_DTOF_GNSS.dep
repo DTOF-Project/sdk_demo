@@ -1,0 +1,1798 @@
+Dependencies for Project 'dtof-lite-sdk-for-stm32', Target 'DTOF_GNSS': (DO NOT MODIFY !)
+CompilerVersion: 6160000::V6.16::ARMCLANG
+F (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Source\Templates\system_stm32g4xx.c)(0x6827DDEA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./system_stm32g4xx.o -MD)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Source\Templates\arm\startup_stm32g474xx.s)(0x6827DDE8)(--cpu Cortex-M4.fp.sp -g --pd "__MICROLIB SETA 1"-I.\RTE\_DTOF_GNSS-IC:\Users\14193\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\14193\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include--pd "__UVISION_VERSION SETA 536"--pd "_RTE_ SETA 1"--pd "STM32G474xx SETA 1"--pd "_RTE_ SETA 1"--list .\listings\startup_stm32g474xx.lst--xref -o .\startup_stm32g474xx.o--depend .\startup_stm32g474xx.d)
+F (..\3rdparty\stm32g4xx_it.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_it.o -MD)
+I (..\3rdparty\stm32g4xx_it.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_ll_usart.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (.\main.c)(0x68625F26)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./main.o -MD)
+I (main.h)(0x68492EB1)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_api.h)(0x68623A3B)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_driver.h)(0x685BBCC8)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\stm32\data_base\sensor_database.h)(0x684A8B9C)
+I (..\..\stm32\customer\dtof_customer.h)(0x684BBEE9)
+I (..\..\stm32\dev\dtof_hal.h)(0x68527A06)
+I (..\..\..\sdk_kws_customer_v1.12\lib\dtof_lib.h)(0x685BB946)
+F (.\board\board.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./board.o -MD)
+I (board\board.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+I (..\..\stm32\fatfs\ff.h)(0x6827DDEC)
+I (..\fatfs\integer.h)(0x6827DDEC)
+I (board\ffconf.h)(0x6827DDEC)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+F (.\board\diskio.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./diskio.o -MD)
+I (..\..\stm32\fatfs\diskio.h)(0x6827DDEC)
+I (..\fatfs\integer.h)(0x6827DDEC)
+I (board\board.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (board\ffconf.h)(0x6827DDEC)
+F (..\fatfs\ff.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./ff.o -MD)
+I (..\fatfs\ff.h)(0x6827DDEC)
+I (..\fatfs\integer.h)(0x6827DDEC)
+I (board\ffconf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (..\fatfs\diskio.h)(0x6827DDEC)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+F (..\stm32_gpio.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32_gpio.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+F (..\stm32_i2c.c)(0x68536C2D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32_i2c.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+F (..\stm32_platform.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32_platform.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+I (board\board.h)(0x6827DDEC)
+F (..\stm32_spi.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32_spi.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+F (..\stm32_uart.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32_uart.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+F (..\fatfs\ccsbcs.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./ccsbcs.o -MD)
+I (..\fatfs\ff.h)(0x6827DDEC)
+I (..\fatfs\integer.h)(0x6827DDEC)
+I (board\ffconf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_cortex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_cortex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_dma.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_dma.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_dma_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_dma_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_exti.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_exti.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_flash.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_flash.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_flash_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_flash_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_flash_ramfunc.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_flash_ramfunc.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_gpio.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_gpio.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_i2c.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_i2c.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_i2c_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_i2c_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_pwr.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_pwr.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_pwr_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_pwr_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_rcc.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_rcc.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_rcc_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_rcc_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_rtc.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_rtc.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_rtc_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_rtc_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_spi.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_spi.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_spi_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_spi_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_tim.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_tim.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_tim_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_tim_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_uart.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_uart.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_uart_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_uart_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_usart.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_usart.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\3rdparty\STM32G4xx_HAL_Driver\Src\stm32g4xx_hal_usart_ex.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./stm32g4xx_hal_usart_ex.o -MD)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\..\src\dtof_api.c)(0x68624102)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_api.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\math.h)(0x603507CA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_api.h)(0x68623A3B)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_driver.h)(0x685BBCC8)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_float.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_endian.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\lib\dtof_lib.h)(0x685BB946)
+I (..\..\..\sdk_kws_customer_v1.12\src\ramcode\dtof_distance_mode.ram)(0x68621D4A)
+I (..\..\..\sdk_kws_customer_v1.12\src\ramcode\dtof_pre_config.ram)(0x684BC399)
+F (..\..\src\dtof_driver.c)(0x6862277C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_driver.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_endian.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_driver.h)(0x685BBCC8)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_api.h)(0x68623A3B)
+F (..\..\src\dtof_endian.c)(0x6838163C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_endian.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_endian.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+F (..\..\src\dtof_fix16_float.c)(0x684F8344)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_fix16_float.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\math.h)(0x603507CA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+F (..\dev\dtof_hal.c)(0x6852571F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_hal.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_driver.h)(0x685BBCC8)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\dev\dtof_reg.h)(0x681C52F1)
+I (..\dev\dtof_hal.h)(0x68527A06)
+F (..\..\lib\dtof_lib.lib)(0x685CE6E0)()
+F (..\user\device\device.c)(0x6827DDEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./device.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\stm32\user\device\ds_sal.h)(0x6827DDEC)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+I (..\..\stm32\user\device\ds_dev.h)(0x68492FA6)
+I (..\user\device\device.h)(0x6827DDEC)
+F (..\user\device\ds_dev.c)(0x6848E386)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./ds_dev.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_float.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_endian.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\util.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\..\stm32\customer\dtof_customer.h)(0x684BBEE9)
+I (..\..\stm32\user\device\ds_sal.h)(0x6827DDEC)
+I (..\..\stm32\user\device\ds_dev.h)(0x68492FA6)
+I (..\user\device\device.h)(0x6827DDEC)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (..\customer\dtof_customer.c)(0x686207C1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_customer.o -MD)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_endian.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_log.h)(0x685BB038)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\stm32\user\device\ds_sal.h)(0x6827DDEC)
+I (..\..\stm32\user\device\ds_dev.h)(0x68492FA6)
+I (..\..\stm32\user\device\device.h)(0x6827DDEC)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_common.h)(0x685BBBCE)
+I (..\..\..\sdk_kws_customer_v1.12\inc\dtof_global_config.h)(0x684922EA)
+I (..\customer\dtof_customer.h)(0x684BBEE9)
+I (..\..\stm32\base\inc\mos_platform.h)(0x6827DDEC)
+I (..\..\stm32\base\inc\mos_def.h)(0x6827DDEC)
+I (board\platform_user_config.h)(0x6827DDEC)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g474xx.h)(0x6827DDE6)
+I (..\3rdparty\CMSIS\Include\core_cm4.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_version.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_compiler.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Include\cmsis_armclang.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x602A3B7E)
+I (C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x603507C4)
+I (..\3rdparty\CMSIS\Include\mpu_armv7.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\system_stm32g4xx.h)(0x6827DDE8)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x6827DDEA)
+I (..\3rdparty\stm32g4xx_hal_conf.h)(0x6827DDEC)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_def.h)(0x6827DDEA)
+I (..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h)(0x6827DDE6)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x6827DDEA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x603507D0)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_gpio_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_dma_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_cortex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_exti.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_flash_ramfunc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_hrtim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_i2c_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_pwr_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rtc_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_spi_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x6827DDEA)
+I (..\3rdparty\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x6827DDEA)
+F (C:\Users\14193\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Source\retarget_io.c)(0x584E29BE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.12 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./retarget_io.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\assert.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\rt_sys.h)(0x603507D4)
+I (RTE\_DTOF_GNSS\RTE_Components.h)(0x685B6A92)

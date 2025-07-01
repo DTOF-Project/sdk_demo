@@ -1,0 +1,41 @@
+Dependencies for Project 'dtof-lite-sdk-for-stm32-lib', Target 'DTOF_GNSS': (DO NOT MODIFY !)
+CompilerVersion: 6160000::V6.16::ARMCLANG
+F (..\..\lib\dtof_cal_binoffset.c)(0x685B714F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.11 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_cal_binoffset.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_log.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_base_type.h)(0x684922EA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_driver.h)(0x6853B5E2)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_common.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_global_config.h)(0x684922EA)
+I (..\..\lib\dtof_reg.h)(0x685B6E89)
+I (..\..\lib\dtof_hal.h)(0x685B6F65)
+F (..\..\lib\dtof_confidence.c)(0x685B73D4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.11 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_confidence.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\math.h)(0x603507CA)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+F (..\..\lib\dtof_hal.c)(0x685B6F07)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.11 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./dtof_hal.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (..\..\lib\dtof_lib.h)(0x685B73CF)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_base_type.h)(0x684922EA)
+I (..\..\lib\dtof_reg.h)(0x685B6E89)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_log.h)(0x6838163C)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_libc.h)(0x6838163C)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_driver.h)(0x6853B5E2)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_common.h)(0x684922EA)
+I (..\..\..\sdk_kws_customer_v1.11\inc\dtof_global_config.h)(0x684922EA)
+F (C:\Users\14193\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Source\retarget_io.c)(0x584E29BE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-covered-switch-default -Wno-unreachable-code-break -I ./board -I ../3rdparty/STM32G4xx_HAL_Driver/Inc -I ../3rdparty/CMSIS/Device/ST/STM32G4xx/Include -I ../3rdparty -I ../3rdparty/CMSIS/Include -I ../../../app/nvram -I ../../../sdk -I ../fatfs -I ../../stm32 -I ../../../sdk_kws_customer_v1.11 -Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef-I./RTE/_DTOF_GNSS-IC:/Users/14193/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/14193/AppData/Local/Arm/Packs/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32G474xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G474xx -DSTM32G4 -DDTOF_GNSS-o ./retarget_io.o -MD)
+I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x603507D4)
+I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\assert.h)(0x603507D0)
+I (C:\Keil_v5\ARM\ARMCLANG\include\rt_sys.h)(0x603507D4)
+I (RTE\_DTOF_GNSS\RTE_Components.h)(0x685B6A92)
