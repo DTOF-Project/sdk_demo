@@ -806,14 +806,13 @@ ARM Macro Assembler    Page 13
   484 0000001C                 END
               00000000 
               00000000 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --depen
-d=.\startup_stm32g474xx.d -o.\startup_stm32g474xx.o -I.\RTE\_DTOF_GNSS -IC:\Use
-rs\14193\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Users\
-14193\AppData\Local\Arm\Packs\Keil\STM32G4xx_DFP\1.5.0\Drivers\CMSIS\Device\ST\
-STM32G4xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSIO
-N SETA 536" --predefine="_RTE_ SETA 1" --predefine="STM32G474xx SETA 1" --prede
-fine="_RTE_ SETA 1" --list=.\listings\startup_stm32g474xx.lst ..\3rdparty\CMSIS
-\Device\ST\STM32G4xx\Source\Templates\arm\startup_stm32g474xx.s
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --depend=.
+\startup_stm32g474xx.d -o.\startup_stm32g474xx.o -I.\RTE\_DTOF_GNSS -ID:\keil5\
+bin\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include -ID:\keil5\bin\ARM\PACK\Keil\STM32G4
+xx_DFP\1.4.0\Drivers\CMSIS\Device\ST\STM32G4xx\Include --predefine="__MICROLIB 
+SETA 1" --predefine="__UVISION_VERSION SETA 524" --predefine="_RTE_ SETA 1" --p
+redefine="STM32G474xx SETA 1" --list=.\listings\startup_stm32g474xx.lst ..\3rdp
+arty\CMSIS\Device\ST\STM32G4xx\Source\Templates\arm\startup_stm32g474xx.s
 
 
 

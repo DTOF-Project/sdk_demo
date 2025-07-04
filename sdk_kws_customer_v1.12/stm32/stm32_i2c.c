@@ -170,8 +170,8 @@ static DTOF_RET stm32_i2c_init_info(struct mos_i2c_info *info) {
     // 进低功耗有问题，有问题，可以运行几分钟 hi2c1.Init.Timing = 0x202F2424; //
     // Speed:634K 运行一个小时没问题 hi2c1.Init.Timing = 0x202F4343;//Speed:400K
 
-    hi2c->Init.Timing = 0x404F2828;  // Speed:399.2K
-   // hi2c->Init.Timing = 0x000f4040;  // Speed:1m
+    // hi2c->Init.Timing = 0x404F2828;  // Speed:399.2K
+   hi2c->Init.Timing = 0x000f4040;  // Speed:1m
     // update timing
     if (timingvalue != 0) {
         hi2c->Init.Timing = timingvalue;

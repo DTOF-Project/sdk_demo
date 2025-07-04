@@ -20,6 +20,55 @@
 #define FLASH_RESERVE_SIZE 64
 #define FLASH_ROM_BURN_START_ADDR 0x08070000 + FLASH_RESERVE_SIZE
 
+/*****************************xyb改******************************/
+extern DTOF_RET stm32_write_gpio(uint32_t gpio, uint32_t value);
+extern DTOF_RET stm32_init_gpio(uint32_t gpio, uint32_t cfgset);
+extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
+
+// 这里要求一定是输入的是 int16 的数据 
+void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
+    #define OUT_PUT_MAX_BUFFER  (517)
+    char output_str[OUT_PUT_MAX_BUFFER]; // 确保缓冲区足够大
+    char *temp_start = output_str;
+    int total_used_len = 0;
+
+    // 每个数据的单元大小是 5 = 4bytes hex + ，
+    #define PRINT_UNIT_SIZE 5
+    for (int i = 0; i < len; i++) {
+        int pos;
+        if(hist_p[i] <= 0xff)
+        {
+            pos = snprintf(temp_start , PRINT_UNIT_SIZE, "%x,", hist_p[i]);
+        }
+        else if (hist_p[i] <= 0xfff)
+        {
+            pos = snprintf(temp_start , PRINT_UNIT_SIZE+1, "%03x,", hist_p[i]);
+        }
+        else if (hist_p[i] <= 0xffff)
+        {
+            pos = snprintf(temp_start , PRINT_UNIT_SIZE+2, "%04x,", hist_p[i]);
+        }
+        total_used_len = total_used_len + pos;
+        temp_start = temp_start + pos;
+
+        if(total_used_len >= (OUT_PUT_MAX_BUFFER - PRINT_UNIT_SIZE))
+        {
+            // sendout the value
+            stm32_uart_write(0, output_str, total_used_len);
+            // reset the value
+			temp_start = output_str;
+		    total_used_len = 0;
+        }				
+    }
+
+    if(total_used_len != 0)
+    {
+        stm32_uart_write(0, output_str, total_used_len);
+    }	
+    stm32_uart_write(0, "\n", 1);
+}
+/**************************************************************/
+
 void stm32_flash_write_init(void)
 {
     FLASH_EraseInitTypeDef eraseInit;
@@ -155,6 +204,7 @@ int main(void)
     // dtof_uint8_t *sensor_ft_data_p = 0;
     // dtof_bool_t is_find_sensor = DTOF_FALSE;
 
+    dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
     dtof_distance_result_t distance_result;
     dtof_bool_t is_new_flag;
     dtof_bool_t is_init = DTOF_FALSE;
@@ -387,43 +437,48 @@ int main(void)
                         dtof_stop_distance_measure(device_id);
                     }
                 }
-                dtof_uint16_t main_hist[DTOF_SINGLE_MAIN_HISTGRAM_LEN];
-                dtof_uint16_t ref_hist[DTOF_SINGLE_REF_HISTGRAM_LEN];
-                dtof_uint16_t dsp_fifo[DTOF_SINGLE_FIFO_LEN];
-                #define TOTAL_REG_NUM 255
-                dtof_uint16_t dtof_reg[TOTAL_REG_NUM];
+                // dtof_uint16_t main_hist[DTOF_SINGLE_MAIN_HISTGRAM_LEN];
+                // dtof_uint16_t ref_hist[DTOF_SINGLE_REF_HISTGRAM_LEN];
+                // dtof_uint16_t dsp_fifo[DTOF_SINGLE_FIFO_LEN];
+                // #define TOTAL_REG_NUM 255
+                // dtof_uint16_t dtof_reg[TOTAL_REG_NUM];
                 // bypass, read debug info
+                #define TOTAL_REG_NUM 255
                 dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT);
 
-                dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, main_hist, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
-                dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, ref_hist, DTOF_SINGLE_REF_HISTGRAM_LEN);
-                dtof_dsp_fifo_read(0, dsp_fifo, DTOF_SINGLE_FIFO_LEN);
-                dtof_reg_burst_read(0, 0x00, dtof_reg, TOTAL_REG_NUM);
+                dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+                dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+                dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+                dump_hist_log(buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+                dtof_dsp_fifo_read(0, buffer, DTOF_SINGLE_FIFO_LEN);
+                dump_hist_log(buffer, DTOF_SINGLE_FIFO_LEN);
+                dtof_reg_burst_read(0, 0x00, buffer, TOTAL_REG_NUM);
+                dump_hist_log(buffer, TOTAL_REG_NUM);
 
                 // printf("main histgram: ");
-                for (int i = 0; i < DTOF_SINGLE_MAIN_HISTGRAM_LEN; i++)
-                {
-                    printf("%d, ", main_hist[i]);
-                }
-                printf("\n");
-                // printf("ref histgram: ");
-                for (int i = 0; i < DTOF_SINGLE_REF_HISTGRAM_LEN; i++)
-                {
-                    printf("%d, ", ref_hist[i]);
-                }
-                printf("\n");
-                // printf("dsp fifo: ");
-                for (int i = 0; i < DTOF_SINGLE_FIFO_LEN; i++)
-                {
-                    printf("%d, ", dsp_fifo[i]);
-                }
-                printf("\n");
-                // printf("cg reg: ");
-                for (int i = 0; i < TOTAL_REG_NUM; i++)
-                {
-                    printf("%d, ", dtof_reg[i]);
-                }
-                printf("\n");
+                // for (int i = 0; i < DTOF_SINGLE_MAIN_HISTGRAM_LEN; i++)
+                // {
+                //     printf("%d, ", main_hist[i]);
+                // }
+                // printf("\n");
+                // // printf("ref histgram: ");
+                // for (int i = 0; i < DTOF_SINGLE_REF_HISTGRAM_LEN; i++)
+                // {
+                //     printf("%d, ", ref_hist[i]);
+                // }
+                // printf("\n");
+                // // printf("dsp fifo: ");
+                // for (int i = 0; i < DTOF_SINGLE_FIFO_LEN; i++)
+                // {
+                //     printf("%d, ", dsp_fifo[i]);
+                // }
+                // printf("\n");
+                // // printf("cg reg: ");
+                // for (int i = 0; i < TOTAL_REG_NUM; i++)
+                // {
+                //     printf("%d, ", dtof_reg[i]);
+                // }
+                // printf("\n");
 
                 dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP);
             }
