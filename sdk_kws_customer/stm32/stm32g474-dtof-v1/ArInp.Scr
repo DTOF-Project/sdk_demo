@@ -1,0 +1,4 @@
+--create .\dtof_lib/dtof_lib.lib
+.\dtof_cal_binoffset.o
+.\dtof_confidence.o
+.\dtof_hal.o
