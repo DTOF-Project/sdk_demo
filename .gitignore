@@ -53,11 +53,13 @@ sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvoptx
 sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvguix*
 sdk_kws_customer/stm32/stm32g474-dtof-v1/*.htm
 
-dtof_calibration_lib/*.uvoptx
-dtof_calibration_lib/*.uvguix*
-dtof_calibration_lib/DebugConfig
-dtof_calibration_lib/Objects
-dtof_calibration_lib/Listings
+dtof_calibration_lib/keil/*.uvoptx
+dtof_calibration_lib/keil/*.uvguix*
+dtof_calibration_lib/keil/DebugConfig
+dtof_calibration_lib/keil/Listings
+dtof_calibration_lib/keil/Objects/*.htm
+dtof_calibration_lib/keil/Objects/*.dep
+dtof_calibration_lib/keil/Objects/*.Scr
 
 # IAR Project
 dtof_calibration_lib/iar/Debug/List

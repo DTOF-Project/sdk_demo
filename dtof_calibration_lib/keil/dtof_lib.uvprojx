@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\sdk_kws_customer\sdk</IncludePath>
+              <IncludePath>..\..\sdk_kws_customer\sdk</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -386,27 +386,27 @@
             <File>
               <FileName>dtof_cal_binoffset.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sdk_kws_customer\sdk\lib\dtof_cal_binoffset.c</FilePath>
+              <FilePath>..\..\sdk_kws_customer\sdk\lib\dtof_cal_binoffset.c</FilePath>
             </File>
             <File>
               <FileName>dtof_cal_cg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sdk_kws_customer\sdk\lib\dtof_cal_cg.c</FilePath>
+              <FilePath>..\..\sdk_kws_customer\sdk\lib\dtof_cal_cg.c</FilePath>
             </File>
             <File>
               <FileName>dtof_cal_ft.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</FilePath>
+              <FilePath>..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</FilePath>
             </File>
             <File>
               <FileName>dtof_confidence.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sdk_kws_customer\sdk\lib\dtof_confidence.c</FilePath>
+              <FilePath>..\..\sdk_kws_customer\sdk\lib\dtof_confidence.c</FilePath>
             </File>
             <File>
               <FileName>dtof_hal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\sdk_kws_customer\sdk\lib\dtof_hal.c</FilePath>
+              <FilePath>..\..\sdk_kws_customer\sdk\lib\dtof_hal.c</FilePath>
             </File>
           </Files>
         </Group>
