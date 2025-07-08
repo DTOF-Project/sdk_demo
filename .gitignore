@@ -46,3 +46,15 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Keil Project
+sdk_kws_customer/stm32/stm32g474-dtof-v1/Build
+sdk_kws_customer/stm32/stm32g474-dtof-v1/Listings
+sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvoptx
+sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvguix*
+sdk_kws_customer/stm32/stm32g474-dtof-v1/*.htm
+
+dtof_calibration_lib/*.uvoptx
+dtof_calibration_lib/*.uvguix*
+dtof_calibration_lib/DebugConfig
+dtof_calibration_lib/Objects
+dtof_calibration_lib/Listings

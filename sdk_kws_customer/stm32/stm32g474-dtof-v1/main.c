@@ -8,6 +8,7 @@
 #include "inc/dtof_api.h"
 #include "inc/dtof_log.h"
 #include "inc/dtof_driver.h"
+#include "inc/dtof_endian.h"
 #include "base/inc/mos_platform.h"
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
@@ -25,7 +26,7 @@ extern DTOF_RET stm32_write_gpio(uint32_t gpio, uint32_t value);
 extern DTOF_RET stm32_init_gpio(uint32_t gpio, uint32_t cfgset);
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
 
-// 这里要求一定是输入的是 int16 的数据 
+// 这里要求一定是输入的是 int16 的数据
 void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
     #define OUT_PUT_MAX_BUFFER  (517)
     char output_str[OUT_PUT_MAX_BUFFER]; // 确保缓冲区足够大
@@ -58,13 +59,13 @@ void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
             // reset the value
 			temp_start = output_str;
 		    total_used_len = 0;
-        }				
+        }
     }
 
     if(total_used_len != 0)
     {
         stm32_uart_write(0, output_str, total_used_len);
-    }	
+    }
     stm32_uart_write(0, "\n", 1);
 }
 /**************************************************************/
@@ -256,31 +257,22 @@ int main(void)
                 // 命令解析
                 if (strcmp(uart_buf, "s") == 0)
                 {
-                    if (is_init == DTOF_FALSE)
-                    {
-                        DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                        is_init = DTOF_TRUE;
-                    }
+                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
+                    is_init = DTOF_TRUE;
                     dtof_start_distance_measure(device_id);
                     debug_flag = DTOF_FALSE;
                 }
                 else if (strcmp(uart_buf, "d") == 0)
                 {
-                    if (is_init == DTOF_FALSE)
-                    {
-                        DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                        is_init = DTOF_TRUE;
-                    }
+                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
+                    is_init = DTOF_TRUE;
                     dtof_start_distance_measure(device_id);
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
-                    if (is_init == DTOF_FALSE)
-                    {
-                        DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                        is_init = DTOF_TRUE;
-                    }
+                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
+                    is_init = DTOF_TRUE;
                     dtof_start_distance_measure(device_id);
                     frame_cnt_flag = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
@@ -364,6 +356,8 @@ int main(void)
                 else if (strcmp(uart_buf, "b") == 0)
                 {
                     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
+                    uint16_t xtalk_data[18];
+                    dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
                     is_init = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "x") == 0)
@@ -388,6 +382,11 @@ int main(void)
                     printf("\n");
 
                     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                }
+                else if (strcmp(uart_buf, "v") == 0)
+                {
+                    DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
+                    DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
                 }
                 else
                 {
@@ -416,7 +415,7 @@ int main(void)
         if (is_init == DTOF_TRUE)
         {
             // 检查是否有中断触发
-            ret = dtof_get_distance_result(device_id, DO_OFFSET_CALIBRATION_MODE, &distance_result, &is_new_flag);
+            ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
         }
 
         if (is_new_flag == DTOF_TRUE)

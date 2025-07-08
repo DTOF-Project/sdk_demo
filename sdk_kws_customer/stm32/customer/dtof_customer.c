@@ -195,14 +195,14 @@ extern void stm32_flash_read(uint32_t offset, uint64_t* context, uint16_t len);
 extern void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
 extern void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
 
-// DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset)
-// {
-//     uint64_t distance_offset_64;
-//     stm32_flash_read_u64(0, &distance_offset_64, 1);
-//     *distance_offset = (dtof_int32_t)distance_offset_64;
-//     printf("read distance offset: %d\n", *distance_offset);
-//     return DTOF_RET_SUCCESS;
-// }
+DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset)
+{
+    uint64_t distance_offset_64;
+    stm32_flash_read_u64(0, &distance_offset_64, 1);
+    *distance_offset = (dtof_int32_t)distance_offset_64;
+    printf("read distance offset: %d\n", *distance_offset);
+    return DTOF_RET_SUCCESS;
+}
 
 DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset)
 {
@@ -212,20 +212,20 @@ DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t 
     return DTOF_RET_SUCCESS;
 }
 
-// DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
-// {
-//     uint64_t xtalk_data64[18];
-//     stm32_flash_read_u64(64, xtalk_data64, 18);
+DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
+{
+    uint64_t xtalk_data64[18];
+    stm32_flash_read_u64(64, xtalk_data64, 18);
 
-//     printf("read xtalk data: ");
-//     for(dtof_uint16_t i = 0; i < 18; i++)
-//     {
-//         *(xtalk_data+i) = (dtof_uint16_t)xtalk_data64[i];
-//         printf("%d, ", xtalk_data[i]);
-//     }
-//     printf("\n");
-//     return DTOF_RET_SUCCESS;
-// }
+    printf("read xtalk data: ");
+    for(dtof_uint16_t i = 0; i < 18; i++)
+    {
+        *(xtalk_data+i) = (dtof_uint16_t)xtalk_data64[i];
+        printf("%d, ", xtalk_data[i]);
+    }
+    printf("\n");
+    return DTOF_RET_SUCCESS;
+}
 
 DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
 {
