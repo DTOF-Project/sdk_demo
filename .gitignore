@@ -58,3 +58,8 @@ dtof_calibration_lib/*.uvguix*
 dtof_calibration_lib/DebugConfig
 dtof_calibration_lib/Objects
 dtof_calibration_lib/Listings
+
+# IAR Project
+dtof_calibration_lib/iar/Debug/List
+dtof_calibration_lib/iar/Debug/Obj
+
