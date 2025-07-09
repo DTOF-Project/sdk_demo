@@ -112,10 +112,6 @@
             <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 41</file>
-                </tool>
-                <tool>
                     <name>BICOMP</name>
                     <file> 48</file>
                 </tool>
@@ -131,7 +127,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 16 49 47 55 30 58 14 29 44 59 43 40 9 23 31 15 38 56 52 25 34 28 18 50 39</file>
+                    <file> 49 55 29 58 9 23 47 14 31 43 40 16 44 30 59 15 38 56 52 25 34 28 18 50 39</file>
                 </tool>
             </inputs>
         </file>
@@ -158,7 +154,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 18 50 25 34 59 58 29 52 14 43 40 49 28 39 47 15 38 56 9 16 44 23 30 31</file>
+                    <file> 23 9 47 14 31 58 29 49 43 40 16 44 30 59 15 38 56 52 25 34 28 18 50 39</file>
                 </tool>
             </inputs>
         </file>
@@ -238,7 +234,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 29 43 52 49 47 31 40 58 14 60 56 9 16 44 23 59 30 34 28 18 50 39</file>
+                    <file> 29 43 49 31 40 58 52 47 14 60 56 9 16 44 23 59 30 34 28 18 50 39</file>
                 </tool>
             </inputs>
         </file>
