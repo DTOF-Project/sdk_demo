@@ -112,6 +112,10 @@
             <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</name>
             <outputs>
                 <tool>
+                    <name>ICCARM</name>
+                    <file> 41</file>
+                </tool>
+                <tool>
                     <name>BICOMP</name>
                     <file> 48</file>
                 </tool>
@@ -234,7 +238,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 29 43 49 31 40 58 52 47 14 60 56 9 16 44 23 59 30 34 28 18 50 39</file>
+                    <file> 29 43 47 49 31 40 58 52 14 60 56 9 16 44 23 59 30 34 28 18 50 39</file>
                 </tool>
             </inputs>
         </file>
