@@ -355,10 +355,11 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "b") == 0)
                 {
+                    stm32_flash_write_init();
                     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                     uint16_t xtalk_data[18];
                     dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
-                    is_init = DTOF_TRUE;
+                    // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
                 }
                 else if (strcmp(uart_buf, "x") == 0)
                 {
