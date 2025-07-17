@@ -1,3 +1,4 @@
-[submodule "sdk_kws_customer/sdk"]
-	path = sdk_kws_customer/sdk
+
+[submodule "soc/sdk"]
+	path = soc/sdk
 	url = git@bitbucket.org:jianash/sdk_core.git
