@@ -18,7 +18,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-int dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
-int dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
 #endif /* PLATFORM_STM32_INCLUDE_MAIN_H */

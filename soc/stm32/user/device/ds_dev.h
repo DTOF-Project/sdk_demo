@@ -8,6 +8,7 @@
 #define SRC_INC_DS_DEV_H_
 
 #include "device.h"
+#include "inc/dtof_api.h"
 
 typedef void (*dsd_interrupt_callback)(void *param);
 
@@ -19,9 +20,10 @@ typedef struct dsd_interrupt_s
 } dsd_interrupt_t;
 
 typedef enum {
-    DTOF_CHIP_TYPE_GNSS01,
-    DTOF_CHIP_TYPE_UNKNOWN,
-} dtof_chipType_t;
+    DTOF_CHIP_TYPE_A05 = 0x0001,
+    DTOF_CHIP_TYPE_L3 = 0x4120,
+    DTOF_CHIP_TYPE_UNKNOWN = 0xffff,
+} dtof_chip_type_t;
 
 /**
  * @ingroup device manage
@@ -38,7 +40,9 @@ typedef struct dtof_device_s
 
     ds_sal_config_t dsd_peripheral; /*!< dtof sensor 外围接口配置 */
     dsd_interrupt_t dsd_interrupt;
-    dtof_chipType_t chip_type; /*!< 芯片类型 */
+    dtof_chip_type_t chip_type; /*!< 芯片类型 */
+    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
+    dtof_bool_t is_find_sensor;
     device_driver_ops_t *device_driver; // iic or spi
     device_driver_ops_t *device_uart_driver; // uart
     device_driver_gpio_ops_t *device_gpio_driver; // gpio
@@ -63,10 +67,13 @@ DTOF_RET ds_device_peripheral_init(ds_sal_config_t *peripheralConfig);
  */
 dtof_device_t *ds_device_get(void);
 
-int dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
-int dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
 DTOF_RET device_driver_ops_init(dtof_device_t *dev);
+
+DTOF_RET dtof_peripheral_device_init(void);
+DTOF_RET ds_get_chip_type(dtof_uint16_t chip_id, dtof_chip_type_t* chiptype);
 
 #endif

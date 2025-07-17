@@ -14,7 +14,10 @@
 #include "customer/dtof_customer.h"
 
 #include "dev/dtof_hal.h"
-#include "lib/dtof_lib.h"
+
+#include "user/device/ds_sal.h"
+#include "user/device/ds_dev.h"
+#include "user/device/device.h"
 
 
 #define FLASH_START_ADDR 0x08070000
@@ -25,6 +28,7 @@
 extern DTOF_RET stm32_write_gpio(uint32_t gpio, uint32_t value);
 extern DTOF_RET stm32_init_gpio(uint32_t gpio, uint32_t cfgset);
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
+extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
 // 这里要求一定是输入的是 int16 的数据
 void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
@@ -199,12 +203,7 @@ int main(void)
 {
     DTOF_RET ret;
     dtof_uint16_t chip_id;
-    dtof_uint8_t device_id = 0;
-
-    // dtof_uint8_t uuid[DTOF_UUID_LENGTH];
-    // dtof_uint8_t *sensor_ft_data_p = 0;
-    // dtof_bool_t is_find_sensor = DTOF_FALSE;
-
+    dtof_device_t *dev = ds_device_get();
     dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
     dtof_distance_result_t distance_result;
     dtof_bool_t is_new_flag;
@@ -215,27 +214,14 @@ int main(void)
 
     DTOF_CHECK_WARN(dtof_peripheral_device_init(), "dtof_peripheral_device_init failed\n");
 
-    // dtof_int32_t write_value = 20;
-    // dtof_int32_t read_value;
-    // stm32_flash_write(0, (uint64_t*)&write_value, 1);
-    // stm32_flash_read(0, (uint64_t*)&read_value, 1);
-    // printf("write value: %d, read value: %d\n", write_value, read_value);
+    // dtof init
+    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
 
-    // for test
-    // DTOF_CHECK_WARN(dtof_get_uuid(device_id, uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
+    // save chip uuid
+    DTOF_CHECK_WARN(dtof_get_uuid(dev->chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
 
-    // ret = dtof_find_ft_data_in_database(uuid, DTOF_UUID_LENGTH, &is_find_sensor, &sensor_ft_data_p);
-
-    // if (!ret)
-    // {
-    //     dtof_quit_distance_measure(device_id);
-    //     printf("load ft data... ...\n");
-    //     DTOF_CHECK_WARN(dtof_version_upgrade(device_id, uuid, sensor_ft_data_p, DTOF_SENSOR_DATA_LENGTH), "version upgrade failed\n");
-    // }
-
-    // dtof_set_distance_offset(device_id, -4);
-
-    extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
+    // save chip type
+    DTOF_CHECK_WARN(ds_get_chip_type(dtof_get_chip_config()->chip_id, &dev->chip_type), "get chip type failed\n");
 
     uint8_t byte;
     char uart_buf[32] = {0};
@@ -243,6 +229,8 @@ int main(void)
 
     dtof_bool_t frame_cnt_flag = DTOF_FALSE;
     int32_t frame_cnt = 0;
+
+    dtof_set_interrupt_flag(DTOF_FALSE);
 
     while (1)
     {
@@ -257,36 +245,35 @@ int main(void)
                 // 命令解析
                 if (strcmp(uart_buf, "s") == 0)
                 {
-                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                    is_init = DTOF_TRUE;
-                    dtof_start_distance_measure(device_id);
+                    if (is_init == DTOF_FALSE) {
+                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                        is_init = DTOF_TRUE;
+                    }
+                    dtof_start_distance_measure();
                     debug_flag = DTOF_FALSE;
                 }
                 else if (strcmp(uart_buf, "d") == 0)
                 {
-                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                    is_init = DTOF_TRUE;
-                    dtof_start_distance_measure(device_id);
+                    if (is_init == DTOF_FALSE) {
+                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                        is_init = DTOF_TRUE;
+                    }
+                    dtof_start_distance_measure();
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
-                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, NORMAL_DISTANCE_MODE), "dtof init and wait for ready failed\n");
-                    is_init = DTOF_TRUE;
-                    dtof_start_distance_measure(device_id);
+                    if (is_init == DTOF_FALSE) {
+                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                        is_init = DTOF_TRUE;
+                    }
+                    dtof_start_distance_measure();
                     frame_cnt_flag = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "t") == 0)
                 {
-                    dtof_stop_distance_measure(device_id);
-                }
-                else if (strncmp(uart_buf, "c,", 2) == 0)
-                {
-                    int value = atoi(&uart_buf[2]);
-                    printf("receive calbration value: %d\n", value);
-                    dtof_set_distance_offset(device_id, 20 - value);
-                    // 这里可以执行设置参数的操作
+                    dtof_stop_distance_measure();
                 }
                 else if (strncmp(uart_buf, "r,", 2) == 0)
                 {
@@ -297,12 +284,12 @@ int main(void)
                 }
                 else if (strncmp(uart_buf, "rb,", 3) == 0)
                 {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
                     int reg_addr, reg_num;
                     dtof_uint16_t reg_max[255];
                     if (sscanf(uart_buf, "rb,%d,%d", &reg_addr, &reg_num) == 2)
                     {
-                        dtof_reg_burst_read(device_id, reg_addr, reg_max, reg_num);
+                        dtof_reg_burst_read(reg_addr, reg_max, reg_num);
                         printf("burst reg read 0x%04x:\n", reg_addr);
                         for (int i = 0; i < reg_num; i++)
                         {
@@ -310,7 +297,7 @@ int main(void)
                         }
                         printf("\n");
                     }
-                    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                 }
                 else if (strncmp(uart_buf, "w,", 2) == 0)
                 {
@@ -323,31 +310,31 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "p") == 0)
                 {
-                    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
-                    dtof_int32_t read_distance_offset = 0;
-                    dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
-                    DTOF_CHECK_WARN(dtof_get_uuid(device_id, chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
-                    printf("chip uuid: ");
-                    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
-                    {
-                        printf("%d, ", chip_uuid[i]);
-                    }
-                    printf("\n");
-                    dtof_get_distance_offset_from_flash(device_id, &read_distance_offset);
-                    printf("distance offset = %d\n", read_distance_offset);
-                    dtof_get_xtalk_data_from_flash(device_id, xtalk_data_read);
-                    printf("xtalk data = ");
-                    for (int i = 0; i < XTALK_DATA_SIZE; i++)
-                    {
-                        printf("%d, ", xtalk_data_read[i]);
-                    }
-                    printf("\n");
+                    // dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
+                    // dtof_int32_t read_distance_offset = 0;
+                    // dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
+                    // DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
+                    // printf("chip uuid: ");
+                    // for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+                    // {
+                    //     printf("%d, ", chip_uuid[i]);
+                    // }
+                    // printf("\n");
+                    // dtof_get_distance_offset_from_flash(&read_distance_offset);
+                    // printf("distance offset = %d\n", read_distance_offset);
+                    // dtof_get_xtalk_data_from_flash(xtalk_data_read);
+                    // printf("xtalk data = ");
+                    // for (int i = 0; i < XTALK_DATA_SIZE; i++)
+                    // {
+                    //     printf("%d, ", xtalk_data_read[i]);
+                    // }
+                    // printf("\n");
                 }
                 else if (strcmp(uart_buf, "cal") == 0)
                 {
-                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                    is_init = DTOF_TRUE;
-                    printf("distance offset = %d\n", dtof_get_distance_offset(device_id));
+                    // DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
+                    // is_init = DTOF_TRUE;
+                    // printf("distance offset = %d\n", dtof_get_distance_offset());
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
@@ -355,21 +342,21 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "b") == 0)
                 {
-                    stm32_flash_write_init();
-                    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                    uint16_t xtalk_data[18];
-                    dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
+                //     stm32_flash_write_init();
+                //     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
+                //     uint16_t xtalk_data[18];
+                //     dtof_get_xtalk_data_from_flash(xtalk_data);
                     // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
                 }
                 else if (strcmp(uart_buf, "x") == 0)
                 {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
                     #define READ_LEN 1126
                     dtof_uint16_t ram_start = 0x2000;
                     dtof_uint16_t ram_read[READ_LEN];
-                    DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1),
+                    DTOF_CHECK_RET(dtof_reg_burst_write(0XFE, &ram_start, 1),
                                     "写入串扰数据失败");
-                    DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xff, ram_read, READ_LEN),
+                    DTOF_CHECK_RET(dtof_reg_burst_read(0xff, ram_read, READ_LEN),
                                     "读取距离结果失败");
 
                     printf("ramdata\n");
@@ -382,12 +369,12 @@ int main(void)
                     }
                     printf("\n");
 
-                    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                 }
                 else if (strcmp(uart_buf, "v") == 0)
                 {
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
-                    DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
+                    DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
                 }
                 else
                 {
@@ -413,10 +400,16 @@ int main(void)
             }
         }
 
-        if (is_init == DTOF_TRUE)
+        // if (is_init == DTOF_TRUE)
+        // {
+        //     // 检查是否有中断触发
+        //     ret = dtof_get_distance_result(NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
+        // }
+        if (dtof_get_interrupt_flag() == DTOF_TRUE)
         {
-            // 检查是否有中断触发
-            ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
+            is_new_flag = DTOF_TRUE;
+            dtof_get_fifo(&distance_result);
+            dtof_set_interrupt_flag(DTOF_FALSE);
         }
 
         if (is_new_flag == DTOF_TRUE)
@@ -434,7 +427,7 @@ int main(void)
                     {
                         debug_flag = DTOF_FALSE;
                         frame_cnt = 0;
-                        dtof_stop_distance_measure(device_id);
+                        dtof_stop_distance_measure();
                     }
                 }
                 // dtof_uint16_t main_hist[DTOF_SINGLE_MAIN_HISTGRAM_LEN];
@@ -444,7 +437,7 @@ int main(void)
                 // dtof_uint16_t dtof_reg[TOTAL_REG_NUM];
                 // bypass, read debug info
                 #define TOTAL_REG_NUM 255
-                dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT);
+                dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);
 
                 dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
@@ -452,7 +445,7 @@ int main(void)
                 dump_hist_log(buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
                 dtof_dsp_fifo_read(0, buffer, DTOF_SINGLE_FIFO_LEN);
                 dump_hist_log(buffer, DTOF_SINGLE_FIFO_LEN);
-                dtof_reg_burst_read(0, 0x00, buffer, TOTAL_REG_NUM);
+                dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
                 dump_hist_log(buffer, TOTAL_REG_NUM);
 
                 // printf("main histgram: ");
@@ -480,10 +473,11 @@ int main(void)
                 // }
                 // printf("\n");
 
-                dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP);
+                dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
             }
-            printf("%d, %d, %d, %d, %.6f, %d\n",
-                   distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
+            printf("%d, %d, %d, %d, %.6f, 1\n",
+                   distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+            is_new_flag = DTOF_FALSE;
         }
     PASS:
     {

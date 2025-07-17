@@ -147,3 +147,76 @@ dtof_device_t *ds_device_get(void) {
 }
 
 /// @}
+
+static ds_sal_config_t peripheral;
+
+static int board_peripheral()
+{
+    peripheral.common_cfg.comm_type = COMM_IIC;
+    peripheral.common_cfg.comm_channel_id = IIC_NBR0;
+
+    peripheral.pin_cfg[dssal_intr_pin].pin_id = PLATFORM_INTERRUPT_PIN;
+    peripheral.pin_cfg[dssal_intr_pin].pin_config = PLATFORM_INTERRUPT_CFG;
+    peripheral.pin_set[dssal_intr_pin].pin_default_value = MOS_GPIO_PULL_DOWN;
+
+    peripheral.pin_cfg[dssal_reset_pin].pin_id = PLATFORM_RST_PIN;
+    peripheral.pin_cfg[dssal_reset_pin].pin_config = PLATFORM_RST_CFG;
+    peripheral.pin_set[dssal_reset_pin].pin_default_value = MOS_GPIO_PULL_DOWN;
+
+    peripheral.pin_cfg[dssal_vcc_en_pin].pin_id = PLATFORM_VCC_PIN;
+    peripheral.pin_cfg[dssal_vcc_en_pin].pin_config = PLATFORM_VCC_CFG;
+    peripheral.pin_set[dssal_vcc_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
+
+    peripheral.pin_cfg[dssal_vcc1_en_pin].pin_id = PLATFORM_VCC1_PIN;
+    peripheral.pin_cfg[dssal_vcc1_en_pin].pin_config = PLATFORM_VCC1_CFG;
+    peripheral.pin_set[dssal_vcc1_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
+
+    peripheral.pin_cfg[dssal_1v2_en_pin].pin_id = PLATFORM_VCC1V2_PIN;
+    peripheral.pin_cfg[dssal_1v2_en_pin].pin_config = PLATFORM_VCC1V2_CFG;
+    peripheral.pin_set[dssal_1v2_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
+
+    peripheral.pin_cfg[dssal_1v8_en_pin].pin_id = PLATFORM_VCC1V8_PIN;
+    peripheral.pin_cfg[dssal_1v8_en_pin].pin_config = PLATFORM_VCC1V8_CFG;
+    peripheral.pin_set[dssal_1v8_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
+
+    return 0;
+}
+
+DTOF_RET dtof_peripheral_device_init(void)
+{
+    /*
+     * 1. 初始化gpio
+     *  1.1 interrupt pin: (STM32_PIN_MODE_IT_FALLING | STM32_PIN_PULL_PULLUP | STM32_PIN_SPEED_HIGH)
+     *  1.2 reset pin: (STM32_PIN_MODE_OUTPUT_PP | STM32_PIN_PULL_NOPULL | STM32_PIN_SPEED_LOW) 默认拉低
+     *  1.3 iic pin: (STM32_PIN_MODE_AF_OD | STM32_PIN_PULL_NOPULL | STM32_PIN_SPEED_VERY_HIGH | STM32_PIN_ALT_4)
+     * 2. 初始化sensor
+     *  2.1 reset pin init 后 usleep(100), 然后拉高reset pin, usleep(750)
+     *  2.2 iic初始化
+     *  2.3 注册中断
+    */
+    DTOF_RET ret;
+
+    board_peripheral();
+
+    DTOF_CHECK_RET(ds_device_peripheral_init(&peripheral), "peripheral init fail");
+
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET ds_get_chip_type(dtof_uint16_t chip_id, dtof_chip_type_t* chiptype)
+{
+    DTOF_RET ret;
+
+    DTOF_CHECK_PTR(chiptype);
+
+    if (chip_id != DTOF_CHIP_TYPE_UNKNOWN){
+        *chiptype = chip_id;
+        ret = DTOF_RET_SUCCESS;
+    } else {
+        *chiptype = DTOF_CHIP_TYPE_UNKNOWN;
+        DTOF_LOG_ERR("unknown chip id: %d", chip_id);
+        ret = DTOF_RET_FAILED;
+    }
+
+    return ret;
+}

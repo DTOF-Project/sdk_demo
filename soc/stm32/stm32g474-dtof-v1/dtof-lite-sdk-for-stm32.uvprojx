@@ -339,7 +339,7 @@
               <MiscControls>-Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef</MiscControls>
               <Define>USE_HAL_DRIVER,STM32G474xx,STM32G4,DTOF_GNSS</Define>
               <Undefine></Undefine>
-              <IncludePath>.\board;..\3rdparty\STM32G4xx_HAL_Driver\Inc;..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include;..\3rdparty;..\3rdparty\CMSIS\Include;..\..\..\app\nvram;..\..\sdk;..\fatfs;..\..\stm32;..\..\..\sdk_kws_customer</IncludePath>
+              <IncludePath>.\board;..\3rdparty\STM32G4xx_HAL_Driver\Inc;..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include;..\3rdparty;..\3rdparty\CMSIS\Include;..\..\..\app\nvram;..\..\sdk;..\fatfs;..\..\stm32;..\..\..\soc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -609,14 +609,9 @@
               <FilePath>..\..\sdk\src\dtof_fix16_float.c</FilePath>
             </File>
             <File>
-              <FileName>dtof_hal.c</FileName>
+              <FileName>dtof_global_config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\dev\dtof_hal.c</FilePath>
-            </File>
-            <File>
-              <FileName>dtof_lib.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\sdk\lib\dtof_lib.lib</FilePath>
+              <FilePath>..\..\sdk\src\dtof_global_config.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -637,6 +632,11 @@
               <FileName>dtof_customer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\customer\dtof_customer.c</FilePath>
+            </File>
+            <File>
+              <FileName>dtof_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\dev\dtof_hal.c</FilePath>
             </File>
           </Files>
         </Group>

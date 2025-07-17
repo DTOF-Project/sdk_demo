@@ -26,7 +26,7 @@ static void dtof_convert_endian(uint16_t *data, uint16_t len)
     }
 }
 
-int dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
+int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
 {
     int ret;
     dtof_device_t *dev_p;
@@ -62,7 +62,7 @@ int dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data
     return ret;
 }
 
-int dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len)
+int dtof_reg_burst_write_burn(uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len)
 {
     int ret;
     dtof_device_t *dev_p;
@@ -89,7 +89,7 @@ int dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_
 }
 
 
-int dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
+int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
 {
     int ret;
     dtof_device_t *dev_p;
@@ -133,61 +133,6 @@ dtof_bool_t dtof_get_interrupt_flag(void)
 void dtof_sleep_ms(dtof_uint32_t time)
 {
     usleep(time * 1000);
-}
-
-static ds_sal_config_t peripheral;
-
-static int board_peripheral()
-{
-    peripheral.common_cfg.comm_type = COMM_IIC;
-    peripheral.common_cfg.comm_channel_id = IIC_NBR0;
-
-    peripheral.pin_cfg[dssal_intr_pin].pin_id = PLATFORM_INTERRUPT_PIN;
-    peripheral.pin_cfg[dssal_intr_pin].pin_config = PLATFORM_INTERRUPT_CFG;
-    peripheral.pin_set[dssal_intr_pin].pin_default_value = MOS_GPIO_PULL_DOWN;
-
-    peripheral.pin_cfg[dssal_reset_pin].pin_id = PLATFORM_RST_PIN;
-    peripheral.pin_cfg[dssal_reset_pin].pin_config = PLATFORM_RST_CFG;
-    peripheral.pin_set[dssal_reset_pin].pin_default_value = MOS_GPIO_PULL_DOWN;
-
-    peripheral.pin_cfg[dssal_vcc_en_pin].pin_id = PLATFORM_VCC_PIN;
-    peripheral.pin_cfg[dssal_vcc_en_pin].pin_config = PLATFORM_VCC_CFG;
-    peripheral.pin_set[dssal_vcc_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
-
-    peripheral.pin_cfg[dssal_vcc1_en_pin].pin_id = PLATFORM_VCC1_PIN;
-    peripheral.pin_cfg[dssal_vcc1_en_pin].pin_config = PLATFORM_VCC1_CFG;
-    peripheral.pin_set[dssal_vcc1_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
-
-    peripheral.pin_cfg[dssal_1v2_en_pin].pin_id = PLATFORM_VCC1V2_PIN;
-    peripheral.pin_cfg[dssal_1v2_en_pin].pin_config = PLATFORM_VCC1V2_CFG;
-    peripheral.pin_set[dssal_1v2_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
-
-    peripheral.pin_cfg[dssal_1v8_en_pin].pin_id = PLATFORM_VCC1V8_PIN;
-    peripheral.pin_cfg[dssal_1v8_en_pin].pin_config = PLATFORM_VCC1V8_CFG;
-    peripheral.pin_set[dssal_1v8_en_pin].pin_default_value = MOS_GPIO_PULL_UP;
-
-    return 0;
-}
-
-DTOF_RET dtof_peripheral_device_init(void)
-{
-    /*
-     * 1. 初始化gpio
-     *  1.1 interrupt pin: (STM32_PIN_MODE_IT_FALLING | STM32_PIN_PULL_PULLUP | STM32_PIN_SPEED_HIGH)
-     *  1.2 reset pin: (STM32_PIN_MODE_OUTPUT_PP | STM32_PIN_PULL_NOPULL | STM32_PIN_SPEED_LOW) 默认拉低
-     *  1.3 iic pin: (STM32_PIN_MODE_AF_OD | STM32_PIN_PULL_NOPULL | STM32_PIN_SPEED_VERY_HIGH | STM32_PIN_ALT_4)
-     * 2. 初始化sensor
-     *  2.1 reset pin init 后 usleep(100), 然后拉高reset pin, usleep(750)
-     *  2.2 iic初始化
-     *  2.3 注册中断
-    */
-    DTOF_RET ret;
-
-    board_peripheral();
-
-    DTOF_CHECK_RET(ds_device_peripheral_init(&peripheral), "peripheral init fail");
-
-    return DTOF_RET_SUCCESS;
 }
 
 extern void stm32_flash_write(uint32_t offset, uint64_t* context, uint16_t len);

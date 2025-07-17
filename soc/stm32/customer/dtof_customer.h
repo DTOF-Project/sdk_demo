@@ -23,8 +23,8 @@ extern "C" {
  *         DTOF_RET_INVALID_PARAM 参数无效
  *         DTOF_RET_DEVICE_ERROR 设备错误
  */
-int dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
-int dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_write_burn(uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len);
 
 /**
  * @brief 批量读取寄存器
@@ -35,7 +35,7 @@ int dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_
  *         DTOF_RET_INVALID_PARAM 参数无效
  *         DTOF_RET_DEVICE_ERROR 设备错误
  */
-int dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
 /**
  * @brief 设置中断标志
@@ -55,13 +55,6 @@ dtof_bool_t dtof_get_interrupt_flag(void);
  */
 void dtof_sleep_ms(dtof_uint32_t time);
 
-
-/**
- * @brief 外设初始化
- * @return DTOF_RET_SUCCESS 成功
- *         DTOF_RET_FAILED 失败
- */
-DTOF_RET dtof_peripheral_device_init(void);
 
 #ifdef __cplusplus
 }
