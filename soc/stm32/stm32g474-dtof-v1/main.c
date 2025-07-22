@@ -195,6 +195,55 @@ static DTOF_RET dtof_find_ft_data_in_database(dtof_uint8_t *uuid, dtof_uint8_t u
     return ret;
 }
 
+#define SPECIAL_BYPASS_VALUE 7
+#define SPECIAL_LOOP_VALUE   136
+#define DTOF_ENABLE_DEBUG_MODE 1
+#define DTOF_DISABLE_DEBUG_MODE 0
+#define DTOF_WFI_STATUS_FLAG_ADDR 0x6e
+#define DTOF_WFI_STATUS_FLAG 0xab
+DTOF_RET dtof_set_debug_mode(dtof_int32_t debug_mode)
+{
+    if (debug_mode == DTOF_ENABLE_DEBUG_MODE) {
+        DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+    } else if (debug_mode == DTOF_DISABLE_DEBUG_MODE) {
+        DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_LOOP_VALUE), "disable debug mode failed\n");
+    } else {
+        DTOF_LOG_ERR("invalid debug mode\n");
+        return DTOF_RET_FAILED;
+    }
+
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_read_innermcu_status(dtof_bool_t *wfi_status)
+{
+#define MAX_RETRY_COUNT 3
+    dtof_uint16_t reg_val;
+    dtof_uint16_t retry_count = 0;
+
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, &reg_val, 1), "read reg 0x6e failed\n");
+
+    *wfi_status = DTOF_TRUE;
+
+    // do {
+    //     DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, &reg_val, 1), "read reg 0x6e failed\n");
+    //     dtof_sleep_ms(1);
+    //     retry_count++;
+    // } while ((reg_val != DTOF_WFI_STATUS_FLAG) && (retry_count < MAX_RETRY_COUNT));
+
+
+    // if (reg_val != DTOF_WFI_STATUS_FLAG) {
+    //     *wfi_status = DTOF_FALSE;
+    // } else {
+    //     *wfi_status = DTOF_TRUE;
+    // }
+
+    printf("reg 0x6e: 0x%x, innermcu status: 0x%x, \n", reg_val, *wfi_status);
+
+    return DTOF_RET_SUCCESS;
+}
+
+
 /**
  * @brief
  * @return int
@@ -245,28 +294,17 @@ int main(void)
                 // 命令解析
                 if (strcmp(uart_buf, "s") == 0)
                 {
-                    if (is_init == DTOF_FALSE) {
-                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-                        is_init = DTOF_TRUE;
-                    }
                     dtof_start_distance_measure();
                     debug_flag = DTOF_FALSE;
                 }
                 else if (strcmp(uart_buf, "d") == 0)
                 {
-                    if (is_init == DTOF_FALSE) {
-                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-                        is_init = DTOF_TRUE;
-                    }
                     dtof_start_distance_measure();
+                    dtof_set_debug_mode(DTOF_ENABLE_DEBUG_MODE);
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
-                    if (is_init == DTOF_FALSE) {
-                        DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-                        is_init = DTOF_TRUE;
-                    }
                     dtof_start_distance_measure();
                     frame_cnt_flag = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
@@ -348,29 +386,6 @@ int main(void)
                 //     dtof_get_xtalk_data_from_flash(xtalk_data);
                     // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
                 }
-                else if (strcmp(uart_buf, "x") == 0)
-                {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-                    #define READ_LEN 1126
-                    dtof_uint16_t ram_start = 0x2000;
-                    dtof_uint16_t ram_read[READ_LEN];
-                    DTOF_CHECK_RET(dtof_reg_burst_write(0XFE, &ram_start, 1),
-                                    "写入串扰数据失败");
-                    DTOF_CHECK_RET(dtof_reg_burst_read(0xff, ram_read, READ_LEN),
-                                    "读取距离结果失败");
-
-                    printf("ramdata\n");
-                    for(int i = 0; i < READ_LEN; i++)
-                    {
-                        printf("0x%04x, ", ram_read[i]);
-                        if ((i + 1) % 16 == 0){
-                            printf("\n");
-                        }
-                    }
-                    printf("\n");
-
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
-                }
                 else if (strcmp(uart_buf, "v") == 0)
                 {
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
@@ -407,6 +422,28 @@ int main(void)
         // }
         if (dtof_get_interrupt_flag() == DTOF_TRUE)
         {
+            if (debug_flag == DTOF_TRUE) {
+                if (dev->chip_type == DTOF_CHIP_TYPE_A05) {
+                    dtof_bool_t wfi_status;
+                    DTOF_CHECK_RET(dtof_read_innermcu_status(&wfi_status), "read inner mcu status failed\n");
+                    if (wfi_status == DTOF_FALSE)
+                    {
+                        dtof_set_interrupt_flag(DTOF_FALSE);
+                        DTOF_LOG_ERR("inner mcu wfi status is false\n");
+                        continue;
+                    }
+
+                    dtof_uint16_t bypassvalue = 0x17b9;
+                    dtof_reg_burst_write(0x05, &bypassvalue, 1);
+                } else if (dev->chip_type == DTOF_CHIP_TYPE_L3) {
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                } else {
+                    DTOF_LOG_ERR("unknown chip type\n");
+                    return DTOF_RET_FAILED;
+                }
+
+            }
+
             is_new_flag = DTOF_TRUE;
             dtof_get_fifo(&distance_result);
             dtof_set_interrupt_flag(DTOF_FALSE);
@@ -416,6 +453,7 @@ int main(void)
         {
             if (debug_flag == DTOF_TRUE)
             {
+
                 if (frame_cnt_flag == DTOF_TRUE)
                 {
                     frame_cnt++;
@@ -430,15 +468,8 @@ int main(void)
                         dtof_stop_distance_measure();
                     }
                 }
-                // dtof_uint16_t main_hist[DTOF_SINGLE_MAIN_HISTGRAM_LEN];
-                // dtof_uint16_t ref_hist[DTOF_SINGLE_REF_HISTGRAM_LEN];
-                // dtof_uint16_t dsp_fifo[DTOF_SINGLE_FIFO_LEN];
-                // #define TOTAL_REG_NUM 255
-                // dtof_uint16_t dtof_reg[TOTAL_REG_NUM];
-                // bypass, read debug info
-                #define TOTAL_REG_NUM 255
-                dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);
 
+                #define TOTAL_REG_NUM 255
                 dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
@@ -448,32 +479,8 @@ int main(void)
                 dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
                 dump_hist_log(buffer, TOTAL_REG_NUM);
 
-                // printf("main histgram: ");
-                // for (int i = 0; i < DTOF_SINGLE_MAIN_HISTGRAM_LEN; i++)
-                // {
-                //     printf("%d, ", main_hist[i]);
-                // }
-                // printf("\n");
-                // // printf("ref histgram: ");
-                // for (int i = 0; i < DTOF_SINGLE_REF_HISTGRAM_LEN; i++)
-                // {
-                //     printf("%d, ", ref_hist[i]);
-                // }
-                // printf("\n");
-                // // printf("dsp fifo: ");
-                // for (int i = 0; i < DTOF_SINGLE_FIFO_LEN; i++)
-                // {
-                //     printf("%d, ", dsp_fifo[i]);
-                // }
-                // printf("\n");
-                // // printf("cg reg: ");
-                // for (int i = 0; i < TOTAL_REG_NUM; i++)
-                // {
-                //     printf("%d, ", dtof_reg[i]);
-                // }
-                // printf("\n");
-
                 dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+                dtof_set_debug_mode(DTOF_ENABLE_DEBUG_MODE);
             }
             printf("%d, %d, %d, %d, %.6f, 1\n",
                    distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
