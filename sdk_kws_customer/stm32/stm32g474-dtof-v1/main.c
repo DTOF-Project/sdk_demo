@@ -16,14 +16,7 @@
 #include "dev/dtof_hal.h"
 #include "lib/dtof_lib.h"
 
-
-#define FLASH_START_ADDR 0x08070000
-#define FLASH_RESERVE_SIZE 64
-#define FLASH_ROM_BURN_START_ADDR 0x08070000 + FLASH_RESERVE_SIZE
-
 /*****************************xyb改******************************/
-extern DTOF_RET stm32_write_gpio(uint32_t gpio, uint32_t value);
-extern DTOF_RET stm32_init_gpio(uint32_t gpio, uint32_t cfgset);
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
 
 // 这里要求一定是输入的是 int16 的数据
@@ -69,99 +62,6 @@ void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
     stm32_uart_write(0, "\n", 1);
 }
 /**************************************************************/
-
-void stm32_flash_write_init(void)
-{
-    FLASH_EraseInitTypeDef eraseInit;
-    uint32_t pageError = 0;
-
-    // 解锁Flash
-    if (HAL_FLASH_Unlock() != HAL_OK)
-    {
-        printf("flash unlock failed\n");
-        return;
-    }
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-    eraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
-    eraseInit.NbPages = 4; // 向上取整
-    eraseInit.Page = 224;
-    eraseInit.Banks = FLASH_BANK_2;
-
-    do
-    {
-    } while (HAL_FLASHEx_Erase(&eraseInit, &pageError) != HAL_OK);
-}
-
-void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
-{
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-
-    HAL_FLASH_Unlock();
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-
-    for (uint32_t i = 0; i < num_words; i++) {
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK) {
-            HAL_FLASH_Lock();
-            return;
-        }
-    }
-
-    HAL_FLASH_Lock();
-}
-
-void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
-{
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    for (uint32_t i = 0; i < num_words; i++) {
-        context[i] = *(uint64_t *)(flash_addr + i * 8);
-    }
-}
-
-
-void stm32_flash_write(uint32_t offset, uint64_t *context, uint16_t len)
-{
-    // 计算目标Flash地址
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    uint32_t context_index = 0;
-
-    do
-    {
-
-    } while (HAL_FLASH_Unlock() != HAL_OK);
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-
-    // 按8字节写入数据
-    for (uint32_t i = 0; i < len; i += 4)
-    {
-        uint64_t data = *(context + context_index);
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + (context_index * 8), data) != HAL_OK)
-        {
-            HAL_FLASH_Lock();
-            return;
-        }
-        context_index++;
-    }
-
-    HAL_FLASH_Lock();
-}
-
-void stm32_flash_read(uint32_t offset, uint64_t *context, uint16_t len)
-{
-    // 计算目标Flash地址
-    // len 的单位是2byte
-    // 起始地址跳过64的预留byte
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    uint32_t context_index = 0;
-    uint64_t data = 0;
-
-    // 按8字节写入数据
-    for (uint32_t i = 0; i < len; i += 4)
-    {
-        data = *(uint64_t *)(flash_addr + context_index * 8);
-        *(context + context_index) = data;
-        context_index++;
-    }
-}
 
 // 从数组库中检索uuid
 static DTOF_RET dtof_find_ft_data_in_database(dtof_uint8_t *uuid, dtof_uint8_t uuid_len, dtof_bool_t *is_find_sensor, dtof_uint8_t **sensor_ft_data_p)
@@ -215,26 +115,6 @@ int main(void)
 
     DTOF_CHECK_WARN(dtof_peripheral_device_init(), "dtof_peripheral_device_init failed\n");
 
-    // dtof_int32_t write_value = 20;
-    // dtof_int32_t read_value;
-    // stm32_flash_write(0, (uint64_t*)&write_value, 1);
-    // stm32_flash_read(0, (uint64_t*)&read_value, 1);
-    // printf("write value: %d, read value: %d\n", write_value, read_value);
-
-    // for test
-    // DTOF_CHECK_WARN(dtof_get_uuid(device_id, uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
-
-    // ret = dtof_find_ft_data_in_database(uuid, DTOF_UUID_LENGTH, &is_find_sensor, &sensor_ft_data_p);
-
-    // if (!ret)
-    // {
-    //     dtof_quit_distance_measure(device_id);
-    //     printf("load ft data... ...\n");
-    //     DTOF_CHECK_WARN(dtof_version_upgrade(device_id, uuid, sensor_ft_data_p, DTOF_SENSOR_DATA_LENGTH), "version upgrade failed\n");
-    // }
-
-    // dtof_set_distance_offset(device_id, -4);
-
     extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
     uint8_t byte;
@@ -284,9 +164,9 @@ int main(void)
                 else if (strncmp(uart_buf, "c,", 2) == 0)
                 {
                     int value = atoi(&uart_buf[2]);
-                    printf("receive calbration value: %d\n", value);
-                    dtof_set_distance_offset(device_id, 20 - value);
-                    // 这里可以执行设置参数的操作
+                    printf("set b offset: %d\n", value);
+                    stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM);
+                    dtof_set_distance_offset_to_flash(device_id, value);
                 }
                 else if (strncmp(uart_buf, "r,", 2) == 0)
                 {
@@ -345,17 +225,19 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "cal") == 0)
                 {
+                    stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM);
                     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                     is_init = DTOF_TRUE;
                     printf("distance offset = %d\n", dtof_get_distance_offset(device_id));
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
-                    stm32_flash_write_init();
+                    stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM);
+                    stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM);
                 }
                 else if (strcmp(uart_buf, "b") == 0)
                 {
-                    stm32_flash_write_init();
+                    stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM);
                     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                     uint16_t xtalk_data[18];
                     dtof_get_xtalk_data_from_flash(device_id, xtalk_data);

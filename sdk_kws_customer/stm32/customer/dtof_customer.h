@@ -63,6 +63,15 @@ void dtof_sleep_ms(dtof_uint32_t time);
  */
 DTOF_RET dtof_peripheral_device_init(void);
 
+// #define FLASH_PAGE_SIZE 2048
+#define DTOF_CG_DATA_FLASH_PAGE 224
+#define DTOF_CG_DATA_FLASH_PAGE_START_ADDR (0x08000000 + DTOF_CG_DATA_FLASH_PAGE * FLASH_PAGE_SIZE)
+#define DTOF_CG_DATA_FLASH_PAGE_NUM 1
+#define DTOF_B_DATA_FLASH_PAGE (DTOF_CG_DATA_FLASH_PAGE + DTOF_CG_DATA_FLASH_PAGE_NUM)
+#define DTOF_B_DATA_FLASH_PAGE_START_ADDR (0x08000000 + DTOF_B_DATA_FLASH_PAGE * FLASH_PAGE_SIZE)
+#define DTOF_B_DATA_FLASH_PAGE_NUM 1
+void stm32_flash_write_init(uint32_t page, uint32_t page_num);
+
 #ifdef __cplusplus
 }
 #endif

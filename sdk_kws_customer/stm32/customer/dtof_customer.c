@@ -190,15 +190,103 @@ DTOF_RET dtof_peripheral_device_init(void)
     return DTOF_RET_SUCCESS;
 }
 
-extern void stm32_flash_write(uint32_t offset, uint64_t* context, uint16_t len);
-extern void stm32_flash_read(uint32_t offset, uint64_t* context, uint16_t len);
-extern void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
-extern void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
+void stm32_flash_write_init(uint32_t page, uint32_t page_num)
+{
+    FLASH_EraseInitTypeDef eraseInit;
+    uint32_t pageError = 0;
+
+    // 解锁Flash
+    if (HAL_FLASH_Unlock() != HAL_OK)
+    {
+        printf("flash unlock failed\n");
+        return;
+    }
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
+    eraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
+    eraseInit.NbPages = page_num; // 向上取整
+    eraseInit.Page = page;
+    eraseInit.Banks = FLASH_BANK_2;
+
+    do
+    {
+    } while (HAL_FLASHEx_Erase(&eraseInit, &pageError) != HAL_OK);
+}
+
+void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
+{
+    uint32_t flash_addr = offset;
+
+    HAL_FLASH_Unlock();
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
+
+    for (uint32_t i = 0; i < num_words; i++) {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK) {
+            HAL_FLASH_Lock();
+            return;
+        }
+    }
+
+    HAL_FLASH_Lock();
+}
+
+void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
+{
+    uint32_t flash_addr = offset;
+    for (uint32_t i = 0; i < num_words; i++) {
+        context[i] = *(uint64_t *)(flash_addr + i * 8);
+    }
+}
+
+
+void stm32_flash_write(uint32_t offset, uint64_t *context, uint16_t len)
+{
+    // 计算目标Flash地址
+    uint32_t flash_addr = offset;
+    uint32_t context_index = 0;
+
+    do
+    {
+
+    } while (HAL_FLASH_Unlock() != HAL_OK);
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
+
+    // 按8字节写入数据
+    for (uint32_t i = 0; i < len; i += 4)
+    {
+        uint64_t data = *(context + context_index);
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + (context_index * 8), data) != HAL_OK)
+        {
+            HAL_FLASH_Lock();
+            return;
+        }
+        context_index++;
+    }
+
+    HAL_FLASH_Lock();
+}
+
+void stm32_flash_read(uint32_t offset, uint64_t *context, uint16_t len)
+{
+    // 计算目标Flash地址
+    // len 的单位是2byte
+    // 起始地址跳过64的预留byte
+    uint32_t flash_addr = offset;
+    uint32_t context_index = 0;
+    uint64_t data = 0;
+
+    // 按8字节写入数据
+    for (uint32_t i = 0; i < len; i += 4)
+    {
+        data = *(uint64_t *)(flash_addr + context_index * 8);
+        *(context + context_index) = data;
+        context_index++;
+    }
+}
 
 DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset)
 {
     uint64_t distance_offset_64;
-    stm32_flash_read_u64(0, &distance_offset_64, 1);
+    stm32_flash_read_u64(DTOF_B_DATA_FLASH_PAGE_START_ADDR, &distance_offset_64, 1);
     *distance_offset = (dtof_int32_t)distance_offset_64;
     printf("read distance offset: %d\n", *distance_offset);
     return DTOF_RET_SUCCESS;
@@ -207,7 +295,7 @@ DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_
 DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset)
 {
     uint64_t distance_offset_64 = (uint64_t)distance_offset;
-    stm32_flash_write_u64(0, (uint64_t*)&distance_offset_64, 1);
+    stm32_flash_write_u64(DTOF_B_DATA_FLASH_PAGE_START_ADDR, (uint64_t*)&distance_offset_64, 1);
     printf("write distance offset: %d\n", (dtof_int32_t)distance_offset_64);
     return DTOF_RET_SUCCESS;
 }
@@ -215,7 +303,7 @@ DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t 
 DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
 {
     uint64_t xtalk_data64[18];
-    stm32_flash_read_u64(64, xtalk_data64, 18);
+    stm32_flash_read_u64(DTOF_CG_DATA_FLASH_PAGE_START_ADDR, xtalk_data64, 18);
 
     printf("read xtalk data: ");
     for(dtof_uint16_t i = 0; i < 18; i++)
@@ -234,7 +322,7 @@ DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
     {
         xtalk_data64[i] = (uint64_t)(*(xtalk_data + i));
     }
-    stm32_flash_write_u64(64, xtalk_data64, 18);
+    stm32_flash_write_u64(DTOF_CG_DATA_FLASH_PAGE_START_ADDR, xtalk_data64, 18);
     return DTOF_RET_SUCCESS;
 }
 
