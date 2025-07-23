@@ -64,4 +64,5 @@ dtof_calibration_lib/keil/Objects/*.Scr
 # IAR Project
 dtof_calibration_lib/iar/Debug/List
 dtof_calibration_lib/iar/Debug/Obj
+dtof_calibration_lib/iar/settings
 
