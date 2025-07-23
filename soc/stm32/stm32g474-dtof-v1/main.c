@@ -215,34 +215,36 @@ DTOF_RET dtof_set_debug_mode(dtof_int32_t debug_mode)
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET dtof_read_innermcu_status(dtof_bool_t *wfi_status)
+DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag)
 {
-#define MAX_RETRY_COUNT 3
-    dtof_uint16_t reg_val;
-    dtof_uint16_t retry_count = 0;
-
-    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, &reg_val, 1), "read reg 0x6e failed\n");
-
-    *wfi_status = DTOF_TRUE;
-
-    // do {
-    //     DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, &reg_val, 1), "read reg 0x6e failed\n");
-    //     dtof_sleep_ms(1);
-    //     retry_count++;
-    // } while ((reg_val != DTOF_WFI_STATUS_FLAG) && (retry_count < MAX_RETRY_COUNT));
-
-
-    // if (reg_val != DTOF_WFI_STATUS_FLAG) {
-    //     *wfi_status = DTOF_FALSE;
-    // } else {
-    //     *wfi_status = DTOF_TRUE;
-    // }
-
-    printf("reg 0x6e: 0x%x, innermcu status: 0x%x, \n", reg_val, *wfi_status);
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, intr_control_flag, 1), "read reg 0x6e failed\n");
 
     return DTOF_RET_SUCCESS;
 }
 
+DTOF_RET dtof_debug_mode_bypass(dtof_chip_type_t chip_type)
+{
+    DTOF_RET ret = DTOF_RET_SUCCESS;
+    if (chip_type == DTOF_CHIP_TYPE_A05) {
+        // a05使用inner mcu中断里的bypass, 偶发会导致inner mcu crash, 需要特殊处理, 使用外部的bypass, 且bypass前关闭timer, dsp, eyesafe中断, 进入wfi, 唤醒后
+        dtof_uint16_t intr_control_flag;
+        dtof_uint16_t bypassvalue = 0x17b9;
+        DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
+        if (intr_control_flag != DTOF_WFI_STATUS_FLAG)
+        {
+            DTOF_LOG_ERR("intr_control_flag is 0x%x\n", intr_control_flag);
+            ret = DTOF_RET_FAILED;
+        }
+
+        DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
+    } else if (chip_type == DTOF_CHIP_TYPE_L3) {
+        DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    } else {
+        DTOF_LOG_ERR("unknown chip type\n");
+        ret = DTOF_RET_FAILED;
+    }
+    return ret;
+}
 
 /**
  * @brief
@@ -299,12 +301,19 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "d") == 0)
                 {
+                    if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
                     dtof_start_distance_measure();
-                    dtof_set_debug_mode(DTOF_ENABLE_DEBUG_MODE);
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
+                    if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
                     dtof_start_distance_measure();
                     frame_cnt_flag = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
@@ -423,25 +432,7 @@ int main(void)
         if (dtof_get_interrupt_flag() == DTOF_TRUE)
         {
             if (debug_flag == DTOF_TRUE) {
-                if (dev->chip_type == DTOF_CHIP_TYPE_A05) {
-                    dtof_bool_t wfi_status;
-                    DTOF_CHECK_RET(dtof_read_innermcu_status(&wfi_status), "read inner mcu status failed\n");
-                    if (wfi_status == DTOF_FALSE)
-                    {
-                        dtof_set_interrupt_flag(DTOF_FALSE);
-                        DTOF_LOG_ERR("inner mcu wfi status is false\n");
-                        continue;
-                    }
-
-                    dtof_uint16_t bypassvalue = 0x17b9;
-                    dtof_reg_burst_write(0x05, &bypassvalue, 1);
-                } else if (dev->chip_type == DTOF_CHIP_TYPE_L3) {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-                } else {
-                    DTOF_LOG_ERR("unknown chip type\n");
-                    return DTOF_RET_FAILED;
-                }
-
+                DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
             }
 
             is_new_flag = DTOF_TRUE;
@@ -480,7 +471,12 @@ int main(void)
                 dump_hist_log(buffer, TOTAL_REG_NUM);
 
                 dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
-                dtof_set_debug_mode(DTOF_ENABLE_DEBUG_MODE);
+
+                if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                {
+                    dtof_io_interaction(0x30, 0x01);
+                    DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                }
             }
             printf("%d, %d, %d, %d, %.6f, 1\n",
                    distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
