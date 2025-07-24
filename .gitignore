@@ -65,3 +65,6 @@ dtof_calibration_lib/keil/Objects/*.Scr
 dtof_calibration_lib/iar/Debug/List
 dtof_calibration_lib/iar/Debug/Obj
 
+# git hash
+soc/application/inc/git_hash.h
+

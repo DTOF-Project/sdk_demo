@@ -19,6 +19,8 @@
 #include "user/device/ds_dev.h"
 #include "user/device/device.h"
 
+#include "application/inc/soc_version.h"
+
 
 #define FLASH_START_ADDR 0x08070000
 #define FLASH_RESERVE_SIZE 64
@@ -397,6 +399,7 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "v") == 0)
                 {
+                    DTOF_LOG("soc version: %s\n", SOC_VERSION_STRING);
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
                     DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
                 }
