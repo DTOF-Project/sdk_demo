@@ -1,0 +1,10 @@
+#include "git_hash.h"
+
+#define SOC_VERSION_MAJOR 1
+#define SOC_VERSION_MINOR 0
+#define SOC_VERSION_PATCH 0
+
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
+#define SOC_VERSION_STRING STR(SOC_VERSION_MAJOR) "." STR(SOC_VERSION_MINOR) "." STR(SOC_VERSION_PATCH)
