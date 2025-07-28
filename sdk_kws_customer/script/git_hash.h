@@ -2,6 +2,6 @@
 #ifndef GIT_HASH_H
 #define GIT_HASH_H
 
-#define GIT_COMMIT_HASH "634c4a5f6227aac35cba61deff39c6909c7d9924"
+#define GIT_COMMIT_HASH "578e7026b8bba91df9dfee499c24248927190872"
 
 #endif // GIT_HASH_H
