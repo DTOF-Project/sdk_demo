@@ -15,6 +15,7 @@
 
 #include "dev/dtof_hal.h"
 #include "lib/dtof_lib.h"
+#include "script/git_hash.h"
 
 /*****************************xyb改******************************/
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
@@ -270,6 +271,7 @@ int main(void)
                 {
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
                     DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
+                    DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
                 }
                 else
                 {
