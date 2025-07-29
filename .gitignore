@@ -52,6 +52,7 @@ sdk_kws_customer/stm32/stm32g474-dtof-v1/Listings
 sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvoptx
 sdk_kws_customer/stm32/stm32g474-dtof-v1/*.uvguix*
 sdk_kws_customer/stm32/stm32g474-dtof-v1/*.htm
+sdk_kws_customer/script/git_hash.h
 
 dtof_calibration_lib/keil/*.uvoptx
 dtof_calibration_lib/keil/*.uvguix*
