@@ -267,7 +267,6 @@ int main(void)
 
     DTOF_CHECK_WARN(dtof_peripheral_device_init(), "dtof_peripheral_device_init failed\n");
 
-    // dtof init
     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
 
     // save chip uuid
@@ -298,26 +297,32 @@ int main(void)
                 // 命令解析
                 if (strcmp(uart_buf, "s") == 0)
                 {
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                     dtof_start_distance_measure();
+                    is_init = DTOF_TRUE;
                     debug_flag = DTOF_FALSE;
                 }
                 else if (strcmp(uart_buf, "d") == 0)
                 {
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
                         DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
                     }
                     dtof_start_distance_measure();
+                    is_init = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
                         DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
                     }
                     dtof_start_distance_measure();
                     frame_cnt_flag = DTOF_TRUE;
+                    is_init = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "t") == 0)
@@ -427,20 +432,22 @@ int main(void)
             }
         }
 
-        // if (is_init == DTOF_TRUE)
-        // {
-        //     // 检查是否有中断触发
-        //     ret = dtof_get_distance_result(NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
-        // }
-        if (dtof_get_interrupt_flag() == DTOF_TRUE)
+        if (is_init == DTOF_TRUE)
         {
-            if (debug_flag == DTOF_TRUE) {
-                DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
-            }
+            #ifdef DTOF_INTERRUPT_MODE
+            if (dtof_get_interrupt_flag() == DTOF_TRUE)
+            {
+                if (debug_flag == DTOF_TRUE) {
+                    DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
+                }
 
-            is_new_flag = DTOF_TRUE;
-            dtof_get_fifo(&distance_result);
-            dtof_set_interrupt_flag(DTOF_FALSE);
+                is_new_flag = DTOF_TRUE;
+                dtof_get_distance_result(&distance_result);
+                dtof_set_interrupt_flag(DTOF_FALSE);
+            }
+            #elif defined(DTOF_POLLING_MODE)
+            ret = dtof_get_distance_result_polling(&distance_result, &is_new_flag);
+            #endif
         }
 
         if (is_new_flag == DTOF_TRUE)
