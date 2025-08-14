@@ -468,11 +468,6 @@ int main(void)
 #ifdef DTOF_INTERRUPT_MODE
             if (dtof_get_interrupt_flag() == DTOF_TRUE)
             {
-                if (debug_flag == DTOF_TRUE)
-                {
-                    DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
-                }
-
                 is_new_flag = DTOF_TRUE;
                 dtof_get_distance_result(&distance_result);
                 dtof_set_interrupt_flag(DTOF_FALSE);
@@ -486,7 +481,6 @@ int main(void)
         {
             if (debug_flag == DTOF_TRUE)
             {
-
                 if (frame_cnt_flag == DTOF_TRUE)
                 {
                     frame_cnt++;
@@ -500,6 +494,10 @@ int main(void)
                         frame_cnt = 0;
                         dtof_stop_distance_measure();
                     }
+                }
+                if (debug_flag == DTOF_TRUE)
+                {
+                    DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
                 }
 
 #define TOTAL_REG_NUM 255
