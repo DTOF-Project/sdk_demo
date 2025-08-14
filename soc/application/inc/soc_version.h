@@ -1,6 +1,6 @@
 #include "git_hash.h"
 
-#define SOC_VERSION_MAJOR 1
+#define SOC_VERSION_MAJOR 2
 #define SOC_VERSION_MINOR 0
 #define SOC_VERSION_PATCH 0
 

@@ -9,6 +9,7 @@
 #include "inc/dtof_log.h"
 #include "inc/dtof_driver.h"
 #include "inc/dtof_endian.h"
+#include "inc/dtof_calibration_ft.h"
 #include "base/inc/mos_platform.h"
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
@@ -21,7 +22,6 @@
 
 #include "application/inc/soc_version.h"
 
-
 #define FLASH_START_ADDR 0x08070000
 #define FLASH_RESERVE_SIZE 64
 #define FLASH_ROM_BURN_START_ADDR 0x08070000 + FLASH_RESERVE_SIZE
@@ -33,42 +33,44 @@ extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
 extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
 // 这里要求一定是输入的是 int16 的数据
-void dump_hist_log(dtof_uint16_t* hist_p, dtof_uint16_t len){
-    #define OUT_PUT_MAX_BUFFER  (517)
+void dump_hist_log(dtof_uint16_t *hist_p, dtof_uint16_t len)
+{
+#define OUT_PUT_MAX_BUFFER (517)
     char output_str[OUT_PUT_MAX_BUFFER]; // 确保缓冲区足够大
     char *temp_start = output_str;
     int total_used_len = 0;
 
-    // 每个数据的单元大小是 5 = 4bytes hex + ，
-    #define PRINT_UNIT_SIZE 5
-    for (int i = 0; i < len; i++) {
+// 每个数据的单元大小是 5 = 4bytes hex + ，
+#define PRINT_UNIT_SIZE 5
+    for (int i = 0; i < len; i++)
+    {
         int pos;
-        if(hist_p[i] <= 0xff)
+        if (hist_p[i] <= 0xff)
         {
-            pos = snprintf(temp_start , PRINT_UNIT_SIZE, "%x,", hist_p[i]);
+            pos = snprintf(temp_start, PRINT_UNIT_SIZE, "%x,", hist_p[i]);
         }
         else if (hist_p[i] <= 0xfff)
         {
-            pos = snprintf(temp_start , PRINT_UNIT_SIZE+1, "%03x,", hist_p[i]);
+            pos = snprintf(temp_start, PRINT_UNIT_SIZE + 1, "%03x,", hist_p[i]);
         }
         else if (hist_p[i] <= 0xffff)
         {
-            pos = snprintf(temp_start , PRINT_UNIT_SIZE+2, "%04x,", hist_p[i]);
+            pos = snprintf(temp_start, PRINT_UNIT_SIZE + 2, "%04x,", hist_p[i]);
         }
         total_used_len = total_used_len + pos;
         temp_start = temp_start + pos;
 
-        if(total_used_len >= (OUT_PUT_MAX_BUFFER - PRINT_UNIT_SIZE))
+        if (total_used_len >= (OUT_PUT_MAX_BUFFER - PRINT_UNIT_SIZE))
         {
             // sendout the value
             stm32_uart_write(0, output_str, total_used_len);
             // reset the value
-			temp_start = output_str;
-		    total_used_len = 0;
+            temp_start = output_str;
+            total_used_len = 0;
         }
     }
 
-    if(total_used_len != 0)
+    if (total_used_len != 0)
     {
         stm32_uart_write(0, output_str, total_used_len);
     }
@@ -105,8 +107,10 @@ void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_word
     HAL_FLASH_Unlock();
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
 
-    for (uint32_t i = 0; i < num_words; i++) {
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK) {
+    for (uint32_t i = 0; i < num_words; i++)
+    {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK)
+        {
             HAL_FLASH_Lock();
             return;
         }
@@ -118,11 +122,11 @@ void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_word
 void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
 {
     uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    for (uint32_t i = 0; i < num_words; i++) {
+    for (uint32_t i = 0; i < num_words; i++)
+    {
         context[i] = *(uint64_t *)(flash_addr + i * 8);
     }
 }
-
 
 void stm32_flash_write(uint32_t offset, uint64_t *context, uint16_t len)
 {
@@ -198,18 +202,23 @@ static DTOF_RET dtof_find_ft_data_in_database(dtof_uint8_t *uuid, dtof_uint8_t u
 }
 
 #define SPECIAL_BYPASS_VALUE 7
-#define SPECIAL_LOOP_VALUE   136
+#define SPECIAL_LOOP_VALUE 136
 #define DTOF_ENABLE_DEBUG_MODE 1
 #define DTOF_DISABLE_DEBUG_MODE 0
 #define DTOF_WFI_STATUS_FLAG_ADDR 0x6e
 #define DTOF_WFI_STATUS_FLAG 0xab
 DTOF_RET dtof_set_debug_mode(dtof_int32_t debug_mode)
 {
-    if (debug_mode == DTOF_ENABLE_DEBUG_MODE) {
+    if (debug_mode == DTOF_ENABLE_DEBUG_MODE)
+    {
         DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
-    } else if (debug_mode == DTOF_DISABLE_DEBUG_MODE) {
+    }
+    else if (debug_mode == DTOF_DISABLE_DEBUG_MODE)
+    {
         DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_LOOP_VALUE), "disable debug mode failed\n");
-    } else {
+    }
+    else
+    {
         DTOF_LOG_ERR("invalid debug mode\n");
         return DTOF_RET_FAILED;
     }
@@ -227,7 +236,8 @@ DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag)
 DTOF_RET dtof_debug_mode_bypass(dtof_chip_type_t chip_type)
 {
     DTOF_RET ret = DTOF_RET_SUCCESS;
-    if (chip_type == DTOF_CHIP_TYPE_A05) {
+    if (chip_type == DTOF_CHIP_TYPE_A05)
+    {
         // a05使用inner mcu中断里的bypass, 偶发会导致inner mcu crash, 需要特殊处理, 使用外部的bypass, 且bypass前关闭timer, dsp, eyesafe中断, 进入wfi, 唤醒后
         dtof_uint16_t intr_control_flag;
         dtof_uint16_t bypassvalue = 0x17b9;
@@ -239,9 +249,13 @@ DTOF_RET dtof_debug_mode_bypass(dtof_chip_type_t chip_type)
         }
 
         DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
-    } else if (chip_type == DTOF_CHIP_TYPE_L3) {
+    }
+    else if (chip_type == DTOF_CHIP_TYPE_L3)
+    {
         DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-    } else {
+    }
+    else
+    {
         DTOF_LOG_ERR("unknown chip type\n");
         ret = DTOF_RET_FAILED;
     }
@@ -396,11 +410,28 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "b") == 0)
                 {
-                //     stm32_flash_write_init();
-                //     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                //     uint16_t xtalk_data[18];
-                //     dtof_get_xtalk_data_from_flash(xtalk_data);
-                    // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
+                    //     stm32_flash_write_init();
+                    //     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
+                    //     uint16_t xtalk_data[18];
+                    //     dtof_get_xtalk_data_from_flash(xtalk_data);
+                    // is_init = DTOF_TRUE;
+                    // cg 和 b   都校准完才视为校准完成
+                }
+                else if (strcmp(uart_buf, "ft") == 0)
+                {
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_calibrate_data_ft_t cal_data;
+                    cal_data.ref_spad_cal.otp_ref_spad_mask = 0xFE;
+                    cal_data.kb_data.far_distance = 690;
+                    DTOF_RET ret = dtof_calibration_ft(&cal_data);
+                    if (ret == DTOF_RET_SUCCESS)
+                    {
+                        DTOF_LOG("FT finish\n");
+                    }
+                    else
+                    {
+                        DTOF_LOG("FT failed: %d\n", ret);
+                    }
                 }
                 else if (strcmp(uart_buf, "v") == 0)
                 {
@@ -434,10 +465,11 @@ int main(void)
 
         if (is_init == DTOF_TRUE)
         {
-            #ifdef DTOF_INTERRUPT_MODE
+#ifdef DTOF_INTERRUPT_MODE
             if (dtof_get_interrupt_flag() == DTOF_TRUE)
             {
-                if (debug_flag == DTOF_TRUE) {
+                if (debug_flag == DTOF_TRUE)
+                {
                     DTOF_CHECK_WARN(dtof_debug_mode_bypass(dev->chip_type), "debug mode bypass failed\n");
                 }
 
@@ -445,9 +477,9 @@ int main(void)
                 dtof_get_distance_result(&distance_result);
                 dtof_set_interrupt_flag(DTOF_FALSE);
             }
-            #elif defined(DTOF_POLLING_MODE)
+#elif defined(DTOF_POLLING_MODE)
             ret = dtof_get_distance_result_polling(&distance_result, &is_new_flag);
-            #endif
+#endif
         }
 
         if (is_new_flag == DTOF_TRUE)
@@ -470,7 +502,7 @@ int main(void)
                     }
                 }
 
-                #define TOTAL_REG_NUM 255
+#define TOTAL_REG_NUM 255
                 dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
@@ -494,7 +526,6 @@ int main(void)
         }
     PASS:
     {
-
     }
     }
 

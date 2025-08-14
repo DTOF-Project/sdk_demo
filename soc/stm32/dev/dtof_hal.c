@@ -110,24 +110,24 @@ DTOF_RET dtof_dsp_fifo_read(dtof_uint16_t addr_offset, dtof_uint16_t * value_p, 
     return ret;
 }
 
-DTOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data)
-{
-    DTOF_RET ret;
+// TOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data)
+// {
+//     DTOF_RET ret;
 
-    ret = dtof_io_interaction(DTOF_CMD_READ_REG, reg_addr);
-    if(ret != DTOF_RET_SUCCESS){
-        DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
-        return ret;
-    }
+//     ret = dtof_io_interaction(DTOF_CMD_READ_REG, reg_addr);
+//     if(ret != DTOF_RET_SUCCESS){
+//         DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
+//         return ret;
+//     }
 
-    ret = dtof_reg_burst_read(DTOF_REG110, reg_data, 1);
-    if(ret != DTOF_RET_SUCCESS){
-        DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
-        return ret;
-    }
+//     ret = dtof_reg_burst_read(DTOF_REG110, reg_data, 1);
+//     if(ret != DTOF_RET_SUCCESS){
+//         DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
+//         return ret;
+//     }
 
-    return ret;
-}
+//     return ret;
+// }
 
 
 /**
@@ -137,27 +137,27 @@ DTOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data)
  * @return DTOF_RET_SUCCESS or DTOF_FAIL
  * @note
  */
-DTOF_RET dtof_write_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t reg_data)
-{
-    DTOF_RET ret;
+// DTOF_RET dtof_write_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t reg_data)
+// {
+//     DTOF_RET ret;
 
-    ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, reg_addr);
-    if(ret != DTOF_RET_SUCCESS){
-        DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
-        return ret;
-    }
+//     ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, reg_addr);
+//     if(ret != DTOF_RET_SUCCESS){
+//         DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
+//         return ret;
+//     }
 
-    ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_LOW, reg_data & 0xFF);
-    if(ret != DTOF_RET_SUCCESS){
-        DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
-        return ret;
-    }
+//     ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_LOW, reg_data & 0xFF);
+//     if(ret != DTOF_RET_SUCCESS){
+//         DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
+//         return ret;
+//     }
 
-    ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_HIGH, (reg_data >> 8) & 0xFF);
-    if(ret != DTOF_RET_SUCCESS){
-        DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
-        return ret;
-    }
+//     ret = dtof_io_interaction(DTOF_CMD_WRITE_REG_HIGH, (reg_data >> 8) & 0xFF);
+//     if(ret != DTOF_RET_SUCCESS){
+//         DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
+//         return ret;
+//     }
 
-    return ret;
-}
+//     return ret;
+// }

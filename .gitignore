@@ -53,17 +53,14 @@ soc/stm32/stm32g474-dtof-v1/*.uvoptx
 soc/stm32/stm32g474-dtof-v1/*.uvguix*
 soc/stm32/stm32g474-dtof-v1/*.htm
 
-dtof_calibration_lib/keil/*.uvoptx
-dtof_calibration_lib/keil/*.uvguix*
-dtof_calibration_lib/keil/DebugConfig
-dtof_calibration_lib/keil/Listings
-dtof_calibration_lib/keil/Objects/*.htm
-dtof_calibration_lib/keil/Objects/*.dep
-dtof_calibration_lib/keil/Objects/*.Scr
-
-# IAR Project
-dtof_calibration_lib/iar/Debug/List
-dtof_calibration_lib/iar/Debug/Obj
+lib/keil_lib/*.uvoptx
+lib/keil_lib/*.uvguix*
+lib/keil_lib/DebugConfig
+lib/keil_lib/Listings
+lib/keil_lib/RTE
+lib/keil_lib/Objects/*.htm
+lib/keil_lib/Objects/*.dep
+lib/keil_lib/Objects/*.Scr
 
 # git hash
 soc/application/inc/git_hash.h
