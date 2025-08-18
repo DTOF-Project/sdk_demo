@@ -398,39 +398,30 @@ int main(void)
                     // }
                     // printf("\n");
                 }
-                else if (strcmp(uart_buf, "cal") == 0)
-                {
-                    // DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                    // is_init = DTOF_TRUE;
-                    // printf("distance offset = %d\n", dtof_get_distance_offset());
-                }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
                     stm32_flash_write_init();
                 }
-                else if (strcmp(uart_buf, "b") == 0)
-                {
-                    //     stm32_flash_write_init();
-                    //     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(&chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                    //     uint16_t xtalk_data[18];
-                    //     dtof_get_xtalk_data_from_flash(xtalk_data);
-                    // is_init = DTOF_TRUE;
-                    // cg 和 b   都校准完才视为校准完成
-                }
-                else if (strcmp(uart_buf, "ft") == 0)
+                else if (strncmp(uart_buf, "ft,", 3) == 0)
                 {
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-                    dtof_calibrate_data_ft_t cal_data;
-                    cal_data.ref_spad_cal.otp_ref_spad_mask = 0xFE;
-                    cal_data.kb_data.far_distance = 690;
-                    DTOF_RET ret = dtof_calibration_ft(&cal_data);
-                    if (ret == DTOF_RET_SUCCESS)
+                    dtof_uint16_t otp_ref_spad_mask,distance;
+
+                    if (sscanf(uart_buf, "ft,%hu,%hu", &otp_ref_spad_mask, &distance) == 2)
                     {
-                        DTOF_LOG("FT finish\n");
-                    }
-                    else
-                    {
-                        DTOF_LOG("FT failed: %d\n", ret);
+                        dtof_calibrate_data_ft_t cal_data;
+                        cal_data.ref_spad_cal.otp_ref_spad_mask = otp_ref_spad_mask;
+                        cal_data.kb_data.far_distance = distance;
+
+                        DTOF_RET ret = dtof_calibration_ft(&cal_data);
+                        if (ret == DTOF_RET_SUCCESS) {
+                            printf("FT success: mask=%u, distance=%u\n",
+                                cal_data.ref_spad_cal.otp_ref_spad_mask,
+                                cal_data.kb_data.far_distance);
+                        }
+                        else{
+                            printf("Invalid format!Example: ft,0xFE,690\n");
+                        }
                     }
                 }
                 else if (strcmp(uart_buf, "v") == 0)
