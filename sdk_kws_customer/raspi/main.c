@@ -14,17 +14,18 @@
 #include "inc/dtof_libc.h"
 #include "inc/dtof_endian.h"
 #include "inc/dtof_api.h"
-#include "i2c_init.h"
-#include "soc/hal/inc/ds_sal.h"
-#include "app_new/cmd/inc/app_cmd.h"
+#include "raspi/i2c_init.h"
+#include "stm32/user/device/ds_sal.h"
+// #include "app_new/cmd/inc/app_cmd.h"
 #include "signal_manager.h"
 #include "dtof_interrupt_handler.h"
-#include "command_receiver.h"    // 更新为新的头文件名
+//#include "command_receiver.h"    // 更新为新的头文件名
 #include <cJSON.h>  // 添加在文件开头的其他include语句之后
 #include <openssl/buffer.h>  // Add this for BUF_MEM
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 #include "gpio_init.h"
+#include "stm32/user/device/device.h"
 static ds_sal_config_t raps_peripheral;
 static int board_peripheral()
 {
@@ -34,7 +35,7 @@ static int board_peripheral()
     raps_peripheral.common_cfg.comm_channel_id = IIC_NBR0;
     return 0;
 }
-
+extern device_driver_ops_t device_iic_driver_ops;
 // static int data_socket = -1;
 
 // 初始化与Rust后端的通信
@@ -87,49 +88,49 @@ void signal_handler(int sig) {
 //     BIO_free_all(bio);
 //     return encoded;
 // }
-static void process_queue_data(void) {
-    dtof_raw_data_t raw_data;
-    char *dis_res, *reg_fifo;
-    // *dsp_fifo, *main_hist, *ref_hist;
-    //  *other_data;
-    // 从队列中获取数据
-    extern int dtof_queue_pop_timeout(dtof_raw_data_t *data, long timeout_ms);
-    if (dtof_queue_pop_timeout(&raw_data,100) == 0) {
-        dis_res = uint16_array_to_hex_string((uint16_t *)&raw_data.result_info, sizeof(raw_data.result_info)/sizeof(uint16_t));
-        reg_fifo = uint16_array_to_hex_string((uint16_t *)&raw_data.reg_fifo, sizeof(raw_data.reg_fifo)/sizeof(uint16_t));
+// static void process_queue_data(void) {
+//     dtof_raw_data_t raw_data;
+//     char *dis_res, *reg_fifo;
+//     // *dsp_fifo, *main_hist, *ref_hist;
+//     //  *other_data;
+//     // 从队列中获取数据
+//     extern int dtof_queue_pop_timeout(dtof_raw_data_t *data, long timeout_ms);
+//     if (dtof_queue_pop_timeout(&raw_data,100) == 0) {
+//         dis_res = uint16_array_to_hex_string((uint16_t *)&raw_data.result_info, sizeof(raw_data.result_info)/sizeof(uint16_t));
+//         reg_fifo = uint16_array_to_hex_string((uint16_t *)&raw_data.reg_fifo, sizeof(raw_data.reg_fifo)/sizeof(uint16_t));
 
-        // 创建JSON对象并发送
-        cJSON *root = cJSON_CreateObject();
-        cJSON_AddStringToObject(root, "cmd", "trap");
-        cJSON_AddNumberToObject(root, "time", raw_data.milliseconds);
-        cJSON_AddNumberToObject(root, "frame_index", raw_data.frame_index);
-        cJSON_AddStringToObject(root, "dis_result", dis_res);
-        cJSON_AddStringToObject(root, "reg_fifo", reg_fifo);
-        // cJSON_AddStringToObject(root, "fifo_dis", raw_data.fifo_buf);
-        // cJSON_AddStringToObject(root, "mainhist", raw_data.main_hist);
-        // cJSON_AddStringToObject(root, "refhist", raw_data.ref_hist);
-        // cJSON_AddStringToObject(root, "fifo_raw", raw_data.raw_data);
+//         // 创建JSON对象并发送
+//         cJSON *root = cJSON_CreateObject();
+//         cJSON_AddStringToObject(root, "cmd", "trap");
+//         cJSON_AddNumberToObject(root, "time", raw_data.milliseconds);
+//         cJSON_AddNumberToObject(root, "frame_index", raw_data.frame_index);
+//         cJSON_AddStringToObject(root, "dis_result", dis_res);
+//         cJSON_AddStringToObject(root, "reg_fifo", reg_fifo);
+//         // cJSON_AddStringToObject(root, "fifo_dis", raw_data.fifo_buf);
+//         // cJSON_AddStringToObject(root, "mainhist", raw_data.main_hist);
+//         // cJSON_AddStringToObject(root, "refhist", raw_data.ref_hist);
+//         // cJSON_AddStringToObject(root, "fifo_raw", raw_data.raw_data);
 
-        // char *json_str = cJSON_PrintUnformatted(root);
-        // printf("%s\n", json_str);
+//         // char *json_str = cJSON_PrintUnformatted(root);
+//         // printf("%s\n", json_str);
 
-        send_response(get_sockfd(), get_client_addr(), 0, (char*)root);
+//         send_response(get_sockfd(), get_client_addr(), 0, (char*)root);
 
-        // 释放资源
-        free(dis_res);
-        // free(dsp_fifo);
-        // free(main_hist);
-        // free(ref_hist);
-        // free(other_data);
-        cJSON_Delete(root);
-        // free(json_str);
-    }
-}
+//         // 释放资源
+//         free(dis_res);
+//         // free(dsp_fifo);
+//         // free(main_hist);
+//         // free(ref_hist);
+//         // free(other_data);
+//         cJSON_Delete(root);
+//         // free(json_str);
+//     }
+// }
 
 int main() {
     int ret;
     board_peripheral();
-    app_cmd_init();
+    //app_cmd_init();
     signal_manager_init();
 
     extern int rpi_gpio_init(void);
@@ -140,40 +141,45 @@ int main() {
         return 1;
     }
 
-extern DTOF_RET ds_device_peripheral_init(ds_sal_config_t *peripheralConfig);
-    ds_device_peripheral_init(&raps_peripheral);
-
-    ret = command_receiver_start();
-    if (ret != 0) {
-        signal_manager_notify_exit();
-        goto ret_flag;
-    }
+    
+    rpi_i2c_init(1);
+    
 
 
-    // 创建 DTOF 中断处理线程
-    ret = dtof_interrupt_handler_start();
-    if (ret != DTOF_HANDLER_OK) {
-        printf("DTOF 中断处理线程创建失败: %d\n", ret);
-        signal_manager_notify_exit();
-        goto ret_flag;
-    }
+// extern DTOF_RET ds_device_peripheral_init(ds_sal_config_t *peripheralConfig);
+//     ds_device_peripheral_init(&raps_peripheral);
 
-    ret = dtof_init();
-    if (ret != 0) {
-        printf("dtof init fail\n");
-        signal_manager_notify_exit();
-        goto ret_flag;
-    }
+//     ret = command_receiver_start();
+//     if (ret != 0) {
+//         signal_manager_notify_exit();
+//         goto ret_flag;
+//     }
 
-    while (signal_manager_should_continue()) {
-        process_queue_data();
-    }
 
-ret_flag:
+    // // 创建 DTOF 中断处理线程
+    // ret = dtof_interrupt_handler_start();
+    // if (ret != DTOF_HANDLER_OK) {
+    //     printf("DTOF 中断处理线程创建失败: %d\n", ret);
+    //     signal_manager_notify_exit();
+    //     goto ret_flag;
+    // }
 
-    printf("正在清理资源...\n");
-    command_receiver_wait();
-    dtof_interrupt_handler_wait();
+    // ret = dtof_init();
+    // if (ret != 0) {
+    //     printf("dtof init fail\n");
+    //     signal_manager_notify_exit();
+    //     goto ret_flag;
+    // }
+
+    // while (signal_manager_should_continue()) {
+    //     process_queue_data();
+    //}
+
+//ret_flag:
+
+    // printf("正在清理资源...\n");
+    // command_receiver_wait();
+    // dtof_interrupt_handler_wait();
 
     // 清理资源
     rpi_gpio_cleanup();

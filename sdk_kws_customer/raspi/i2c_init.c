@@ -9,7 +9,7 @@
 #include "i2c_init.h"
 #include "platform_user_config.h"    // 添加平台配置头文件
 #include "sdk/inc/util.h"
-#include "soc/hal/inc/device.h"
+#include "stm32/user/device/device.h"
 
 int dtof_file;  // 定义全局变量
 

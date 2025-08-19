@@ -1,9 +1,9 @@
 # 编译器设置
-CC = gcc
+CC = arm-linux-gnueabihf-gcc
 CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
-LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,soc/raspberry_pi/arm64-64.lds
+LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread 
 
 # 目录设置
 BUILD_DIR = Build
@@ -18,16 +18,16 @@ CJSON_HEADER = $(CJSON_DIR)/cJSON.h
 CJSON_OBJ = $(OBJ_DIR)/cJSON.o  # 简化路径，避免嵌套目录问题
 
 # 源文件和头文件路径
-SRC = $(wildcard soc/raspberry_pi/*.c) \
-      $(wildcard soc/hal/*.c) \
+SRC = $(wildcard raspi/*.c)\
       $(wildcard sdk/**/*.c) \
-      $(wildcard sdk/**/**/*.c) \
-      $(wildcard app_rapi/**/*.c) \
-      $(wildcard app_rapi/**/**/*.c)\
+	  $(wildcard sdk/**/**/*.c) \
       $(CJSON_SRC)
 
+SRC := $(filter-out raspi/command_receiver.c raspi/dtof_frame_control.c raspi/dtof_interrupt_handler.c, $(SRC))
 
-INCLUDES = -I sdk -I app_rapi -I . -I soc/raspberry_pi -I soc/hal -I $(CJSON_DIR)
+
+
+INCLUDES = -I sdk -I raspi -I . -I $(CJSON_DIR) 
 
 # 对象文件
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
