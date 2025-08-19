@@ -1,0 +1,158 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <pthread.h>
+#include <time.h>
+
+#define PORT 8888
+#define MAX_CLIENTS 10
+#define BUFFER_SIZE 1024
+
+// 客户端信息结构体
+typedef struct {
+    int sockfd;
+    struct sockaddr_in addr;
+    int active;
+} Client;
+
+Client clients[MAX_CLIENTS];
+pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
+int client_count = 0;
+
+// 发送消息给所有客户端
+void broadcast_message(const char *message) {
+    pthread_mutex_lock(&clients_mutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clients[i].active) {
+            send(clients[i].sockfd, message, strlen(message), 0);
+        }
+    }
+    pthread_mutex_unlock(&clients_mutex);
+}
+
+// 处理客户端连接的线程函数
+void *handle_client(void *arg) {
+    int client_sock = *(int *)arg;
+    free(arg);
+    char buffer[BUFFER_SIZE];
+    int read_size;
+
+    // 接收客户端注册信息
+    if ((read_size = recv(client_sock, buffer, BUFFER_SIZE, 0)) > 0) {
+        buffer[read_size] = '\0';
+        printf("New client registered: %s\n", buffer);
+    }
+
+    // 主循环，保持连接
+    while ((read_size = recv(client_sock, buffer, BUFFER_SIZE, 0)) > 0) {
+        buffer[read_size] = '\0';
+        printf("Received from client: %s\n", buffer);
+    }
+
+    // 客户端断开
+    pthread_mutex_lock(&clients_mutex);
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clients[i].sockfd == client_sock) {
+            clients[i].active = 0;
+            client_count--;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&clients_mutex);
+    close(client_sock);
+    printf("Client disconnected. Active clients: %d\n", client_count);
+    return NULL;
+}
+
+// 生产者线程，定期生成消息
+void *producer_thread(void *arg) {
+    char message[BUFFER_SIZE];
+    while (1) {
+        time_t now = time(NULL);
+        snprintf(message, BUFFER_SIZE, "Producer message at %s", ctime(&now));
+        broadcast_message(message);
+        sleep(5); // 每 5 秒发送一次消息
+    }
+    return NULL;
+}
+
+int main() {
+    int server_sock, client_sock;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    pthread_t thread_id;
+
+    // 初始化客户端数组
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        clients[i].active = 0;
+    }
+
+    // 创建 socket
+    server_sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_sock < 0) {
+        perror("Socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // 设置服务器地址
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(PORT);
+
+    // 绑定 socket
+    if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("Bind failed");
+        exit(EXIT_FAILURE);
+    }
+
+    // 监听连接
+    listen(server_sock, MAX_CLIENTS);
+    printf("Server listening on port %d\n", PORT);
+
+    // 启动生产者线程
+    pthread_create(&thread_id, NULL, producer_thread, NULL);
+    pthread_detach(thread_id);
+
+    // 主循环，接受客户端连接
+    while (1) {
+        client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);
+        if (client_sock < 0) {
+            perror("Accept failed");
+            continue;
+        }
+
+        // 检查客户端数量
+        pthread_mutex_lock(&clients_mutex);
+        if (client_count >= MAX_CLIENTS) {
+            printf("Max clients reached. Rejecting connection.\n");
+            close(client_sock);
+            pthread_mutex_unlock(&clients_mutex);
+            continue;
+        }
+
+        // 添加客户端到列表
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (!clients[i].active) {
+                clients[i].sockfd = client_sock;
+                clients[i].addr = client_addr;
+                clients[i].active = 1;
+                client_count++;
+                break;
+            }
+        }
+        pthread_mutex_unlock(&clients_mutex);
+
+        // 创建客户端处理线程
+        int *new_sock = malloc(sizeof(int));
+        *new_sock = client_sock;
+        pthread_create(&thread_id, NULL, handle_client, (void *)new_sock);
+        pthread_detach(thread_id);
+        printf("New client connected. Active clients: %d\n", client_count);
+    }
+
+    close(server_sock);
+    return 0;
+}
