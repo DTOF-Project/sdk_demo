@@ -384,11 +384,6 @@
           <GroupName>lib</GroupName>
           <Files>
             <File>
-              <FileName>dtof_calibration_ft.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\soc\sdk\src\dtof_calibration_ft.c</FilePath>
-            </File>
-            <File>
               <FileName>dtof_bin_width_calibrate.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\soc\sdk\src\calibration\dtof_bin_width_calibrate.c</FilePath>

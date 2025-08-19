@@ -14,6 +14,7 @@
 #include "dtof_customer.h"
 #include "base/inc/mos_platform.h"
 #include "platform_user_config.h"
+#include "inc/dtof_api.h"
 
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
@@ -135,51 +136,77 @@ void dtof_sleep_ms(dtof_uint32_t time)
     usleep(time * 1000);
 }
 
-extern void stm32_flash_write(uint32_t offset, uint64_t* context, uint16_t len);
-extern void stm32_flash_read(uint32_t offset, uint64_t* context, uint16_t len);
-extern void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
-extern void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
-
-DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset)
+void stm32_flash_write_init(uint32_t page, uint32_t page_num)
 {
-    uint64_t distance_offset_64;
-    stm32_flash_read_u64(0, &distance_offset_64, 1);
-    *distance_offset = (dtof_int32_t)distance_offset_64;
-    printf("read distance offset: %d\n", *distance_offset);
-    return DTOF_RET_SUCCESS;
+    FLASH_EraseInitTypeDef eraseInit;
+    uint32_t pageError = 0;
+
+    // 解锁Flash
+    if (HAL_FLASH_Unlock() != HAL_OK)
+    {
+        printf("flash unlock failed\n");
+        return;
+    }
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
+    eraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
+    eraseInit.NbPages = page_num; // 向上取整
+    eraseInit.Page = page;
+    eraseInit.Banks = FLASH_BANK_2;
+
+    do
+    {
+    } while (HAL_FLASHEx_Erase(&eraseInit, &pageError) != HAL_OK);
 }
 
-DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset)
+void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
 {
-    uint64_t distance_offset_64 = (uint64_t)distance_offset;
-    stm32_flash_write_u64(0, (uint64_t*)&distance_offset_64, 1);
-    printf("write distance offset: %d\n", (dtof_int32_t)distance_offset_64);
-    return DTOF_RET_SUCCESS;
+    uint32_t flash_addr = offset;
+
+    HAL_FLASH_Unlock();
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
+
+    for (uint32_t i = 0; i < num_words; i++) {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK) {
+            HAL_FLASH_Lock();
+            return;
+        }
+    }
+
+    HAL_FLASH_Lock();
 }
 
-DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
+void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
 {
-    uint64_t xtalk_data64[18];
-    stm32_flash_read_u64(64, xtalk_data64, 18);
+    uint32_t flash_addr = offset;
+    for (uint32_t i = 0; i < num_words; i++) {
+        context[i] = *(uint64_t *)(flash_addr + i * 8);
+    }
+}
+
+#define FT_DATA_NUM (sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t))
+DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
+{
+    uint64_t ft_data64[FT_DATA_NUM];
+    stm32_flash_read_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
 
     printf("read xtalk data: ");
-    for(dtof_uint16_t i = 0; i < 18; i++)
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
-        *(xtalk_data+i) = (dtof_uint16_t)xtalk_data64[i];
-        printf("%d, ", xtalk_data[i]);
+        *(ft_data+i) = (dtof_uint16_t)ft_data64[i];
+        printf("%d, ", ft_data[i]);
     }
     printf("\n");
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
+DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
 {
-    uint64_t xtalk_data64[18];
-    for(dtof_uint16_t i = 0; i < 18; i++)
+    uint64_t ft_data64[FT_DATA_NUM];
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
-        xtalk_data64[i] = (uint64_t)(*(xtalk_data + i));
+        ft_data64[i] = (uint64_t)(*(ft_data + i));
+        stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
     }
-    stm32_flash_write_u64(64, xtalk_data64, 18);
     return DTOF_RET_SUCCESS;
 }
 

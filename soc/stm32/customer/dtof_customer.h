@@ -55,6 +55,13 @@ dtof_bool_t dtof_get_interrupt_flag(void);
  */
 void dtof_sleep_ms(dtof_uint32_t time);
 
+#define DTOF_FT_DATA_FLASH_PAGE 224
+#define DTOF_FT_DATA_FLASH_PAGE_START_ADDR (0x08000000 + DTOF_FT_DATA_FLASH_PAGE * FLASH_PAGE_SIZE)
+#define DTOF_FT_DATA_FLASH_PAGE_NUM 1
+
+void stm32_flash_write_init(uint32_t page, uint32_t page_num);
+DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len);
+DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len);
 
 #ifdef __cplusplus
 }

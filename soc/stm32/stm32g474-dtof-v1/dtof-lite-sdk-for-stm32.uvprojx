@@ -618,6 +618,11 @@
               <FileType>4</FileType>
               <FilePath>..\..\sdk\src\lib\dtof_ft.lib</FilePath>
             </File>
+            <File>
+              <FileName>dtof_calibration_ft.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sdk\src\dtof_calibration_ft.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

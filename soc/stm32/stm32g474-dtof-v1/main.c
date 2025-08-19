@@ -21,14 +21,6 @@
 #include "user/device/device.h"
 
 #include "application/inc/soc_version.h"
-
-#define FLASH_START_ADDR 0x08070000
-#define FLASH_RESERVE_SIZE 64
-#define FLASH_ROM_BURN_START_ADDR 0x08070000 + FLASH_RESERVE_SIZE
-
-/*****************************xyb改******************************/
-extern DTOF_RET stm32_write_gpio(uint32_t gpio, uint32_t value);
-extern DTOF_RET stm32_init_gpio(uint32_t gpio, uint32_t cfgset);
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
 extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
@@ -77,129 +69,6 @@ void dump_hist_log(dtof_uint16_t *hist_p, dtof_uint16_t len)
     stm32_uart_write(0, "\n", 1);
 }
 /**************************************************************/
-
-void stm32_flash_write_init(void)
-{
-    FLASH_EraseInitTypeDef eraseInit;
-    uint32_t pageError = 0;
-
-    // 解锁Flash
-    if (HAL_FLASH_Unlock() != HAL_OK)
-    {
-        printf("flash unlock failed\n");
-        return;
-    }
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-    eraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
-    eraseInit.NbPages = 4; // 向上取整
-    eraseInit.Page = 224;
-    eraseInit.Banks = FLASH_BANK_2;
-
-    do
-    {
-    } while (HAL_FLASHEx_Erase(&eraseInit, &pageError) != HAL_OK);
-}
-
-void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
-{
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-
-    HAL_FLASH_Unlock();
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-
-    for (uint32_t i = 0; i < num_words; i++)
-    {
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + i * 8, context[i]) != HAL_OK)
-        {
-            HAL_FLASH_Lock();
-            return;
-        }
-    }
-
-    HAL_FLASH_Lock();
-}
-
-void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words)
-{
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    for (uint32_t i = 0; i < num_words; i++)
-    {
-        context[i] = *(uint64_t *)(flash_addr + i * 8);
-    }
-}
-
-void stm32_flash_write(uint32_t offset, uint64_t *context, uint16_t len)
-{
-    // 计算目标Flash地址
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    uint32_t context_index = 0;
-
-    do
-    {
-
-    } while (HAL_FLASH_Unlock() != HAL_OK);
-    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-
-    // 按8字节写入数据
-    for (uint32_t i = 0; i < len; i += 4)
-    {
-        uint64_t data = *(context + context_index);
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_addr + (context_index * 8), data) != HAL_OK)
-        {
-            HAL_FLASH_Lock();
-            return;
-        }
-        context_index++;
-    }
-
-    HAL_FLASH_Lock();
-}
-
-void stm32_flash_read(uint32_t offset, uint64_t *context, uint16_t len)
-{
-    // 计算目标Flash地址
-    // len 的单位是2byte
-    // 起始地址跳过64的预留byte
-    uint32_t flash_addr = FLASH_ROM_BURN_START_ADDR + offset;
-    uint32_t context_index = 0;
-    uint64_t data = 0;
-
-    // 按8字节写入数据
-    for (uint32_t i = 0; i < len; i += 4)
-    {
-        data = *(uint64_t *)(flash_addr + context_index * 8);
-        *(context + context_index) = data;
-        context_index++;
-    }
-}
-
-// 从数组库中检索uuid
-static DTOF_RET dtof_find_ft_data_in_database(dtof_uint8_t *uuid, dtof_uint8_t uuid_len, dtof_bool_t *is_find_sensor, dtof_uint8_t **sensor_ft_data_p)
-{
-    DTOF_RET ret = DTOF_RET_SUCCESS;
-    dtof_int32_t sensor_index;
-
-    *is_find_sensor = DTOF_FALSE;
-
-    for (sensor_index = 0; sensor_index < sizeof(sensor_database) / sizeof(sensor_database_t); sensor_index++)
-    {
-        if (memcmp(uuid, sensor_database[sensor_index].uuid, uuid_len) == 0)
-        {
-            *is_find_sensor = DTOF_TRUE;
-            *sensor_ft_data_p = (dtof_uint8_t *)&sensor_database[sensor_index];
-            break;
-        }
-    }
-
-    if (!(*is_find_sensor))
-    {
-        *sensor_ft_data_p = (dtof_uint8_t *)&sensor_database[0];
-        DTOF_LOG_ERR("can not find uuid in database\n");
-        ret = DTOF_RET_FAILED;
-    }
-
-    return ret;
-}
 
 #define SPECIAL_BYPASS_VALUE 7
 #define SPECIAL_LOOP_VALUE 136
@@ -378,6 +247,9 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "p") == 0)
                 {
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+
+                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                     // dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
                     // dtof_int32_t read_distance_offset = 0;
                     // dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
@@ -400,27 +272,41 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
-                    stm32_flash_write_init();
+                    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
                 }
                 else if (strncmp(uart_buf, "ft,", 3) == 0)
                 {
+                    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                     dtof_uint16_t otp_ref_spad_mask,distance;
 
                     if (sscanf(uart_buf, "ft,%hu,%hu", &otp_ref_spad_mask, &distance) == 2)
                     {
                         dtof_calibrate_data_ft_t cal_data;
+                        dtof_ft_data_t ft_data;
+                    #ifdef DTOF_FT_CALIBRATE_REFSPAD
                         cal_data.ref_spad_cal.otp_ref_spad_mask = otp_ref_spad_mask;
+                    #endif
+                    #ifdef DTOF_FT_CALIBRATE_B
                         cal_data.kb_data.far_distance = distance;
-
-                        DTOF_RET ret = dtof_calibration_ft(&cal_data);
+                    #endif
+                        DTOF_RET ret = dtof_do_ft_calibration(&cal_data, &ft_data);
                         if (ret == DTOF_RET_SUCCESS) {
-                            printf("FT success: mask=%u, distance=%u\n",
-                                cal_data.ref_spad_cal.otp_ref_spad_mask,
-                                cal_data.kb_data.far_distance);
+                            printf("FT success: mask=%u, distance=%u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.kb_data.far_distance);
+                            printf("bin_offset=%u, ref_spad=%u, distance_k=%.2f, distance_b=%.2f\n",
+                                    cal_data.binoffset_cal_data.binoffset, cal_data.ref_spad_cal.ref_spad_cal, cal_data.kb_data.k, cal_data.kb_data.b);
+                            printf("cg_reg: ");
+                            for (int i = 0; i < DTOF_AC_NUM; i++)
+                            {
+                                printf("%u, ", cal_data.cross_talk_data.next_ac[i]);
+                            }
+                            printf("%u\n", cal_data.cross_talk_data.next_dc);
+
+                            dtof_set_ft_data((dtof_uint16_t*)&ft_data);
+                            dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_data, sizeof(ft_data) / sizeof(dtof_uint16_t));
                         }
                         else{
-                            printf("Invalid format!Example: ft,0xFE,690\n");
+                            printf("ft calibration failed\n");
                         }
                     }
                 }
