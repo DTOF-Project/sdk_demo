@@ -247,19 +247,19 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "p") == 0)
                 {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                    // DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
 
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
-                    // dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
+                    // DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
                     // dtof_int32_t read_distance_offset = 0;
                     // dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
-                    // DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
-                    // printf("chip uuid: ");
-                    // for (int i = 0; i < DTOF_UUID_LENGTH; i++)
-                    // {
-                    //     printf("%d, ", chip_uuid[i]);
-                    // }
-                    // printf("\n");
+                    DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
+                    printf("chip uuid: ");
+                    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+                    {
+                        printf("%d, ", chip_uuid[i]);
+                    }
+                    printf("\n");
                     // dtof_get_distance_offset_from_flash(&read_distance_offset);
                     // printf("distance offset = %d\n", read_distance_offset);
                     // dtof_get_xtalk_data_from_flash(xtalk_data_read);
