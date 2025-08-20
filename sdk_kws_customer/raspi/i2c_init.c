@@ -26,6 +26,9 @@ DTOF_RET rpi_i2c_init(int iic_id) {
         close(dtof_file);
         return DTOF_RET_ERROR;
     }
+
+    
+
     return DTOF_SUCCESS;
 }
 

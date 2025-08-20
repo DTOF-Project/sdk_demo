@@ -143,8 +143,11 @@ int main() {
 
     
     rpi_i2c_init(1);
-    
 
+    // 测试寄存器读取，期望结果：0xdeaf
+    uint8_t testReadResult[2];
+    device_iic_driver_ops.read_block(1, DEVICE_ADDR, testReadResult, 2);
+    printf("=> testReadResult: %x, %x \n", testReadResult[0], testReadResult[1]);
 
 // extern DTOF_RET ds_device_peripheral_init(ds_sal_config_t *peripheralConfig);
 //     ds_device_peripheral_init(&raps_peripheral);

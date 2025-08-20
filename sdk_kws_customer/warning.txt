@@ -1,0 +1,38 @@
+raspi/main.c: In function ‘main’:
+raspi/main.c:145:5: warning: implicit declaration of function ‘rpi_i2c_init’; did you mean ‘rpi_gpio_init’? [-Wimplicit-function-declaration]
+  145 |     rpi_i2c_init(1);
+      |     ^~~~~~~~~~~~
+      |     rpi_gpio_init
+sdk/lib/dtof_cal_binoffset.c:1:32: warning: unknown option after ‘#pragma GCC diagnostic’ kind [-Wpragmas]
+    1 | #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sdk/lib/dtof_cal_cg.c:1:32: warning: unknown option after ‘#pragma GCC diagnostic’ kind [-Wpragmas]
+    1 | #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sdk/lib/dtof_cal_cg.c: In function ‘dtof_cross_talk_sample_data’:
+sdk/lib/dtof_cal_cg.c:156:14: warning: unused variable ‘object_peak_pos’ [-Wunused-variable]
+  156 |     uint16_t object_peak_pos;
+      |              ^~~~~~~~~~~~~~~
+sdk/lib/dtof_cal_cg.c:253:48: warning: ‘cg_peak_pos’ may be used uninitialized [-Wmaybe-uninitialized]
+  253 |     dtof_find_min_uint16(cross_talk_calib_data + cg_peak_pos, DTOF_FIND_MIN_PEAK_BIN_SIZE, &min_pos_between_two_peak);
+      |                                                ^
+sdk/lib/dtof_cal_cg.c:155:14: note: ‘cg_peak_pos’ was declared here
+  155 |     uint16_t cg_peak_pos;
+      |              ^~~~~~~~~~~
+sdk/lib/dtof_cal_ft.c:1:32: warning: unknown option after ‘#pragma GCC diagnostic’ kind [-Wpragmas]
+    1 | #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sdk/lib/dtof_hal.c:1:32: warning: unknown option after ‘#pragma GCC diagnostic’ kind [-Wpragmas]
+    1 | #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sdk/lib/dtof_hal.c: In function ‘dtof_ram_read_lib’:
+sdk/lib/dtof_hal.c:93:19: warning: unused variable ‘local_buffer’ [-Wunused-variable]
+   93 |     dtof_uint16_t local_buffer[64];
+      |                   ^~~~~~~~~~~~
+sdk/lib/dtof_hal.c:92:19: warning: unused variable ‘burst_step’ [-Wunused-variable]
+   92 |     dtof_uint16_t burst_step = (len+7) / 8 ;
+      |                   ^~~~~~~~~~
+sdk/src/dtof_api.c: In function ‘dtof_do_distance_calibration’:
+sdk/src/dtof_api.c:646:14: warning: unused variable ‘ret’ [-Wunused-variable]
+  646 |     DTOF_RET ret;
+      |              ^~~

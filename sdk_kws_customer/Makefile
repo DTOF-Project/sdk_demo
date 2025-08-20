@@ -1,8 +1,10 @@
 # 编译器设置
-CC = arm-linux-gnueabihf-gcc
+# CC = arm-linux-gnueabihf-gcc
+CC = gcc
 CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
+# LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,soc/raspberry_pi/arm64-64.lds
 LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread 
 
 # 目录设置
