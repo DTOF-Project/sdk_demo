@@ -1026,7 +1026,7 @@
                 </option>
                 <option>
                     <name>IarchiveOutput</name>
-                    <state>D:\code_jiana\sdk_demo\dtof_calibration_lib\iar\Debug\Exe\kws_lib.a</state>
+                    <state>D:\code_jiana\sdk_demo\dtof_calibration_lib\iar\Debug\Exe\dtof_lib.a</state>
                 </option>
             </data>
         </settings>
