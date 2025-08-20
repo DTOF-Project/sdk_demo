@@ -10,6 +10,7 @@
 #include "inc/dtof_driver.h"
 #include "inc/dtof_endian.h"
 #include "inc/dtof_calibration_ft.h"
+#include "inc/dtof_global_config.h"
 #include "base/inc/mos_platform.h"
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
@@ -247,28 +248,12 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "p") == 0)
                 {
-                    // DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-
-                    // DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
-                    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
-                    // dtof_int32_t read_distance_offset = 0;
-                    // dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
-                    DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
                     printf("chip uuid: ");
                     for (int i = 0; i < DTOF_UUID_LENGTH; i++)
                     {
-                        printf("%d, ", chip_uuid[i]);
+                        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
                     }
                     printf("\n");
-                    // dtof_get_distance_offset_from_flash(&read_distance_offset);
-                    // printf("distance offset = %d\n", read_distance_offset);
-                    // dtof_get_xtalk_data_from_flash(xtalk_data_read);
-                    // printf("xtalk data = ");
-                    // for (int i = 0; i < XTALK_DATA_SIZE; i++)
-                    // {
-                    //     printf("%d, ", xtalk_data_read[i]);
-                    // }
-                    // printf("\n");
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
