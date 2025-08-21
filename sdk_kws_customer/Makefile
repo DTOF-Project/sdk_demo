@@ -5,7 +5,7 @@ CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
 # LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,soc/raspberry_pi/arm64-64.lds
-LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread 
+LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/custom.lds
 
 # 目录设置
 BUILD_DIR = Build
@@ -14,22 +14,21 @@ BIN_DIR = $(BUILD_DIR)/bin
 TARGET = $(BIN_DIR)/my_program  # 定义最终目标文件（可根据需要修改名称）
 
 # cJSON 设置
-CJSON_DIR = third_party/cjson
-CJSON_SRC = $(CJSON_DIR)/cJSON.c
-CJSON_HEADER = $(CJSON_DIR)/cJSON.h
-CJSON_OBJ = $(OBJ_DIR)/cJSON.o  # 简化路径，避免嵌套目录问题
+# CJSON_DIR = third_party/cjson
+# CJSON_SRC = $(CJSON_DIR)/cJSON.c
+# CJSON_HEADER = $(CJSON_DIR)/cJSON.h
+# CJSON_OBJ = $(OBJ_DIR)/cJSON.o  # 简化路径，避免嵌套目录问题
 
 # 源文件和头文件路径
-SRC = $(wildcard raspi/*.c)\
+SRC = $(wildcard raspinew/*.c)\
       $(wildcard sdk/**/*.c) \
-	  $(wildcard sdk/**/**/*.c) \
-      $(CJSON_SRC)
+	  $(wildcard sdk/**/**/*.c)
+#       $(CJSON_SRC)
 
-SRC := $(filter-out raspi/command_receiver.c raspi/dtof_frame_control.c raspi/dtof_interrupt_handler.c, $(SRC))
+# SRC := $(filter-out raspinew/command_receiver.c raspinew/dtof_frame_control.c raspinew/dtof_interrupt_handler.c, $(SRC))
 
-
-
-INCLUDES = -I sdk -I raspi -I . -I $(CJSON_DIR) 
+# INCLUDES = -I sdk -I raspinew -I . -I $(CJSON_DIR) 
+INCLUDES = -I sdk -I raspinew -I . 
 
 # 对象文件
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

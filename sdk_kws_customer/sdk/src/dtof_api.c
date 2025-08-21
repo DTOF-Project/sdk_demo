@@ -11,6 +11,8 @@
 #include "src/ramcode/dtof_distance_mode.ram"
 #include "src/ramcode/dtof_pre_config.ram"
 
+// #define DTOF_API_DEBUG_FLAG
+
 static dtof_device_info_t dtof_device_info[DTOF_MAX_DEVICE_NUM] =
 {
     {.device_id = 0, .is_init = DTOF_FALSE, .first_frame = 1, .frame_id_pre = 0, .distance_offset = 0},
@@ -114,13 +116,18 @@ DTOF_RET dtof_get_distance_result(dtof_uint8_t device_id, dtof_start_mode_t dtof
 
     DTOF_CHECK_PTR(result_info_p);
 
-    ret = dtof_get_fifo(device_id, dtof_start_mode,result_info_p);
+    ret = dtof_get_fifo(device_id, dtof_start_mode, result_info_p);
     if(ret != DTOF_RET_SUCCESS) {
         DTOF_LOG_ERR("dtof get fifo fail\n");
         return ret;
     }
     frame_id = result_info_p->frame_id;
     *is_new_frame = DTOF_FALSE;
+
+    // DTOF_LOG(
+    //     "frame_id= %d, frame_id_pre = %d \n",
+    //     frame_id, dtof_device_info[device_id].frame_id_pre
+    // );
 
     if (dtof_device_info[device_id].first_frame) {
         // 第一帧不要
@@ -153,6 +160,10 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
     dtof_uint16_t temp = 0;
     dtof_uint16_t try_count = 0;
 
+#ifdef DTOF_API_DEBUG_FLAG
+    DTOF_LOG("call dtof_set_mcu_status() status = 0x%08x\n", status);
+#endif
+
     if(status != DTOF_MCU_STATE_WAKEUP) {
         DTOF_CHECK_RET(dtof_io_interaction(device_id, status, DTOF_CMD_NONE),
                      "发送IO命令失败");
@@ -161,6 +172,9 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
         do {
             DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, &temp, 1),
                          "读取寄存器失败");
+#ifdef DTOF_API_DEBUG_FLAG
+            DTOF_LOG("dtof_set_mcu_status() temp = 0x%04x\n", temp);
+#endif
 
             if (++try_count >= DTOF_MAX_RETRY_COUNT) {
                 return DTOF_RET_ERROR;
@@ -175,6 +189,9 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
         do {
             DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, &temp, 1),
                          "读取寄存器失败");
+#ifdef DTOF_API_DEBUG_FLAG
+            DTOF_LOG("dtof_set_mcu_status(WAKEUP) temp = 0x%04x\n", temp);
+#endif
 
             if (++try_count >=DTOF_MAX_RETRY_COUNT) {
                 return DTOF_RET_ERROR;
@@ -425,11 +442,22 @@ DTOF_RET dtof_pre_init(dtof_uint8_t device_id, dtof_uint16_t * chip_id_p)
         dtof_sleep_ms(DTOF_INIT_DELAY);
     } while ((frame_id < DTOF_INIT_FRAME_ID) && (frame_id != 0xffff));
 
+    
+    DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, chip_id_p, 1), "reg read chip id fail\n");
+
+#ifdef DTOF_API_DEBUG_FLAG
+    DTOF_LOG("chip id(before set sleep) = 0x%04x\n", *chip_id_p);
+#endif
+
     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
     DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, chip_id_p, 1), "reg read chip id fail\n");
 
+#ifdef DTOF_API_DEBUG_FLAG
+    DTOF_LOG("chip id(bypass) = 0x%04x\n", *chip_id_p);
+#endif
+
     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
-    DTOF_LOG("chip id = 0x%04x\n", *chip_id_p);
+    DTOF_LOG("chip id(final) = 0x%04x\n", *chip_id_p);
 
     ret = dtof_version_upgrade(device_id, 0, 0, 0);
     if(ret != DTOF_RET_SUCCESS){
@@ -441,7 +469,10 @@ DTOF_RET dtof_pre_init(dtof_uint8_t device_id, dtof_uint16_t * chip_id_p)
 
 DTOF_RET dtof_set_calibration_data(dtof_uint8_t device_id, dtof_start_mode_t dtof_start_mode)
 {
-    dtof_uint16_t xtalk_data[XTALK_DATA_SIZE] = {6939, 6427, 6682, 7196, 7452, 14634, 14908, 11567, 11567, 10027, 9253, 8739, 8225, 7711, 6941, 6426, 1, 11};
+    dtof_uint16_t xtalk_data[XTALK_DATA_SIZE] = {
+        6939, 6427, 6682, 7196, 7452, 14634, 14908, 11567, 11567, 
+        10027, 9253, 8739, 8225, 7711, 6941, 6426, 1, 11
+    };
     dtof_int32_t distance_offset = 0;
     switch(dtof_start_mode)
     {

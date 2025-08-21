@@ -3,9 +3,10 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:/Users/ouyangyumeng/.conda/envs/oyym/Library/mingw-w64/x86_64-w64-mingw32/include/**",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/sdk/**",
-                "${workspaceFolder}/raspi/**",
+                "${workspaceFolder}/raspinew/**",
                 "${workspaceFolder}/third_party/cjson/**"
             ],
             "defines": [
