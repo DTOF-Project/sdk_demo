@@ -189,22 +189,22 @@ int main(void)
                 else if (strcmp(uart_buf, "d") == 0)
                 {
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_start_distance_measure();
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
                         DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
                     }
-                    dtof_start_distance_measure();
                     is_init = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
                 }
                 else if (strcmp(uart_buf, "e") == 0)
                 {
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_start_distance_measure();
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
                         DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
                     }
-                    dtof_start_distance_measure();
                     frame_cnt_flag = DTOF_TRUE;
                     is_init = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
@@ -212,6 +212,13 @@ int main(void)
                 else if (strcmp(uart_buf, "t") == 0)
                 {
                     dtof_stop_distance_measure();
+                    if (debug_flag == DTOF_TRUE)
+                    {
+                        if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                        {
+                            DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "disable debug mode failed\n");
+                        }
+                    }
                 }
                 else if (strncmp(uart_buf, "r,", 2) == 0)
                 {
