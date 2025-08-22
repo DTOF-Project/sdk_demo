@@ -56,7 +56,9 @@ dtof_bool_t dtof_get_interrupt_flag(void);
 void dtof_sleep_ms(dtof_uint32_t time);
 
 DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset);
+DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset);
 DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data);
+DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data);
 
 /**
  * @brief 外设初始化

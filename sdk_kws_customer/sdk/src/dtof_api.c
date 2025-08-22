@@ -11,8 +11,6 @@
 #include "src/ramcode/dtof_distance_mode.ram"
 #include "src/ramcode/dtof_pre_config.ram"
 
-// #define DTOF_API_DEBUG_FLAG
-
 static dtof_device_info_t dtof_device_info[DTOF_MAX_DEVICE_NUM] =
 {
     {.device_id = 0, .is_init = DTOF_FALSE, .first_frame = 1, .frame_id_pre = 0, .distance_offset = 0},
@@ -160,7 +158,7 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
     dtof_uint16_t temp = 0;
     dtof_uint16_t try_count = 0;
 
-#ifdef DTOF_API_DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
     DTOF_LOG("call dtof_set_mcu_status() status = 0x%08x\n", status);
 #endif
 
@@ -172,7 +170,7 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
         do {
             DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, &temp, 1),
                          "读取寄存器失败");
-#ifdef DTOF_API_DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
             DTOF_LOG("dtof_set_mcu_status() temp = 0x%04x\n", temp);
 #endif
 
@@ -189,7 +187,7 @@ DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status)
         do {
             DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, &temp, 1),
                          "读取寄存器失败");
-#ifdef DTOF_API_DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
             DTOF_LOG("dtof_set_mcu_status(WAKEUP) temp = 0x%04x\n", temp);
 #endif
 
@@ -445,14 +443,14 @@ DTOF_RET dtof_pre_init(dtof_uint8_t device_id, dtof_uint16_t * chip_id_p)
     
     DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, chip_id_p, 1), "reg read chip id fail\n");
 
-#ifdef DTOF_API_DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
     DTOF_LOG("chip id(before set sleep) = 0x%04x\n", *chip_id_p);
 #endif
 
     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
     DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_CHIP_ID_REG_ADDR, chip_id_p, 1), "reg read chip id fail\n");
 
-#ifdef DTOF_API_DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
     DTOF_LOG("chip id(bypass) = 0x%04x\n", *chip_id_p);
 #endif
 

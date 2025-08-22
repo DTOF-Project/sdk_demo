@@ -29,7 +29,6 @@
 
 
 #define CMD_BUFFER_SIZE 256
-// #define DEBUG_FLAG
 
 // extern device_driver_ops_t device_iic_driver_ops;
 
@@ -46,6 +45,27 @@ void dtof_reg_test(int device_id) {
     // uint8_t test_read_result[2];
     // device_iic_driver_ops.read_block(1, DEVICE_ADDR, test_read_result, 2);
     // printf("=> test_read_result: %x %x \n", test_read_result[0], test_read_result[1]);
+}
+
+void file_io_test(dtof_uint8_t test_uuid) {
+    // dtof_uint8_t test_uuid = 0x0a;
+    dtof_int32_t read_b;
+    dtof_int32_t read_xtalk[18];
+    dtof_get_distance_offset_from_flash(test_uuid, &read_b);
+    DTOF_LOG("file_io_test(): read_b = %d \n", read_b);
+    dtof_get_xtalk_data_from_flash(test_uuid, read_xtalk);
+    DTOF_LOG(
+        "file_io_test(): read_xtalk[:4] = %d, %d, %d, %d \n", 
+        read_xtalk[0], read_xtalk[1], read_xtalk[2], read_xtalk[3]
+    );
+
+    dtof_int32_t write_b = -1;
+    dtof_int32_t write_xtalk[] = {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16, 17, -18};
+    int ret;
+    ret = dtof_set_distance_offset_to_flash(test_uuid, write_b);
+    // DTOF_LOG("file_io_test(): write_b ret = %d \n", ret);
+    ret = dtof_set_xtalk_data_from_flash(test_uuid, write_xtalk);
+    // DTOF_LOG("file_io_test(): write_xtalk ret = %d \n", ret);
 }
 
 #define DTOF_SINGLE_MAIN_HISTGRAM_LEN      512 // 64 * 8, stm32/dev/dtof_hal.h
@@ -132,7 +152,7 @@ void main_cmd_loop(int serial){
 
         if (received > 0) {
             // 输出接收到的命令
-#ifdef DEBUG_FLAG
+#ifdef DEBUG_LOG_FLAG
             printf("=> DEBUG MSG:\n");
             printf("Received[%d bytes]: %s\n", received, cmd_buffer);
             for (size_t i = 0; i < CMD_BUFFER_SIZE; i++)
@@ -253,21 +273,22 @@ void main_cmd_loop(int serial){
             else if (strcmp(cmd_buffer, "cal") == 0)
             {   
                 // 输出 distance_offset
-                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // TODO
+                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
                 DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                 is_init = DTOF_TRUE;
                 printf("distance offset = %d\n", dtof_get_distance_offset(device_id));
             }
             else if (strcmp(cmd_buffer, "clear") == 0)
             {
-                // 清除flash？
-                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // TODO
-                // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // TODO
+                // 清除flash（flash单点写入时只能从1置0，因此写入数据必须先置1）
+                DTOF_LOG("running on raspi, stm32_flash_write_init() is deprecated.");
+                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
+                // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
             }
             else if (strcmp(cmd_buffer, "b") == 0)
             {   
-                // 从flash获取xtalk_data？
-                // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // TODO
+                // 从flash获取xtalk_data
+                // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
                 DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                 uint16_t xtalk_data[18];
                 dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
@@ -305,9 +326,13 @@ void main_cmd_loop(int serial){
                 // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
             }
 #endif
-            else if (strcmp(cmd_buffer, "test") == 0) {
-                // 测试读写api
+            else if (strcmp(cmd_buffer, "regtest") == 0) {
+                // 测试寄存器读写api
                 dtof_reg_test(device_id);
+            }
+            else if (strcmp(cmd_buffer, "filetest") == 0) {
+                // 测试文件读写api
+                file_io_test(0x0a);
             }
             else if (strcmp(cmd_buffer, "q") == 0) {
                 // 退出命令循环
@@ -346,6 +371,7 @@ void main_cmd_loop(int serial){
                         frame_cnt = 0;
                         dtof_stop_distance_measure(device_id);
                         DTOF_LOG("frame_cnt == 200, stopped.");
+                        printf("=> wait for cmd...\n");
                     }
                 }
                 

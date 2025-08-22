@@ -25,6 +25,7 @@
         "platform_user_config.h": "c",
         "dtof_endian.h": "c",
         "mos_platform.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "stdio.h": "c"
     }
 }
