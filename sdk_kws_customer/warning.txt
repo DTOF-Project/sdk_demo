@@ -104,8 +104,8 @@ raspinew/main.c:131:14: warning: variable ‘ret’ set but not used [-Wunused-b
   131 |     DTOF_RET ret;
       |              ^~~
 raspinew/main.c: In function ‘main’:
-raspinew/main.c:417:5: warning: implicit declaration of function ‘rpi_i2c_init’; did you mean ‘rpi_gpio_init’? [-Wimplicit-function-declaration]
-  417 |     rpi_i2c_init(1);
+raspinew/main.c:441:5: warning: implicit declaration of function ‘rpi_i2c_init’; did you mean ‘rpi_gpio_init’? [-Wimplicit-function-declaration]
+  441 |     rpi_i2c_init(1);
       |     ^~~~~~~~~~~~
       |     rpi_gpio_init
 sdk/lib/dtof_cal_binoffset.c:1:32: warning: unknown option after ‘#pragma GCC diagnostic’ kind [-Wpragmas]

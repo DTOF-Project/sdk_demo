@@ -334,6 +334,30 @@ void main_cmd_loop(int serial){
                 // 测试文件读写api
                 file_io_test(0x0a);
             }
+            else if (strncmp(cmd_buffer, "u,", 2) == 0) {
+                // 更新当前程序，（退出c程序，调用python脚本）
+                char version_name[256];
+                char command[512];
+                
+                // 安全地解析版本名称
+                if (sscanf(cmd_buffer + 2, "%255s", version_name) == 1) {
+                    // 构建Python命令
+                    snprintf(command, sizeof(command), "python ./script/update.py download -v %s", version_name);
+                    
+                    // 执行Python更新脚本
+                    int ret = system(command);
+                    if (ret != 0) {
+                        DTOF_LOG("更新脚本执行失败，返回值: %d\n", ret);
+                    }
+                    
+                    // 退出当前C程序
+                    DTOF_LOG("正在退出程序以完成更新...\n");
+                    break;
+                    // exit(EXIT_SUCCESS);
+                } else {
+                    DTOF_LOG("无效的版本名称格式\n");
+                }
+            }
             else if (strcmp(cmd_buffer, "q") == 0) {
                 // 退出命令循环
                 printf("Quit.\n");
