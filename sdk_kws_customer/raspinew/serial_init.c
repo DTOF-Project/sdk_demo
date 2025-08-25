@@ -79,6 +79,25 @@ int rpi_serial_send(const int serial_hd, const char *data, const size_t len) {
     return written;
 }
 
+// 串口 print
+int rpi_serial_printf(int serial_hd, const char *fmt, ...) {
+    char buffer[512];  // 缓冲区大小可按需调整
+    va_list args;
+    va_start(args, fmt);
+    int n = vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+
+    if (n < 0) {
+        return -1;  // 格式化失败
+    }
+    if ((size_t)n >= sizeof(buffer)) {
+        // 输出被截断，可以考虑动态分配更大 buffer
+        n = sizeof(buffer) - 1;
+    }
+
+    return rpi_serial_send(serial_hd, buffer, n);
+}
+
 // 串口接收函数
 // 带超时和缓冲区的串口接收
 int rpi_serial_receive(const int serial_hd, char *buffer, const size_t buf_size) {

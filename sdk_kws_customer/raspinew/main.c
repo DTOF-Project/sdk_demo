@@ -79,7 +79,7 @@ typedef int (*dtof_data_dump_func_t)(const int, const char *, const size_t);
  */
 void dump_hist_log(int dev_handle, dtof_data_dump_func_t dump_func, dtof_uint16_t* hist_p, dtof_uint16_t len){
     // printf("=> dump_hist_log() NotImplemented");
-    #define OUT_PUT_MAX_BUFFER  (517)
+    #define OUT_PUT_MAX_BUFFER  (4096)
     char output_str[OUT_PUT_MAX_BUFFER]; // 确保缓冲区足够大
     char *temp_start = output_str;
     int total_used_len = 0;
@@ -390,8 +390,8 @@ void main_cmd_loop(int serial){
 
                 dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP);
             }
-            DTOF_LOG(
-                "frm_id: %d, tgt: %d, intens: %d, nflash: %d, ambient: %.6f, leagal: %d",
+            rpi_serial_printf(
+                "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
         }      

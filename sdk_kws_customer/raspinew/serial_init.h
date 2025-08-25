@@ -21,6 +21,13 @@ int rpi_serial_init(const char *port_name);
 int rpi_serial_send(const int serial_hd, const char *data, const size_t len);
 
 /**
+ * @brief 串口发送数据 类printf 格式
+ * @param serial_hd 串口handle
+ * @param fmt 参数信息
+ */
+int rpi_serial_printf(int serial_hd, const char *fmt, ...);
+
+/**
  * @brief 从串口接收消息
  * @param serial_hd 串口handle
  * @param buffer 接收信息缓冲
