@@ -205,8 +205,9 @@ DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
     for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
         ft_data64[i] = (uint64_t)(*(ft_data + i));
-        stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
     }
+
+    stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
     return DTOF_RET_SUCCESS;
 }
 
