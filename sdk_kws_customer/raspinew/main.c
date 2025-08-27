@@ -214,7 +214,8 @@ void main_cmd_loop(int serial){
                 // "r,<reg_addr:int>", 读地址为<reg_addr>的寄存器的值
                 int reg_addr = atoi(&cmd_buffer[2]);
                 uint16_t reg_value;
-                dtof_reg_burst_write(device_id, reg_addr, &reg_value, 1);
+                
+                dtof_reg_burst_read(device_id, reg_addr, &reg_value, 1);
                 DTOF_LOG("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
             }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
@@ -414,7 +415,7 @@ void main_cmd_loop(int serial){
 
                 dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP);
             }
-            rpi_serial_printf(
+            rpi_serial_printf(serial,
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
@@ -429,6 +430,7 @@ void main_cmd_loop(int serial){
 
 
 int main() {
+    // TODO: 编译前 需要先查一下当前的 arm 是 32 还是 64的，然后将makefile中的 lds 做修改，指定为是 64的 或 32的
     int ret;
     extern int rpi_gpio_init(void);
     printf("rpi_gpio_init...\n");
