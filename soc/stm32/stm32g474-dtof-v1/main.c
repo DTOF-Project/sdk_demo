@@ -295,19 +295,24 @@ int main(void)
                     #endif
                         DTOF_RET ret = dtof_do_ft_calibration(&cal_data, &ft_data, is_to_sky_flag);
                         if (ret == DTOF_RET_SUCCESS) {
-                            #if defined(DTOF_FT_CALIBRATE_REFSPAD) && (DTOF_FT_CALIBRATE_B)
-                            printf("FT success: mask=%u, distance=%u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.kb_data.far_distance);
+                            printf("FT success:\n");
+                            #ifdef DTOF_FT_CALIBRATE_BINOFFSET
+                            printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
                             #endif
-                            #if defined(DTOF_FT_CALIBRATE_BINOFFSET) && (DTOF_FT_CALIBRATE_REFSPAD) && (DTOF_FT_CALIBRATE_B)
-                            printf("bin_offset=%u, ref_spad=%u, distance_k=%.2f, distance_b=%.2f\n",
-                                    cal_data.binoffset_cal_data.binoffset, cal_data.ref_spad_cal.ref_spad_cal, cal_data.kb_data.k, cal_data.kb_data.b);
+                            #ifdef DTOF_FT_CALIBRATE_REFSPAD
+                            printf("otp_ref_spad_mask = %u, ref_spad = %u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.ref_spad_cal.ref_spad);
                             #endif
+                            #ifdef DTOF_FT_CALIBRATE_CG
                             printf("cg_reg: ");
                             for (int i = 0; i < DTOF_AC_NUM; i++)
                             {
                                 printf("%u, ", cal_data.cross_talk_data.next_ac[i]);
                             }
                             printf("%u\n", cal_data.cross_talk_data.next_dc);
+                            #endif
+                            #ifdef DTOF_FT_CALIBRATE_B
+                            printf("distance = %u, distance_k=%.2f, distance_b=%.2f\n", cal_data.kb_data.far_distance, cal_data.kb_data.k, cal_data.kb_data.b);
+                            #endif
 
                             dtof_set_ft_data((dtof_uint16_t*)&ft_data);
                             dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_data, sizeof(ft_data) / sizeof(dtof_uint16_t));
