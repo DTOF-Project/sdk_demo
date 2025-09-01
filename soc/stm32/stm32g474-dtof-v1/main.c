@@ -25,6 +25,8 @@
 extern int stm32_uart_write(int uart_id, void *buf, int nbyte);
 extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
+static dtof_uint16_t is_to_sky_flag = 1;
+
 // 这里要求一定是输入的是 int16 的数据
 void dump_hist_log(dtof_uint16_t *hist_p, dtof_uint16_t len)
 {
@@ -249,8 +251,13 @@ int main(void)
                     int reg_addr, reg_value;
                     if (sscanf(uart_buf, "w,%d,%d", &reg_addr, &reg_value) == 2)
                     {
-                        dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
-                        printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                        if (reg_addr == 300){
+                            is_to_sky_flag = reg_addr;
+                            printf("reg write 0x%x: 0x%04x, set 300->1 for let cg cal to sky \n", reg_addr, reg_value);
+                        }else{
+                            dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
+                            printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                        }
                     }
                 }
                 else if (strcmp(uart_buf, "p") == 0)
@@ -261,6 +268,10 @@ int main(void)
                         printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
                     }
                     printf("\n");
+                    dtof_ft_data_t ft_data_read;
+                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t));
+                    dtof_set_ft_data((dtof_uint16_t*)&ft_data_read);
+
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
@@ -282,17 +293,26 @@ int main(void)
                     #ifdef DTOF_FT_CALIBRATE_B
                         cal_data.kb_data.far_distance = distance;
                     #endif
-                        DTOF_RET ret = dtof_do_ft_calibration(&cal_data, &ft_data);
+                        DTOF_RET ret = dtof_do_ft_calibration(&cal_data, &ft_data, is_to_sky_flag);
                         if (ret == DTOF_RET_SUCCESS) {
-                            printf("FT success: mask=%u, distance=%u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.kb_data.far_distance);
-                            printf("bin_offset=%u, ref_spad=%u, distance_k=%.2f, distance_b=%.2f\n",
-                                    cal_data.binoffset_cal_data.binoffset, cal_data.ref_spad_cal.ref_spad_cal, cal_data.kb_data.k, cal_data.kb_data.b);
+                            printf("FT success:\n");
+                            #ifdef DTOF_FT_CALIBRATE_BINOFFSET
+                            printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
+                            #endif
+                            #ifdef DTOF_FT_CALIBRATE_REFSPAD
+                            printf("otp_ref_spad_mask = %u, ref_spad = %u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.ref_spad_cal.ref_spad);
+                            #endif
+                            #ifdef DTOF_FT_CALIBRATE_CG
                             printf("cg_reg: ");
                             for (int i = 0; i < DTOF_AC_NUM; i++)
                             {
                                 printf("%u, ", cal_data.cross_talk_data.next_ac[i]);
                             }
                             printf("%u\n", cal_data.cross_talk_data.next_dc);
+                            #endif
+                            #ifdef DTOF_FT_CALIBRATE_B
+                            printf("distance = %u, distance_k=%.2f, distance_b=%.2f\n", cal_data.kb_data.far_distance, cal_data.kb_data.k, cal_data.kb_data.b);
+                            #endif
 
                             dtof_set_ft_data((dtof_uint16_t*)&ft_data);
                             dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_data, sizeof(ft_data) / sizeof(dtof_uint16_t));
