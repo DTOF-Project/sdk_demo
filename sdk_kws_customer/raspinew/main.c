@@ -26,6 +26,7 @@
 #include "raspinew/dtof_customer.h"
 // #include "stm32/customer/dtof_customer.h"
 // #include "stm32/dev/dtof_hal.c"
+#include "dtof_interrupt_handler.h"
 
 
 #define CMD_BUFFER_SIZE 256
@@ -148,8 +149,9 @@ void main_cmd_loop(int serial){
     printf("Start loop.\n");
     printf("=> wait for cmd...\n");
     while(1) {
+        rpi_gpio_debug_set_status(1);
         int received = rpi_serial_receive(serial, cmd_buffer, sizeof(cmd_buffer));
-
+        rpi_gpio_debug_set_status(0);
         if (received > 0) {
             // 输出接收到的命令
 #ifdef DEBUG_LOG_FLAG
@@ -373,14 +375,25 @@ void main_cmd_loop(int serial){
         }
 
         // on_loop_step_done 每次循环执行
-        if (is_init == DTOF_TRUE)
-        {
+        // if (is_init == DTOF_TRUE)
+        // {
             // 检查是否有中断触发
-            ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
-        }
+            // if (dtof_get_interrupt_flag() == DTOF_TRUE){
+            //     rpi_gpio_debug_set_status(1);
+            //     dtof_set_interrupt_flag(DTOF_FALSE);
+            //     rpi_gpio_debug_set_status(0);
+            // }
+            
+            // ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
+            
+        // }
         
         if (is_new_flag == DTOF_TRUE)
+        // if (dtof_get_interrupt_flag() == DTOF_TRUE)
         {
+            // rpi_gpio_debug_set_status(1);
+            dtof_set_interrupt_flag(DTOF_FALSE);
+            // rpi_gpio_debug_set_status(0);
             if (debug_flag == DTOF_TRUE)
             {
                 if (frame_cnt_flag == DTOF_TRUE)
@@ -419,7 +432,8 @@ void main_cmd_loop(int serial){
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
-        }      
+        } 
+        // rpi_gpio_debug_set_status(0);     
         PASS:
         {
             
@@ -430,13 +444,19 @@ void main_cmd_loop(int serial){
 
 
 int main() {
-    // TODO: 编译前 需要先查一下当前的 arm 是 32 还是 64的，然后将makefile中的 lds 做修改，指定为是 64的 或 32的
     int ret;
     extern int rpi_gpio_init(void);
     printf("rpi_gpio_init...\n");
     ret = rpi_gpio_init();
     if(ret){
         printf("Failed to init rpi gpio");
+        return 1;
+    }
+
+    ret = dtof_interrupt_handler_start();
+    if (ret != DTOF_HANDLER_OK) {
+        printf("DTOF 中断处理线程创建失败: %d\n", ret);
+        signal_manager_notify_exit();
         return 1;
     }
 

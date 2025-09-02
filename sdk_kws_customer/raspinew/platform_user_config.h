@@ -11,6 +11,7 @@
 #include "sdk/inc/dtof_log.h"
 // GPIO 配置
 #define GPIO_CHIP_NAME      "gpiochip0"  // GPIO 控制器名称
+#define GPIO_DEBUG_LINE     7            // DEBUG引脚号，使用 GPIO7 用于统计 代码的 cost
 #define GPIO_INTR_LINE     14            // 中断引脚号，使用 GPIO14
 #define GPIO_RESET_LINE    15            // 复位引脚号，使用 GPIO15
 

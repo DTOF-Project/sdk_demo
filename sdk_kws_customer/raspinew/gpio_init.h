@@ -16,6 +16,11 @@ void rpi_gpio_cleanup(void);
  * @param enable true:使能中断 false:禁用中断
  * @return 0:成功 <0:失败
  */
+
 int rpi_gpio_interrupt_enable(bool enable);
 
+#define DTOF_DEBUG_GPIO_INIT
+#ifdef DTOF_DEBUG_GPIO_INIT
+void rpi_gpio_debug_set_status(int status);
+#endif
 #endif /* GPIO_INIT_H */

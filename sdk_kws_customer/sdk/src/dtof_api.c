@@ -67,8 +67,8 @@ DTOF_RET dtof_set_xtalk_data(dtof_uint8_t device_id, dtof_uint16_t* xtalk_data)
     }
 
     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-
     DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1), "write ram start failed\n");
+
     DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0xFF, xtalk_data_set, DTOF_SET_XTALK_DATA_SIZE), "write xtalk data failed");
 
     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");

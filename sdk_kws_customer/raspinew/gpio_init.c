@@ -6,9 +6,12 @@
 #include "gpio_init.h"
 #include "platform_user_config.h"
 
+
 // 全局变量定义
 struct gpiod_line *intr_line = NULL;
 struct gpiod_chip *chip = NULL;
+
+struct gpiod_line *debug_line = NULL;
 
 DTOF_RET rpi_gpio_init(void) {
     struct gpiod_line *line;
@@ -50,6 +53,29 @@ DTOF_RET rpi_gpio_init(void) {
     }
 
     usleep(750);
+
+#ifdef DTOF_DEBUG_GPIO_INIT 
+{
+    // 获取DEBUG 引脚
+    debug_line = gpiod_chip_get_line(chip, GPIO_DEBUG_LINE);
+    if (!debug_line) {
+        perror("无法获取 DEBUG 引脚");
+        gpiod_chip_close(chip);
+        return DTOF_FAIL;
+    }
+
+     // 配置复位引脚为输出，并初始化为低电平
+     ret = gpiod_line_request_output(debug_line, "gpio_toggle", 0);  // 0表示低电平
+     if (ret < 0) {
+         perror("无法配置复位引脚为输出");
+         gpiod_chip_close(chip);
+         return DTOF_FAIL;
+     }
+
+    // 等待一段时间，模拟操作
+    usleep(100);
+}
+#endif
 
     // 获取中断引脚
     intr_line = gpiod_chip_get_line(chip, GPIO_INTR_LINE);
@@ -102,9 +128,27 @@ void rpi_gpio_cleanup(void) {
         gpiod_line_release(intr_line);
         intr_line = NULL;
     }
+#ifdef DTOF_DEBUG_GPIO_INIT
+{
+    if (debug_line) {
+        // 确保在清理前禁用中断
+        rpi_gpio_interrupt_enable(false);
+        gpiod_line_release(debug_line);
+        debug_line = NULL;
+    }
+}
+#endif
 
     if (chip) {
         gpiod_chip_close(chip);
         chip = NULL;
     }
 }
+
+#ifdef DTOF_DEBUG_GPIO_INIT
+void rpi_gpio_debug_set_status(int status){
+    gpiod_line_set_value(debug_line, status);
+    return ;
+}
+
+#endif

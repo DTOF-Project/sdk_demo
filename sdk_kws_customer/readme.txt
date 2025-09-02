@@ -23,11 +23,11 @@ Record
     - "p": 输出chip uuid, distance offset, xtalk data
     - "cal": 输出 distance_offset
     - "clear": 清除flash（已弃用，仅在stm32平台上有用）
-    - "x": 写入串扰数据并原样输出ram
+    - "x": 写入串扰数据并原样输出ram，读出当前ram长度的 hex， 用于check 升级的 code是否正确
     - "v": 输出版本信息
     - "regtest": 测试寄存器读写api
     - "filetest": 测试文件读写api（存取 distance offset 和 xtalk data ）
-    - "u,<version_name>": 更新当前程序，（退出c程序，调用python脚本）
+    - "u,<version_name>": 更新当前程序，（退出c程序，调用python脚本） - 新增
     - "q": 退出命令循环
 3. 注意：必须在执行c程序的目录下放置路径为 "script/update.py" 的py脚本文件，否则"u,<version_name>"命令将报错
 4. 修改"script/update.py"中的 HOST 和 SAVE_PATH 变量来修改下载url和保存路径，可以使用{version_name}字符串填入"u,<version_name>"命令的version_name参数
