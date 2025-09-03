@@ -184,12 +184,28 @@ void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words
 }
 
 #define FT_DATA_NUM (sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t))
-DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
+DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
 {
     uint64_t ft_data64[FT_DATA_NUM];
     stm32_flash_read_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
 
-    printf("read xtalk data: ");
+    *is_legal_data = DTOF_FALSE;
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
+    {
+        if (ft_data64[i] != 0xFFFFFFFFFFFFFFFF)
+        {
+            *is_legal_data = DTOF_TRUE;
+            break;
+        }
+    }
+
+    if (*is_legal_data == DTOF_FALSE)
+    {
+        printf("ft data is illegal, all 0xFF\n");
+        return DTOF_RET_SUCCESS;
+    }
+
+    printf("read ft data: ");
     for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
         *(ft_data+i) = (dtof_uint16_t)ft_data64[i];

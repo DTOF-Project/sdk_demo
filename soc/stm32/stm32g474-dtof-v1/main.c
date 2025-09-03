@@ -231,7 +231,7 @@ int main(void)
                 }
                 else if (strncmp(uart_buf, "rb,", 3) == 0)
                 {
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
                     int reg_addr, reg_num;
                     dtof_uint16_t reg_max[255];
                     if (sscanf(uart_buf, "rb,%d,%d", &reg_addr, &reg_num) == 2)
@@ -244,7 +244,7 @@ int main(void)
                         }
                         printf("\n");
                     }
-                    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                    DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                 }
                 else if (strncmp(uart_buf, "w,", 2) == 0)
                 {
@@ -268,9 +268,9 @@ int main(void)
                         printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
                     }
                     printf("\n");
-                    dtof_ft_data_t ft_data_read;
-                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t));
-                    dtof_set_ft_data((dtof_uint16_t*)&ft_data_read);
+                    // dtof_ft_data_t ft_data_read;
+                    // dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t));
+                    // dtof_set_ft_data((dtof_uint16_t*)&ft_data_read);
 
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
@@ -285,17 +285,17 @@ int main(void)
 
                     if (sscanf(uart_buf, "ft,%hu,%hu", &otp_ref_spad_mask, &distance) == 2)
                     {
-                        dtof_calibrate_data_ft_t cal_data;
-                        dtof_ft_data_t ft_data;
-                    #ifdef DTOF_FT_CALIBRATE_REFSPAD
-                        cal_data.ref_spad_cal.otp_ref_spad_mask = otp_ref_spad_mask;
-                    #endif
-                    #ifdef DTOF_FT_CALIBRATE_B
-                        cal_data.kb_data.far_distance = distance;
-                    #endif
-                        DTOF_RET ret = dtof_do_ft_calibration(&cal_data, &ft_data, is_to_sky_flag);
+                        DTOF_RET ret = dtof_do_ft_calibration(otp_ref_spad_mask, distance, is_to_sky_flag);
                         if (ret == DTOF_RET_SUCCESS) {
+                            dtof_ft_data_t ft_data;
+                            dtof_bool_t is_legal_data = DTOF_FALSE;
+                            dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
                             printf("FT success:\n");
+                            if (is_legal_data != DTOF_TRUE)
+                            {
+                                printf("ft data is illegal\n");
+                                continue;
+                            }
                             #ifdef DTOF_FT_CALIBRATE_BINOFFSET
                             printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
                             #endif
@@ -304,18 +304,18 @@ int main(void)
                             #endif
                             #ifdef DTOF_FT_CALIBRATE_CG
                             printf("cg_reg: ");
-                            for (int i = 0; i < DTOF_AC_NUM; i++)
+                            dtof_uint16_t cg_reg;
+                            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
                             {
-                                printf("%u, ", cal_data.cross_talk_data.next_ac[i]);
+                                cg_reg = ft_data.cg_data[i * 2 + 1] * 256 + ft_data.cg_data[i * 2];
+                                printf("%u, ", cg_reg);
                             }
-                            printf("%u\n", cal_data.cross_talk_data.next_dc);
+                            printf("\n");
                             #endif
                             #ifdef DTOF_FT_CALIBRATE_B
                             printf("distance = %u, distance_k=%.2f, distance_b=%.2f\n", cal_data.kb_data.far_distance, cal_data.kb_data.k, cal_data.kb_data.b);
                             #endif
 
-                            dtof_set_ft_data((dtof_uint16_t*)&ft_data);
-                            dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_data, sizeof(ft_data) / sizeof(dtof_uint16_t));
                         }
                         else{
                             printf("ft calibration failed\n");
@@ -327,6 +327,12 @@ int main(void)
                     DTOF_LOG("soc version: %s\n", SOC_VERSION_STRING);
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
                     DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
+                }
+                else if (strcmp(uart_buf, "test") == 0)
+                {
+                    DTOF_LOG("enter test mode\n");
+                    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "set mcu sleep failed\n");
                 }
                 else
                 {

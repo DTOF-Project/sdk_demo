@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "dtof_api.h": "c",
+        "dtof_calibration_ft.h": "c",
+        "dtof_common.h": "c",
+        "dtof_driver.h": "c",
+        "dtof_log.h": "c",
+        "soc_version.h": "c",
+        "dtof_version.h": "c"
+    }
+}
