@@ -201,17 +201,14 @@ DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, 
 
     if (*is_legal_data == DTOF_FALSE)
     {
-        printf("ft data is illegal, all 0xFF\n");
         return DTOF_RET_SUCCESS;
     }
 
-    printf("read ft data: ");
     for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
         *(ft_data+i) = (dtof_uint16_t)ft_data64[i];
-        printf("%d, ", ft_data[i]);
     }
-    printf("\n");
+
     return DTOF_RET_SUCCESS;
 }
 
