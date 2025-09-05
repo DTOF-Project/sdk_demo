@@ -4,9 +4,7 @@ CC = gcc
 CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
-#LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,soc/raspberry_pi/arm64-64.lds
-LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm64-64.lds
-# LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm32-32.lds
+LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm32-32.lds
 
 # 目录设置
 BUILD_DIR = Build
