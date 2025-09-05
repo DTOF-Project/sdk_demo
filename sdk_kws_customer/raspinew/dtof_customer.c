@@ -13,6 +13,13 @@
 
 extern device_driver_ops_t device_iic_driver_ops;
 
+static void dtof_convert_endian(uint16_t *data, uint16_t len)
+{
+    for (uint16_t i = 0; i < len; i++) {
+        data[i] = DTOF_SWAP16(data[i]);
+    }
+}
+
 DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len) {
 
 #ifdef DEBUG_LOG_FLAG
@@ -20,9 +27,8 @@ DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg
 #endif
 
     // 主机uint16 -> 从机大端序uint8
-    uint8_t *input_data_p = reg_data_p;
-    DTOF_HOST_TO_BE16(input_data_p, reg_data_p);
-    // DTOF_HOST_TO_LE16(input_data_p, reg_data_p);
+    // TODO： 因为目前树莓派上只有 iic 的接口，所以 先不判断是什么连接方式，直接先转大小端
+    dtof_convert_endian(reg_data_p, len);
 
 #ifdef DEBUG_LOG_FLAG
     // 大端序
@@ -32,7 +38,10 @@ DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg
 #endif
 
     // 调用底层写函数
-    int ret = device_iic_driver_ops.write_block(device_id, reg_addr, input_data_p, len);
+    int ret = device_iic_driver_ops.write_block(device_id, reg_addr, (uint8_t *)reg_data_p, len);
+
+    // 写完转回
+    dtof_convert_endian(reg_data_p, len);
 
     if (ret == DTOF_RET_ERROR) {
         perror("dtof_reg_burst_write() WRITE ERROR");
@@ -60,10 +69,8 @@ DTOF_RET dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_
 // #endif
 
     // 从机大端序uint8 -> 主机uint16
-    for (uint16_t i = 0; i < len; i++) {
-        reg_data_p[i] = DTOF_SWAP16(reg_data_p[i]);
-        // reg_data_p[i] = DTOF_BE16_TO_HOST(reg_data_p[i]);
-        // reg_data_p[i] = DTOF_LE16_TO_HOST(reg_data_p[i]);
+    if (ret == DTOF_RET_SUCCESS){
+        dtof_convert_endian(reg_data_p, len);
     }
 
 #ifdef DEBUG_LOG_FLAG

@@ -217,6 +217,9 @@ void main_cmd_loop(int serial){
                 
                 dtof_reg_burst_read(device_id, reg_addr, &reg_value, 1);
                 DTOF_LOG("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                rpi_serial_printf(serial,
+                "reg read 0x%x: 0x%4x\n", reg_addr, reg_value
+            );
             }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
             {
@@ -229,10 +232,18 @@ void main_cmd_loop(int serial){
                 {
                     dtof_reg_burst_read(device_id, reg_addr, reg_max, reg_num);
                     DTOF_LOG("burst reg read 0x%04x:\n", reg_addr);
+                    
                     for (int i = 0; i < reg_num; i++)
                     {
+                        rpi_serial_printf(serial,
+                            "0x%x, ", reg_max[i]
+                        );
                         DTOF_LOG("%d, ", reg_max[i]);
+                        
                     }
+                    rpi_serial_printf(serial,
+                            "\n"
+                        );
                     DTOF_LOG("burst reg read 0x%04x end.\n", reg_addr);
                 }
                 DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
@@ -326,6 +337,13 @@ void main_cmd_loop(int serial){
                 DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
                 // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
             }
+            else if (strcmp(cmd_buffer, "rst") == 0)
+            {
+                // 输出版本信息
+                DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
+                DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
+                // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
+            }
 #endif
             else if (strcmp(cmd_buffer, "regtest") == 0) {
                 // 测试寄存器读写api
@@ -335,6 +353,48 @@ void main_cmd_loop(int serial){
                 // 测试文件读写api
                 file_io_test(0x0a);
             }
+            else if (strcmp(cmd_buffer, "tt") == 0) {
+                // 测试文件读写api
+                uint16_t ram_start = 0x2400;
+                uint16_t test_ram[6] = {0x1,0x2,0x3,0x4,0x5,0x6};
+                uint16_t read_ram[6] = {0};
+                uint16_t check_ = 0;
+                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+
+                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1), "write ram start failed\n");
+                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFF, &test_ram, 6), "write ram start failed\n");
+
+                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xFE, &check_, 1), "write xtalk data failed");
+
+                printf("check fe should be 0x2400 %x\n",check_);
+                ram_start = 0x2400;
+                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1), "write ram start failed\n");
+                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0XFf, &read_ram, 6), "write ram start failed\n");
+                printf("read ram:\n");
+                for (int i =0; i < 6; i++){
+                    printf("%x, ",read_ram[i]);
+                    
+                }
+                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xFE, &check_, 1), "write xtalk data failed");
+                
+                printf("check fe should be 0x2400 %x\n",check_);
+
+                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+            }
+            else if (strcmp(cmd_buffer, "sleep") == 0) {
+                // 测试文件读写api
+                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                
+            }
+            else if (strcmp(cmd_buffer, "wake") == 0) {
+                // 测试文件读写api
+                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "set mcu sleep failed\n");
+                
+            }
+
+            
+
+
             else if (strncmp(cmd_buffer, "u,", 2) == 0) {
                 // 更新当前程序，（退出c程序，调用python脚本）
                 char version_name[256];
