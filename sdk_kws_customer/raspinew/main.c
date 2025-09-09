@@ -145,8 +145,6 @@ void main_cmd_loop(int serial){
     dtof_bool_t frame_cnt_flag = DTOF_FALSE;
     int32_t frame_cnt = 0;
 
-    printf("Start loop.\n");
-    printf("=> wait for cmd...\n");
     while(1) {
         int received = rpi_serial_receive(serial, cmd_buffer, sizeof(cmd_buffer));
 
@@ -161,14 +159,15 @@ void main_cmd_loop(int serial){
                 if (cmd_buffer[i] == 0) break;
             }
             printf("=> END\n");
-#endif
+
             printf("=> receive cmd: %s\n", cmd_buffer);
+#endif
 
             // 解析命令并执行
             if (strcmp(cmd_buffer, "echo") == 0) {
                 // 复读串口发送的echo
                 printf("Receive command: %s\n", cmd_buffer);
-                rpi_serial_send(serial, cmd_buffer, received);
+                // rpi_serial_send(serial, cmd_buffer, received);
             }
 #ifdef COMPILE_I2C_CMDS
             else if (strcmp(cmd_buffer, "s") == 0)
@@ -217,9 +216,9 @@ void main_cmd_loop(int serial){
                 
                 dtof_reg_burst_read(device_id, reg_addr, &reg_value, 1);
                 DTOF_LOG("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
-                rpi_serial_printf(serial,
-                "reg read 0x%x: 0x%4x\n", reg_addr, reg_value
-            );
+                // rpi_serial_printf(serial,
+                // "reg read 0x%x: 0x%4x\n", reg_addr, reg_value
+                // );
             }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
             {
@@ -235,15 +234,9 @@ void main_cmd_loop(int serial){
                     
                     for (int i = 0; i < reg_num; i++)
                     {
-                        rpi_serial_printf(serial,
-                            "0x%x, ", reg_max[i]
-                        );
                         DTOF_LOG("%d, ", reg_max[i]);
                         
                     }
-                    rpi_serial_printf(serial,
-                            "\n"
-                        );
                     DTOF_LOG("burst reg read 0x%04x end.\n", reg_addr);
                 }
                 DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
@@ -355,31 +348,13 @@ void main_cmd_loop(int serial){
             }
             else if (strcmp(cmd_buffer, "tt") == 0) {
                 // 测试文件读写api
-                uint16_t ram_start = 0x2400;
-                uint16_t test_ram[6] = {0x1,0x2,0x3,0x4,0x5,0x6};
-                uint16_t read_ram[6] = {0};
-                uint16_t check_ = 0;
-                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-
-                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1), "write ram start failed\n");
-                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFF, &test_ram, 6), "write ram start failed\n");
-
-                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xFE, &check_, 1), "write xtalk data failed");
-
-                printf("check fe should be 0x2400 %x\n",check_);
-                ram_start = 0x2400;
-                DTOF_CHECK_RET(dtof_reg_burst_write(device_id, 0XFE, &ram_start, 1), "write ram start failed\n");
-                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0XFf, &read_ram, 6), "write ram start failed\n");
-                printf("read ram:\n");
-                for (int i =0; i < 6; i++){
-                    printf("%x, ",read_ram[i]);
-                    
-                }
-                DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xFE, &check_, 1), "write xtalk data failed");
                 
-                printf("check fe should be 0x2400 %x\n",check_);
-
-                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+                DTOF_LOG("DTOF_LOG\n");
+                printf("printf\n");
+                rpi_serial_printf(serial,
+                            "rpi_serial_printf\n"
+                        );
+                
             }
             else if (strcmp(cmd_buffer, "sleep") == 0) {
                 // 测试文件读写api
@@ -421,7 +396,7 @@ void main_cmd_loop(int serial){
             }
             else if (strcmp(cmd_buffer, "q") == 0) {
                 // 退出命令循环
-                printf("Quit.\n");
+                // printf("Quit.\n");
                 break;
             }
             else {
@@ -429,7 +404,6 @@ void main_cmd_loop(int serial){
             }
 
             // on_cmd_done 每次执行完命令执行
-            printf("=> wait for cmd...\n");
         }
 
         // on_loop_step_done 每次循环执行
@@ -456,7 +430,6 @@ void main_cmd_loop(int serial){
                         frame_cnt = 0;
                         dtof_stop_distance_measure(device_id);
                         DTOF_LOG("frame_cnt == 200, stopped.");
-                        printf("=> wait for cmd...\n");
                     }
                 }
                 
@@ -485,7 +458,6 @@ void main_cmd_loop(int serial){
             
         }  
     }
-    printf("Exit loop.\n");
 }
 
 
@@ -493,7 +465,7 @@ int main() {
     // TODO: 编译前 需要先查一下当前的 arm 是 32 还是 64的，然后将makefile中的 lds 做修改，指定为是 64的 或 32的
     int ret;
     extern int rpi_gpio_init(void);
-    printf("rpi_gpio_init...\n");
+    
     ret = rpi_gpio_init();
     if(ret){
         printf("Failed to init rpi gpio");
@@ -504,6 +476,7 @@ int main() {
 
     // 初始化串口
     int serial = rpi_serial_init(SERIAL_PORT);
+    printf("serial init...\n");
 
     // 主循环接收命令
     main_cmd_loop(serial);
@@ -511,6 +484,6 @@ int main() {
     // 清理资源
     rpi_gpio_cleanup();
 
-    printf("=> Safely exited.\n");
+    // printf("=> Safely exited.\n");
     return 0;
 }
