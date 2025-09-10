@@ -213,6 +213,7 @@ int main(void)
                 }
                 else if (strcmp(uart_buf, "t") == 0)
                 {
+                STOP_DISTANCE_MEASURE:
                     dtof_stop_distance_measure();
                     if (debug_flag == DTOF_TRUE)
                     {
@@ -408,12 +409,6 @@ int main(void)
                     {
                         goto PASS;
                     }
-                    if (frame_cnt == 200)
-                    {
-                        debug_flag = DTOF_FALSE;
-                        frame_cnt = 0;
-                        dtof_stop_distance_measure();
-                    }
                 }
                 if (debug_flag == DTOF_TRUE)
                 {
@@ -436,6 +431,17 @@ int main(void)
                 {
                     dtof_io_interaction(0x30, 0x01);
                     DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                }
+
+                if (frame_cnt_flag == DTOF_TRUE)
+                {
+                    if (frame_cnt == 200)
+                    {
+                        debug_flag = DTOF_FALSE;
+                        frame_cnt_flag = DTOF_FALSE;
+                        frame_cnt = 0;
+                        goto STOP_DISTANCE_MEASURE;
+                    }
                 }
             }
             printf("%d, %d, %d, %d, %.6f, 1\n",
