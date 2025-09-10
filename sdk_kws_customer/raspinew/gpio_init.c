@@ -10,6 +10,12 @@
 struct gpiod_line *intr_line = NULL;
 struct gpiod_chip *chip = NULL;
 
+// #define GPIO_DEBUG 
+#ifdef GPIO_DEBUG
+#define GPIO_DEBUG_LINE 21
+struct gpiod_line *debug_line = NULL;
+#endif
+
 DTOF_RET rpi_gpio_init(void) {
     struct gpiod_line *line;
     int ret;
@@ -50,6 +56,22 @@ DTOF_RET rpi_gpio_init(void) {
     }
 
     usleep(750);
+
+    #ifdef GPIO_DEBUG
+    debug_line = gpiod_chip_get_line(chip, GPIO_DEBUG_LINE);
+    if (!debug_line) {
+        perror("无法获取复位引脚");
+        gpiod_chip_close(debug_line);
+        return DTOF_FAIL;
+    }
+
+     // 配置复位引脚为输出，并初始化为低电平
+     ret = gpiod_line_request_output(debug_line, "gpio debug", 0);  // 0表示低电平
+     if (ret < 0) {
+         return DTOF_FAIL;
+     }
+
+    #endif
 
     // 获取中断引脚
     intr_line = gpiod_chip_get_line(chip, GPIO_INTR_LINE);
@@ -108,3 +130,9 @@ void rpi_gpio_cleanup(void) {
         chip = NULL;
     }
 }
+
+#ifdef GPIO_DEBUG
+void rpi_gpio_debug_up_down(int status){
+    gpiod_line_set_value(debug_line, status);  // 1表示高电平
+}
+#endif

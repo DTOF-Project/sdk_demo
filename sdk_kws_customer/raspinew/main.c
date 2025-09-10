@@ -410,11 +410,14 @@ void main_cmd_loop(int serial){
         if (is_init == DTOF_TRUE)
         {
             // 检查是否有中断触发
+            
             ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
+            
         }
         
         if (is_new_flag == DTOF_TRUE)
-        {
+        // {   rpi_gpio_debug_up_down(1);
+            
             if (debug_flag == DTOF_TRUE)
             {
                 if (frame_cnt_flag == DTOF_TRUE)
@@ -452,6 +455,7 @@ void main_cmd_loop(int serial){
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
+            // rpi_gpio_debug_up_down(0);
         }      
         PASS:
         {

@@ -17,5 +17,8 @@ void rpi_gpio_cleanup(void);
  * @return 0:成功 <0:失败
  */
 int rpi_gpio_interrupt_enable(bool enable);
+#ifdef GPIO_DEBUG
+void rpi_gpio_debug_up_down(int status);
+#endif
 
 #endif /* GPIO_INIT_H */
