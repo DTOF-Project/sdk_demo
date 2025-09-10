@@ -29,6 +29,10 @@ extern "C" {
 #define DTOF_READ_RAM_START_REG_ADDR 0xFF
 #define XTALK_DATA_SIZE 18
 
+#define DTOF_REG251 251
+#define DTOF_REG254 254
+#define DTOF_REG255 255
+
 // 系统常量定义
 #define DTOF_MAX_RETRY_COUNT        3
 #define DTOF_INVALID_REG_VALUE      0xDEAF

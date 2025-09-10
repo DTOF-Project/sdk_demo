@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "dtof_base_type.h": "c"
+        "dtof_base_type.h": "c",
+        "*.ram": "c",
+        "platform_user_config.h": "c",
+        "gpio_init.h": "c",
+        "dtof_common.h": "c",
+        "dtof_customer.h": "c",
+        "dtof_frame_control.h": "c"
     }
 }

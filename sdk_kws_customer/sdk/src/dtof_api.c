@@ -722,3 +722,74 @@ dtof_uint16_t dtof_get_chip_version(dtof_uint8_t device_id)
     dtof_uint16_t sdk_version = dtof_distance_mode_data[DTOF_DISTANCE_MODE_CODE_SIZE-2];
     return sdk_version;
 }
+
+
+
+// debug use
+
+
+
+#define OTP_ENABLE 0x0020
+#define OTP_DISABLE 0x0000
+#define MVPP_AND_PPROG_ENABLE 0x0031     // after otp enable
+#define PWE_ENABLE 0x0033                // after otp, mvpp, pprog enable and write PA PDIN
+#define PWE_DISABLE 0x0031               // first disable pwe after write otp
+#define OTP_MVPP_AND_PPROG_DIABLE 0x0000 // disable otp, mvpp, pprog after disable pwe
+#define INNER_OTP_START_ADDR 0x0800
+static void otp_read_enable(dtof_uint8_t device_id, dtof_bool_t status)
+{
+    dtof_uint16_t otp_temp;
+    dtof_uint16_t cfg = 0x323;
+    if (status == DTOF_FALSE)
+    {
+        otp_temp = OTP_DISABLE;
+        cfg = 0x323;
+        dtof_reg_burst_write(device_id, 3, &cfg, 1);
+        dtof_reg_burst_write(device_id, DTOF_REG251, &otp_temp, 1);
+    }
+    else
+    {
+        // enable
+        otp_temp = OTP_ENABLE;
+        cfg = 0x32b;
+        dtof_reg_burst_write(device_id, 3, &cfg, 1);
+        dtof_reg_burst_write(device_id, DTOF_REG251, &otp_temp, 1);
+    }
+    return;
+}
+
+// use dtof_uint16_t to get buf
+DTOF_RET dtof_read_otp(dtof_uint8_t device_id, dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len){
+    DTOF_RET ret;
+    dtof_uint16_t temp;
+    temp = INNER_OTP_START_ADDR + offset;
+    otp_read_enable(device_id, DTOF_TRUE);
+    ret = dtof_reg_burst_write(device_id, DTOF_REG254, &temp, 1);
+    if(ret != DTOF_RET_SUCCESS)
+    {
+        return ret;
+    }
+    for (dtof_uint16_t i = 0; i < len; i++)
+    {
+        ret = dtof_reg_burst_read(device_id, DTOF_REG255, &temp, 1);
+        if(ret != DTOF_RET_SUCCESS)
+        {
+            return ret;
+        }
+        *(buf + i) =  temp&0xff;
+    }
+    temp = 0x0000;
+    ret = dtof_reg_burst_write(device_id, DTOF_REG254, &temp, 1);
+    otp_read_enable(device_id, DTOF_FALSE);
+	return ret;
+}
+
+DTOF_RET dtof_get_otp(dtof_uint8_t device_id, dtof_uint8_t *otp_list){
+    DTOF_RET ret;
+
+    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    ret = dtof_read_otp(device_id, 0, otp_list, 128);
+    DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+    return ret;
+
+}

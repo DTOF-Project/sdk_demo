@@ -131,6 +131,10 @@ const char* dtof_get_sdk_version(void);
 void dtof_init_all_device_info(void);
 dtof_uint16_t dtof_get_chip_version(dtof_uint8_t device_id);
 
+//use to debug
+DTOF_RET dtof_get_otp(dtof_uint8_t device_id, dtof_uint8_t *otp_list);
+
+
 #ifdef __cplusplus
 }
 #endif

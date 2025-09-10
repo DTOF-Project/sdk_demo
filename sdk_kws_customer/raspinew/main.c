@@ -200,6 +200,7 @@ void main_cmd_loop(int serial){
             {
                 // 停止测距
                 dtof_stop_distance_measure(device_id);
+                rpi_serial_printf(serial, "stop done");
             }
             else if (strncmp(cmd_buffer, "c,", 2) == 0)
             {
@@ -217,6 +218,7 @@ void main_cmd_loop(int serial){
                 
                 dtof_reg_burst_read(device_id, reg_addr, &reg_value, 1);
                 DTOF_LOG("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                rpi_serial_printf(serial, "reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
             }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
             {
@@ -331,9 +333,21 @@ void main_cmd_loop(int serial){
                 // 测试寄存器读写api
                 dtof_reg_test(device_id);
             }
+            
             else if (strcmp(cmd_buffer, "filetest") == 0) {
                 // 测试文件读写api
                 file_io_test(0x0a);
+            }
+            else if (strcmp(cmd_buffer, "ro") == 0) {
+                // 测试寄存器读写api
+                dtof_uint8_t otp_list[128] = {0};
+                dtof_get_otp(device_id, otp_list);
+                for (int i =0; i<128; i++){
+                    rpi_serial_printf(serial,"%d,",otp_list[i]);
+
+                }
+                rpi_serial_printf(serial,"\n");
+
             }
             else if (strncmp(cmd_buffer, "u,", 2) == 0) {
                 // 更新当前程序，（退出c程序，调用python脚本）
