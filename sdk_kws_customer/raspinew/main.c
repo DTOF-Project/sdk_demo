@@ -416,7 +416,8 @@ void main_cmd_loop(int serial){
         }
         
         if (is_new_flag == DTOF_TRUE)
-        // {   rpi_gpio_debug_up_down(1);
+        {   
+            // rpi_gpio_debug_up_down(1);
             
             if (debug_flag == DTOF_TRUE)
             {
