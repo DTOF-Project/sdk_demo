@@ -168,7 +168,7 @@ void main_cmd_loop(int serial){
             // 解析命令并执行
             if (strcmp(cmd_buffer, "echo") == 0) {
                 // 复读串口发送的echo
-                printf("Receive command: %s\n", cmd_buffer);
+                rpi_serial_printf(serial,"Receive command: %s\n", cmd_buffer);
                 // rpi_serial_send(serial, cmd_buffer, received);
             }
 #ifdef COMPILE_I2C_CMDS
@@ -206,7 +206,7 @@ void main_cmd_loop(int serial){
             {
                 // "c,<value:int>", 设置b偏移为<value>
                 int value = atoi(&cmd_buffer[2]);
-                DTOF_LOG("set b offset: %d\n", value);
+                rpi_serial_printf(serial,"set b offset: %d\n", value);
                 // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // TODO
                 dtof_set_distance_offset_to_flash(device_id, value);
             }
@@ -217,7 +217,7 @@ void main_cmd_loop(int serial){
                 uint16_t reg_value;
                 
                 dtof_reg_burst_read(device_id, reg_addr, &reg_value, 1);
-                DTOF_LOG("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                rpi_serial_printf(serial, "reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
                 // rpi_serial_printf(serial,
                 // "reg read 0x%x: 0x%4x\n", reg_addr, reg_value
                 // );
@@ -232,14 +232,14 @@ void main_cmd_loop(int serial){
                 if (sscanf(cmd_buffer, "rb,%d,%d", &reg_addr, &reg_num) == 2)
                 {
                     dtof_reg_burst_read(device_id, reg_addr, reg_max, reg_num);
-                    DTOF_LOG("burst reg read 0x%04x:\n", reg_addr);
+                    rpi_serial_printf(serial,"burst reg read 0x%04x:\n", reg_addr);
                     
                     for (int i = 0; i < reg_num; i++)
                     {
-                        DTOF_LOG("%d, ", reg_max[i]);
+                        rpi_serial_printf(serial,"%d, ", reg_max[i]);
                         
                     }
-                    DTOF_LOG("burst reg read 0x%04x end.\n", reg_addr);
+                    rpi_serial_printf(serial,"burst reg read 0x%04x end.\n", reg_addr);
                 }
                 DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
             }
@@ -251,7 +251,7 @@ void main_cmd_loop(int serial){
                 {   
                     dtof_reg_burst_write(device_id, reg_addr, &reg_value, 1);
                     // dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 cmd_buffer 中解析的值
-                    DTOF_LOG("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                    rpi_serial_printf(serial,"reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
                 }
             }
             else if (strcmp(cmd_buffer, "p") == 0)
@@ -261,21 +261,21 @@ void main_cmd_loop(int serial){
                 dtof_int32_t read_distance_offset = 0;
                 dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
                 DTOF_CHECK_WARN(dtof_get_uuid(device_id, chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
-                printf("chip uuid: ");
+                rpi_serial_printf(serial,"chip uuid: ");
                 for (int i = 0; i < DTOF_UUID_LENGTH; i++)
                 {
-                    printf("%d, ", chip_uuid[i]); // TODO
+                    rpi_serial_printf(serial,"%d, ", chip_uuid[i]); // TODO
                 }
-                printf("\n");
+                rpi_serial_printf(serial,"\n");
                 dtof_get_distance_offset_from_flash(device_id, &read_distance_offset);
-                printf("distance offset = %d\n", read_distance_offset);
+                rpi_serial_printf(serial,"distance offset = %d\n", read_distance_offset);
                 dtof_get_xtalk_data_from_flash(device_id, xtalk_data_read);
-                printf("xtalk data = ");
+                rpi_serial_printf(serial,"xtalk data = ");
                 for (int i = 0; i < XTALK_DATA_SIZE; i++)
                 {
-                    printf("%d, ", xtalk_data_read[i]);
+                    rpi_serial_printf(serial,"%d, ", xtalk_data_read[i]);
                 }
-                printf("\n");
+                rpi_serial_printf(serial,"\n");
             }
             else if (strcmp(cmd_buffer, "cal") == 0)
             {   
@@ -283,7 +283,7 @@ void main_cmd_loop(int serial){
                 // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
                 DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                 is_init = DTOF_TRUE;
-                printf("distance offset = %d\n", dtof_get_distance_offset(device_id));
+                rpi_serial_printf(serial,"distance offset = %d\n", dtof_get_distance_offset(device_id));
             }
             else if (strcmp(cmd_buffer, "clear") == 0)
             {
@@ -313,30 +313,23 @@ void main_cmd_loop(int serial){
                 DTOF_CHECK_RET(dtof_reg_burst_read(device_id, 0xff, ram_read, READ_LEN),
                                 "读取距离结果失败");
 
-                printf("ramdata\n");
+                rpi_serial_printf(serial,"ramdata\n");
                 for(int i = 0; i < READ_LEN; i++)
                 {
-                    printf("0x%04x, ", ram_read[i]);
+                    rpi_serial_printf(serial,"0x%04x, ", ram_read[i]);
                     if ((i + 1) % 16 == 0){
-                        printf("\n");
+                        rpi_serial_printf(serial,"\n");
                     }
                 }
-                printf("\n");
+                rpi_serial_printf(serial,"\n");
 
                 DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
             }
             else if (strcmp(cmd_buffer, "v") == 0)
             {
                 // 输出版本信息
-                DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
-                DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
-                // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
-            }
-            else if (strcmp(cmd_buffer, "rst") == 0)
-            {
-                // 输出版本信息
-                DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
-                DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
+                rpi_serial_printf(serial,"sdk version: %s\n",dtof_get_sdk_version());
+                rpi_serial_printf(serial,"chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version(device_id)));
                 // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
             }
 #endif
