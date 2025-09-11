@@ -145,7 +145,9 @@ int main(void)
     dtof_device_t *dev = ds_device_get();
     dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
     dtof_distance_result_t distance_result;
+    dtof_uint16_t reg80;
     dtof_bool_t is_new_flag;
+    dtof_bool_t first_new_flag = DTOF_TRUE; // polling模式下, 不取第一帧, debug模式下需要特殊处理, 因为新的bypass交互流程
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
 
@@ -172,6 +174,7 @@ int main(void)
 
     while (1)
     {
+        is_new_flag = DTOF_FALSE;
         int len = stm32_uart_read(0, &byte, 1);
 
         if (len == 1)
@@ -191,6 +194,7 @@ int main(void)
                 else if (strcmp(uart_buf, "d") == 0)
                 {
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_reg_burst_read(80, &reg80, 1);
                     dtof_start_distance_measure();
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
@@ -202,6 +206,7 @@ int main(void)
                 else if (strcmp(uart_buf, "e") == 0)
                 {
                     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_reg_burst_read(80, &reg80, 1);
                     dtof_start_distance_measure();
                     if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                     {
@@ -398,6 +403,24 @@ int main(void)
 #endif
         }
 
+#ifdef DTOF_POLLING_MODE
+        if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+        {
+            if (first_new_flag == DTOF_TRUE)
+            {
+                if (debug_flag == DTOF_TRUE)
+                {
+                    if ((reg80 != distance_result.frame_id) && (is_new_flag != DTOF_TRUE))
+                    {
+                        dtof_io_interaction(0x30, 0x01);
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                        first_new_flag = DTOF_FALSE;
+                    }
+                }
+            }
+        }
+#endif
+
         if (is_new_flag == DTOF_TRUE)
         {
             if (debug_flag == DTOF_TRUE)
@@ -407,6 +430,11 @@ int main(void)
                     frame_cnt++;
                     if (frame_cnt < 50)
                     {
+                        if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                        {
+                            dtof_io_interaction(0x30, 0x01);
+                            DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                        }
                         goto PASS;
                     }
                 }
@@ -440,6 +468,9 @@ int main(void)
                         debug_flag = DTOF_FALSE;
                         frame_cnt_flag = DTOF_FALSE;
                         frame_cnt = 0;
+                        printf("%d, %d, %d, %d, %.6f, 1\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+                        is_new_flag = DTOF_FALSE;
                         goto STOP_DISTANCE_MEASURE;
                     }
                 }
