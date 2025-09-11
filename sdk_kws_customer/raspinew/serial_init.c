@@ -103,7 +103,7 @@ int rpi_serial_printf(int serial_hd, const char *fmt, ...) {
 // 带超时和缓冲区的串口接收
 int rpi_serial_receive(const int serial_hd, char *buffer, const size_t buf_size) {
     size_t total_received = 0;
-    struct timeval timeout = {0, 4000}; // 等待0.02秒
+    struct timeval timeout = {0, 100}; // 等待0.02秒
     fd_set read_fds;
     
     FD_ZERO(&read_fds);

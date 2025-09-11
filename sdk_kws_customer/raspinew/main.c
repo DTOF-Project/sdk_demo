@@ -349,11 +349,22 @@ void main_cmd_loop(int serial){
             else if (strcmp(cmd_buffer, "tt") == 0) {
                 // 测试文件读写api
                 
-                DTOF_LOG("DTOF_LOG\n");
-                printf("printf\n");
-                rpi_serial_printf(serial,
-                            "rpi_serial_printf\n"
-                        );
+                // DTOF_LOG("DTOF_LOG\n");
+                // printf("printf\n");
+                rpi_serial_printf(serial,"start test\n");
+                DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+                uint16_t reg_value;
+
+                for (int i = 0; i<10000;i++){
+                    dtof_reg_burst_read(device_id, 0, &reg_value, 1);
+                    if (reg_value != 0x4120){
+                        rpi_serial_printf(serial,"read error value is %x\n", reg_value);
+                    }
+
+                }
+                rpi_serial_printf(serial,"end read test for 10000 times\n");
+                
+                
                 
             }
             else if (strcmp(cmd_buffer, "sleep") == 0) {
@@ -410,14 +421,16 @@ void main_cmd_loop(int serial){
         if (is_init == DTOF_TRUE)
         {
             // 检查是否有中断触发
-            
+            // rpi_gpio_debug_up_down(1);
             ret = dtof_get_distance_result(device_id, NORMAL_DISTANCE_MODE, &distance_result, &is_new_flag);
+            // rpi_gpio_debug_up_down(0);
             
         }
         
         if (is_new_flag == DTOF_TRUE)
         {   
-            // rpi_gpio_debug_up_down(1);
+            rpi_gpio_debug_up_down(1);
+
             
             if (debug_flag == DTOF_TRUE)
             {
@@ -456,7 +469,8 @@ void main_cmd_loop(int serial){
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
-            // rpi_gpio_debug_up_down(0);
+            
+            rpi_gpio_debug_up_down(0);
         }      
         PASS:
         {
