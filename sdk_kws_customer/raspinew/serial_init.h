@@ -4,6 +4,11 @@
 // 串口设备
 #define SERIAL_PORT "/dev/ttyGS0"  // 硬件串口
 
+/**
+ * 获得 singo信号 并 清除
+ */
+int get_and_clear_data_ready();
+
 // 函数声明
 /**
  * @brief 初始化串口通信

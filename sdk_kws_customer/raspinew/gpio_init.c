@@ -10,7 +10,7 @@
 struct gpiod_line *intr_line = NULL;
 struct gpiod_chip *chip = NULL;
 
-#define GPIO_DEBUG 
+// #define GPIO_DEBUG 
 #ifdef GPIO_DEBUG
 #define GPIO_DEBUG_LINE 21
 struct gpiod_line *debug_line = NULL;

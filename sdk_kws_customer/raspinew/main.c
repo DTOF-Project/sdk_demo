@@ -144,10 +144,12 @@ void main_cmd_loop(int serial){
 
     dtof_bool_t frame_cnt_flag = DTOF_FALSE;
     int32_t frame_cnt = 0;
+    int received = 0;
 
     while(1) {
-        int received = rpi_serial_receive(serial, cmd_buffer, sizeof(cmd_buffer));
-
+        if (get_and_clear_data_ready()){
+            received = rpi_serial_receive(serial, cmd_buffer, sizeof(cmd_buffer));
+        }
         if (received > 0) {
             // 输出接收到的命令
 #ifdef DEBUG_LOG_FLAG
@@ -415,6 +417,7 @@ void main_cmd_loop(int serial){
             }
 
             // on_cmd_done 每次执行完命令执行
+            received = 0;
         }
 
         // on_loop_step_done 每次循环执行
@@ -429,7 +432,7 @@ void main_cmd_loop(int serial){
         
         if (is_new_flag == DTOF_TRUE)
         {   
-            rpi_gpio_debug_up_down(1);
+            // rpi_gpio_debug_up_down(1);
 
             
             if (debug_flag == DTOF_TRUE)
@@ -470,7 +473,7 @@ void main_cmd_loop(int serial){
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame
             );
             
-            rpi_gpio_debug_up_down(0);
+            // rpi_gpio_debug_up_down(0);
         }      
         PASS:
         {
