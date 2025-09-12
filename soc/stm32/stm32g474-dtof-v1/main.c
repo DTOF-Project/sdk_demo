@@ -228,9 +228,9 @@ int main(void)
                         }
                     }
                 }
-                else if (strncmp(uart_buf, "r,", 2) == 0)
+                else if (strncmp(uart_buf, "ri,", 3) == 0)
                 {
-                    int reg_addr = atoi(&uart_buf[2]);
+                    int reg_addr = atoi(&uart_buf[3]);
                     uint16_t reg_value;
                     dtof_read_reg_running(reg_addr, &reg_value);
                     printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
@@ -252,10 +252,10 @@ int main(void)
                     }
                     DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                 }
-                else if (strncmp(uart_buf, "w,", 2) == 0)
+                else if (strncmp(uart_buf, "wi,", 3) == 0)
                 {
                     int reg_addr, reg_value;
-                    if (sscanf(uart_buf, "w,%d,%d", &reg_addr, &reg_value) == 2)
+                    if (sscanf(uart_buf, "wi,%d,%d", &reg_addr, &reg_value) == 2)
                     {
                         if (reg_addr == 300){
                             is_to_sky_flag = reg_addr;
@@ -359,11 +359,34 @@ int main(void)
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
                     DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
                 }
-                else if (strcmp(uart_buf, "test") == 0)
+                else if (strcmp(uart_buf, "init") == 0)
                 {
-                    DTOF_LOG("enter test mode\n");
-                    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-                    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "set mcu sleep failed\n");
+                    dtof_init_device_info();
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                }
+                else if (strcmp(uart_buf, "uuid") == 0)
+                {
+                    dtof_uint8_t chip_uuid_buffer[DTOF_UUID_LENGTH];
+                    DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid_buffer, DTOF_UUID_LENGTH), "get uuid failed\n");
+                    printf("chip uuid: ");
+                    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+                    {
+                        printf("%d, ", chip_uuid_buffer[i]);
+                    }
+                }
+                else if (strcmp(uart_buf, "error_code") == 0)
+                {
+                    dtof_uint32_t error_code;
+                    DTOF_CHECK_WARN(dtof_get_error_info(&error_code), "get error info failed\n");
+                    printf("error code: 0x%x\n", error_code);
+                }
+                else if (strncmp(uart_buf, "osc_cal,", 8) == 0)
+                {
+                    int osc_cal_mode;
+                    if (sscanf(uart_buf, "osc_cal,%d", &osc_cal_mode) == 1)
+                    {
+                        DTOF_CHECK_WARN(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, (osc_cal_mode << 12) | 0x0388), "dtof start failed\n");
+                    }
                 }
                 else
                 {
