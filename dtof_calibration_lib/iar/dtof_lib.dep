@@ -1,323 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>4</fileVersion>
-    <fileChecksum>1608114197</fileChecksum>
+    <fileChecksum>1612567265</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_cg.pbi</file>
-            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_log.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_confidence.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.pbd</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_hal.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_ft.__cstat.et</file>
+            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.__cstat.et</file>
+            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_api.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_confidence.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_global_config.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.pbi</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_cg.c</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.7\lib\dtof_lib.c</file>
+            <file>$PROJ_DIR$\Debug\Exe\dtof_lib.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
+            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_lib.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_common.h</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_confidence.c</file>
             <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_libc.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_ft.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
             <file>$PROJ_DIR$\Debug\Obj\dtof_confidence.pbi</file>
             <file>$PROJ_DIR$\Debug\Exe\kws_lib.out</file>
             <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.7\lib\dtof_lib.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_cg.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.h</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_ft.c</file>
             <file>$PROJ_DIR$\Debug\Obj\dtof_cal_ft.o</file>
-            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_driver.h</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_reg.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.__cstat.et</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_ft.c</file>
             <file>$PROJ_DIR$\Debug\Obj\dtof_lib.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_confidence.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.pbi</file>
+            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_driver.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_hal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
             <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.c</file>
             <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_base_type.h</file>
             <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_binoffset.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_cg.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_ft.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\dtof_cal_cg.__cstat.et</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_confidence.c</file>
             <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_hal.c</file>
-            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_lib.h</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_binoffset.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_common.h</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_confidence.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_ft.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.__cstat.et</file>
+            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_hal.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_cg.pbi</file>
             <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_cg.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_api.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_cal_binoffset.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_hal.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_global_config.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.pbd</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_confidence.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\dtof_lib.pbi</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.7\lib\dtof_lib.c</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_cg.c</file>
-            <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_hal.c</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$PROJ_DIR$\Debug\Exe\dtof_lib.a</file>
+            <file>$PROJ_DIR$\..\..\..\..\customer_sdk\sdk_kws_customer_v1.12\inc\dtof_log.h</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>IARCHIVE</name>
-                    <file> 60</file>
+                    <file> 21</file>
                 </tool>
                 <tool>
                     <name>ILINK</name>
-                    <file> 11</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_ft.c</name>
-            <outputs>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 38</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 9</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 22</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 48</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 14 4 31 23 16 55 46 13 17</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 31 46 55 13 4 16 14 17 23</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_binoffset.c</name>
-            <outputs>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 39</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 7</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_confidence.c</name>
-            <outputs>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 52</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 10</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_hal.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 47</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 6</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 43</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13 4 31 23 16 55 33 27 21 24 1 8 3 2 58 49 44 59 20 35 50</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 4 1 13 27 59 21 20 23 31 33 24 16 55 8 58 2 49 25 3 44 35 50</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_binoffset.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 42</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 39</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 7</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13 4 31 23 16 55 1 8 27 3 2 58 49 44 59 20 35 50 41 21 24</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 55 27 31 35 41 8 24 16 58 13 1 20 21 4 23 25 3 44 2 50 49 59</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 19</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 38</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 9</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13 4 31 23 16 55 14 46 1 8 27 3 2 58 49 44 59 20 35 50 41 21 24 45</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 58 45 13 31 59 20 16 4 27 1 21 55 8 49 2 14 41 24 23 46 25 3 44 35 50</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_confidence.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 5</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 52</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 10</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 14 4 31 23 16 55 46 13</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 31 46 16 13 4 55 14 23</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_cg.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 15</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 0</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 13 4 31 23 16 55 14 46 1 8 27 3 2 58 49 44 59 20 35 50 41 21 24</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 3 2 27 4 20 31 50 13 1 21 23 46 25 44 35 14 41 24 16 55 8 58 49 59</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.7\lib\dtof_lib.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 22</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 48</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 53</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 14 4 31 23 16 55 46 13 12</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 31 46 16 13 4 55 14 12 23</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_cg.c</name>
-            <outputs>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 0</file>
+                    <file> 30</file>
                 </tool>
             </outputs>
         </file>
@@ -326,13 +85,254 @@
             <outputs>
                 <tool>
                     <name>__cstat</name>
-                    <file> 6</file>
+                    <file> 34</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 43</file>
+                    <file> 3</file>
                 </tool>
             </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_cg.c</name>
+            <outputs>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 58</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.7\lib\dtof_lib.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 36</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 10</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 18</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 23 28 53 45 39 12 16 38 31</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53 16 39 38 28 12 23 31 45</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_confidence.c</name>
+            <outputs>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_ft.c</name>
+            <outputs>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 51</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 36</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 10</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 18</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 23 28 53 45 39 12 16 38 43</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53 16 12 38 28 39 23 43 45</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.12\lib\dtof_cal_binoffset.c</name>
+            <outputs>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_binoffset.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 15</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38 28 53 45 39 12 60 27 48 37 40 4 0 6 5 44 25 17 11 33 46</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 12 48 53 25 11 27 46 39 4 38 60 44 33 28 45 22 37 6 40 17 0 5</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_ft.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 32</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 51</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38 28 53 45 39 12 23 16 60 27 48 37 40 4 0 6 5 44 25 17 11 33 46 9</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 48 9 28 44 39 4 38 53 5 60 33 12 27 0 40 23 11 46 45 16 22 37 6 25 17</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_confidence.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 41</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 23 28 53 45 39 12 16 38</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 53 16 12 38 28 39 23 45</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_hal.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 1</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 34</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 3</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38 28 53 45 39 12 24 48 33 46 60 27 37 40 4 0 6 5 44 25 17</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 28 60 38 48 5 33 44 45 53 24 46 39 12 27 4 40 0 22 37 6 25 17</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\sdk_kws_customer\sdk\lib\dtof_cal_cg.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 50</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 58</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38 28 53 45 39 12 23 16 60 27 48 37 40 4 0 6 5 44 25 17 11 33 46</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 17 44 53 48 37 40 28 38 60 33 45 16 22 6 25 23 11 46 39 12 27 4 0 5</file>
+                </tool>
+            </inputs>
         </file>
         <forcedrebuild>
             <name>[MULTI_TOOL]</name>
@@ -345,32 +345,32 @@
     <configuration>
         <name>Release</name>
         <outputs>
+            <file>$PROJ_DIR$\Release\Obj\dtof_lib.pbi</file>
+            <file>$PROJ_DIR$\Release\Exe\kws_lib.a</file>
+            <file>$PROJ_DIR$\Release\Obj\dtof_lib.o</file>
+            <file>$PROJ_DIR$\Release\Exe\kws_lib.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
+            <file>$PROJ_DIR$\Release\Obj\dtof_lib.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
             <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
             <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
             <file>$PROJ_DIR$\..\customer_sdk\sdk_kws_customer_v1.8\lib\dtof_lib.c</file>
             <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
-            <file>$PROJ_DIR$\Release\Obj\dtof_lib.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\Release\Obj\dtof_lib.pbi</file>
-            <file>$PROJ_DIR$\Release\Exe\kws_lib.a</file>
-            <file>$PROJ_DIR$\Release\Obj\dtof_lib.o</file>
-            <file>$PROJ_DIR$\Release\Exe\kws_lib.out</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>IARCHIVE</name>
-                    <file> 12</file>
+                    <file> 1</file>
                 </tool>
                 <tool>
                     <name>ILINK</name>
-                    <file> 14</file>
+                    <file> 3</file>
                 </tool>
             </outputs>
         </file>
@@ -379,25 +379,25 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 13</file>
+                    <file> 2</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 9</file>
+                    <file> 6</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 11</file>
+                    <file> 0</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 2 0 7 5 3 10 8 1 4</file>
+                    <file> 7 8 14 12 10 4 5 9 11</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 7 8 3 1 0 10 2 4 5</file>
+                    <file> 14 5 10 9 8 4 7 11 12</file>
                 </tool>
             </inputs>
         </file>
