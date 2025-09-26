@@ -23,9 +23,6 @@ typedef enum {
 
 #define ENABLE_LOG
 #ifdef ENABLE_LOG
-    #define DEBUG_LOG_FLAG
-    #undef DEBUG_LOG_FLAG
-    
     #define DTOF_LOG(fmt, ...) \
         dtof_printf("[DTOF] " fmt "\n", ##__VA_ARGS__)
 
