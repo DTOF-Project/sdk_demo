@@ -1,6 +1,7 @@
 #include "inc/dtof_base_type.h"
 #include "inc/dtof_driver.h"
 #include "inc/dtof_log.h"
+#include "inc/dtof_api.h"
 #include "dtof_reg.h"
 #include "dtof_hal.h"
 
@@ -108,6 +109,39 @@ DTOF_RET dtof_dsp_fifo_read(dtof_uint16_t addr_offset, dtof_uint16_t * value_p, 
         return ret;
     }
     return ret;
+}
+
+DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len){
+    DTOF_RET ret;
+    dtof_uint16_t reg3;
+    dtof_addressREG3_t *reg3_p = (dtof_addressREG3_t *)&reg3;
+    dtof_uint16_t temp;
+    temp = 0x800 + offset;
+
+    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG3, &reg3, 1), "read reg 3 fail");
+    reg3_p->cfgDoneR = 0;
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail");
+
+    // otp_read_enable(DTOF_TRUE);
+    ret = dtof_reg_burst_write(DTOF_REG254, &temp, 1);
+    if(ret != DTOF_RET_SUCCESS)
+    {
+        return ret;
+    }
+    for (dtof_uint16_t i = 0; i < len; i++)
+    {
+        ret = dtof_reg_burst_read(DTOF_REG255, &temp, 1);
+        if(ret != DTOF_RET_SUCCESS)
+        {
+            return ret;
+        }
+        *(buf + i) =  temp&0xff;
+    }
+    temp = 0x0000;
+    ret = dtof_reg_burst_write(DTOF_REG254, &temp, 1);
+    // otp_read_enable(DTOF_FALSE);
+	return ret;
 }
 
 // TOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data)

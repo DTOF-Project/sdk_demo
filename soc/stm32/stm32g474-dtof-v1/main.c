@@ -11,6 +11,7 @@
 #include "inc/dtof_endian.h"
 #include "inc/dtof_calibration_ft.h"
 #include "inc/dtof_global_config.h"
+#include "inc/dev/dtof_dev_api.h"
 #include "base/inc/mos_platform.h"
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
@@ -274,6 +275,15 @@ int main(void)
                         printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
                     }
                     printf("\n");
+                    printf("otp list:\n");
+                    dtof_uint8_t otp_data[128];
+                    DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+                    for (int i = 0; i < 128; i++)
+                    {
+                        printf("%d, ", otp_data[i]);
+                    }
+                    printf("\n");
+                    // dtof_read_otp
                     dtof_ft_data_t ft_data_read;
                     dtof_bool_t is_legal_data = DTOF_FALSE;
                     dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
