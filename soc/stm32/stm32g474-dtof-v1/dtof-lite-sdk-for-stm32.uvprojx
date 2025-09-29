@@ -339,7 +339,7 @@
               <MiscControls>-Wno-gnu-zero-variadic-macro-arguments -Wno-covered-switch-default -Wno-address-of-packed-member -Wno-missing-noreturn -Wno-unused-function -Wno-newline-eof -Wno-empty-translation-unit -Wno-undef</MiscControls>
               <Define>USE_HAL_DRIVER,STM32G474xx,STM32G4,DTOF_GNSS</Define>
               <Undefine></Undefine>
-              <IncludePath>.\board;..\3rdparty\STM32G4xx_HAL_Driver\Inc;..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include;..\3rdparty;..\3rdparty\CMSIS\Include;..\..\..\app\nvram;..\..\sdk;..\fatfs;..\..\stm32;..\..\..\soc</IncludePath>
+              <IncludePath>.\board;..\3rdparty\STM32G4xx_HAL_Driver\Inc;..\3rdparty\CMSIS\Device\ST\STM32G4xx\Include;..\3rdparty;..\3rdparty\CMSIS\Include;..\..\..\app\nvram;..\..\sdk;..\fatfs;..\..\stm32;..\..\..\soc;..\..\application</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -647,6 +647,16 @@
               <FileName>dtof_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\dev\dtof_hal.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>app</GroupName>
+          <Files>
+            <File>
+              <FileName>app_cmd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\application\app_cmd.c</FilePath>
             </File>
           </Files>
         </Group>

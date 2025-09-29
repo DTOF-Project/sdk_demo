@@ -114,11 +114,12 @@ DTOF_RET dtof_dsp_fifo_read(dtof_uint16_t addr_offset, dtof_uint16_t * value_p, 
 DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len){
     DTOF_RET ret;
     dtof_uint16_t reg3;
+    dtof_uint16_t bypass = 0x17b9;
     dtof_addressREG3_t *reg3_p = (dtof_addressREG3_t *)&reg3;
     dtof_uint16_t temp;
     temp = 0x800 + offset;
 
-    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
+    dtof_reg_burst_write(0x05, &bypass, 1);
     DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG3, &reg3, 1), "read reg 3 fail");
     reg3_p->cfgDoneR = 0;
     DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail");
