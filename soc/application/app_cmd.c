@@ -6,7 +6,17 @@
 #include "inc/dtof_driver.h"
 #include "inc/dtof_api.h"
 #include "inc/dtof_log.h"
-#include "inc/app_cmd.h"
+#include "inc/dtof_endian.h"
+#include "inc/dtof_global_config.h"
+#include "inc/dtof_calibration_ft.h"
+
+#include "application/inc/soc_version.h"
+#include "application/inc/app_cmd.h"
+#include "application/inc/app_distance.h"
+
+// TODO: 不要放在stm32的文件夹下
+#include "dev/dtof_hal.h"
+#include "customer/dtof_customer.h"
 
 #define ECO_TEST_MODE
 
@@ -17,44 +27,33 @@ static int buf_pos = 0;
 
 // ========== 命令处理函数 ==========
 void app_cmd_start_distance_measure(const char *cmd) {
-    // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    // dtof_start_distance_measure();
-    printf("[CMD] s -> start distance measure\n");
+    app_set_distance_mode(DISTANCE_NORMAL_MODE);
+    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+    DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
 }
 
 void app_cmd_stop_distance_measure(const char *cmd) {
-    // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    // dtof_start_distance_measure();
-    printf("[CMD] s -> stop distance measure\n");
+    app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+    DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
 }
 
-
 void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
-    // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    // dtof_start_distance_measure();
-    // if (dev->chip_type == DTOF_CHIP_TYPE_A05) {
-    //     DTOF_CHECK_WARN(
-    //         dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE),
-    //         "enable debug mode failed\n"
-    //     );
-    // }
-    // is_init = DTOF_TRUE;
-    // debug_flag = DTOF_TRUE;
-    printf("[CMD] d -> init debug mode\n");
+    app_set_distance_mode(DISTANCE_DEBUG_MODE);
+    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+    DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
+    DTOF_CHECK_WARN(dtof_enable_distance_debug_mode(), "enable debug mode failed\n");
 }
 
 void app_cmd_start_distance_measure_test_mode(const char *cmd) {
-    // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    // dtof_start_distance_measure();
-    // frame_cnt_flag = DTOF_TRUE;
-    // is_init = DTOF_TRUE;
-    // debug_flag = DTOF_TRUE;
-    printf("[CMD] e -> enable frame count + debug\n");
+    app_set_distance_mode(DISTANCE_TEST_MODE);
+    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+    DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
+    dtof_sleep_ms(1);
+    DTOF_CHECK_WARN(dtof_enable_distance_debug_mode(), "enable debug mode failed\n");
 }
 
 void app_cmd_reg_burst_read(const char *cmd) {
-    // DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT),
-    //                "set mcu sleep failed\n");
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
 
     int reg_addr, reg_num;
     dtof_uint16_t reg_max[255];
@@ -68,9 +67,7 @@ void app_cmd_reg_burst_read(const char *cmd) {
         printf("\n");
     }
 
-    // DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP),
-    //                "wakeup mcu failed\n");
-    printf("[CMD] rb -> burst read\n");
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
 }
 
 void app_cmd_reg_read_running(const char *cmd) {
@@ -84,25 +81,113 @@ void app_cmd_reg_write_running(const char *cmd) {
     int reg_addr, reg_value;
     if (sscanf(uart_buf, "wi,%d,%d", &reg_addr, &reg_value) == 2)
     {
-        dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
+        dtof_write_reg_running(reg_addr, reg_value);
         printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
     }
 }
 
-#ifdef ECO_TEST_MODE
-void app_cmd_test_ram_code_burn(const char *cmd) {
-    int ret;
-    uint16_t ram_code[] =  {0xe977, 0x3707, 0x0093, 0x9387, 0xd71e, 0x2314, 0xf70c, 0x8280, 0x0000, 0x0000, 0x7f00, 0x0c00, };;
-    ret = dtof_ram_code_burn(ram_code, sizeof(ram_code)/sizeof(ram_code[0]), DTOF_SWB_TYPE_FROM_RAM_FIXADDR, 0x0);
-    if (ret != DTOF_RET_SUCCESS) {
-        printf("ram code burn failed, ret = %d\n", ret);
-    } else {
-        printf("ram code burn success\n");
-    }
-
-    printf("[CMD] test0 -> test ram code burn\n");
+void app_cmd_get_version(const char *cmd) {
+    DTOF_LOG("soc version: %s\n", SOC_VERSION_STRING);
+    DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
+    DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
 }
-#endif
+
+void app_cmd_print_chip_info(const char *cmd) {
+    printf("chip uuid: ");
+    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+    {
+        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+    }
+    printf("\n");
+    printf("otp list:\n");
+    dtof_uint8_t otp_data[128];
+    DTOF_CHECK_WARN(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+    for (int i = 0; i < 128; i++)
+    {
+        printf("%d, ", otp_data[i]);
+    }
+    printf("\n");
+
+    dtof_ft_data_t ft_data_read;
+    dtof_bool_t is_legal_data = DTOF_FALSE;
+    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+    if (is_legal_data == DTOF_FALSE)
+    {
+        printf("ft data is illegal, all 0xFF\n");
+    }
+    else
+    {
+        #ifdef DTOF_FT_CALIBRATE_BINOFFSET
+        printf("bin_offset = %u\n", ft_data_read.bin_offset);
+        #endif
+        #ifdef DTOF_FT_CALIBRATE_REFSPAD
+        printf("ref_spad = %u\n", ft_data_read.ref_spad);
+        #endif
+        #ifdef DTOF_FT_CALIBRATE_CG
+        printf("cg_reg: ");
+        dtof_uint16_t cg_reg;
+        for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+        {
+            cg_reg = ft_data_read.cg_data[i * 2 + 1] * 256 + ft_data_read.cg_data[i * 2];
+            printf("%u, ", cg_reg);
+        }
+        printf("\n");
+        #endif
+        #ifdef DTOF_FT_CALIBRATE_B
+        printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
+        #endif
+        }
+}
+
+void app_cmd_clear_cal_info(const char *cmd) {
+    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
+}
+
+static dtof_uint16_t is_to_sky_flag = 1;
+void app_cmd_do_ft_calibration(const char *cmd) {
+    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
+    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+    dtof_uint16_t otp_ref_spad_mask,distance;
+
+    if (sscanf(cmd, "ft,%hu,%hu", &otp_ref_spad_mask, &distance) == 2)
+    {
+        DTOF_RET ret = dtof_do_ft_calibration(otp_ref_spad_mask, distance, is_to_sky_flag);
+        if (ret == DTOF_RET_SUCCESS) {
+            dtof_ft_data_t ft_data;
+            dtof_bool_t is_legal_data = DTOF_FALSE;
+            dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+            printf("FT success:\n");
+            if (is_legal_data != DTOF_TRUE)
+            {
+                printf("ft data is illegal\n");
+                return;
+            }
+            #ifdef DTOF_FT_CALIBRATE_BINOFFSET
+            printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
+            #endif
+            #ifdef DTOF_FT_CALIBRATE_REFSPAD
+            printf("otp_ref_spad_mask = %u, ref_spad = %u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.ref_spad_cal.ref_spad);
+            #endif
+            #ifdef DTOF_FT_CALIBRATE_CG
+            printf("cg_reg: ");
+            dtof_uint16_t cg_reg;
+            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            {
+                cg_reg = ft_data.cg_data[i * 2 + 1] * 256 + ft_data.cg_data[i * 2];
+                printf("%u, ", cg_reg);
+            }
+            printf("\n");
+            #endif
+            #ifdef DTOF_FT_CALIBRATE_B
+            printf("distance = %u, distance_k=%.2f, distance_b=%.2f\n", cal_data.kb_data.far_distance, cal_data.kb_data.k, cal_data.kb_data.b);
+            #endif
+
+        }
+        else{
+            printf("ft calibration failed\n");
+        }
+    }
+}
 
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
@@ -112,11 +197,10 @@ cmd_entry_t cmd_table[] = {
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
-
-#ifdef ECO_TEST_MODE
-    // test cmd
-    { "test0",   0, app_cmd_test_ram_code_burn },
-#endif
+    { "ft,", 1, app_cmd_do_ft_calibration },
+    { "v",   0, app_cmd_get_version },
+    { "p",   0, app_cmd_print_chip_info },
+    { "clear", 0, app_cmd_clear_cal_info },
 };
 
 // ========== 命令解析器 ==========
@@ -135,7 +219,7 @@ static void handle_uart_cmd(const char *uart_buf) {
             }
         }
     }
-    printf("Unknown UART command: %s\n", uart_buf);
+    printf("unknown command: %s\n", uart_buf);
 }
 
 static int is_end_of_command(char byte) {

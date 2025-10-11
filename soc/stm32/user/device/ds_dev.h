@@ -21,7 +21,7 @@ typedef struct dsd_interrupt_s
 
 typedef enum {
     DTOF_CHIP_TYPE_A05 = 0x0001,
-    DTOF_CHIP_TYPE_L3 = 0x4120,
+    DTOF_CHIP_TYPE_L3 = 0x4121,
     DTOF_CHIP_TYPE_UNKNOWN = 0xffff,
 } dtof_chip_type_t;
 
