@@ -61,7 +61,6 @@ int main(void)
 
     while (1)
     {
-        is_new_flag = DTOF_FALSE;
         int len = dev->device_uart_driver->read(0, &byte, 1);
 
         if (len == 1)

@@ -33,7 +33,7 @@ void app_cmd_start_distance_measure(const char *cmd) {
 }
 
 void app_cmd_stop_distance_measure(const char *cmd) {
-    app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+    // app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
     DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
 }
 
@@ -89,7 +89,13 @@ void app_cmd_reg_write_running(const char *cmd) {
 void app_cmd_get_version(const char *cmd) {
     DTOF_LOG("soc version: %s\n", SOC_VERSION_STRING);
     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
-    DTOF_LOG("chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
+    DTOF_LOG("ram version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
+    DTOF_LOG("chip id: 0x%04x\n", dtof_get_chip_config()->chip_id);
+    DTOF_LOG("chip uuid: ");
+    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+    {
+        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+    }
 }
 
 void app_cmd_print_chip_info(const char *cmd) {

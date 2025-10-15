@@ -167,6 +167,15 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             static int test_frame_count = 0;
             dtof_bypass_distance_debug_mode();
 
+            if (++test_frame_count >= DISTANCE_TEST_MODE_FRAME_NUM)
+            {
+                uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
+                app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+                dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
+                // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+                test_frame_count = 0;
+            }
+
         #define TOTAL_REG_NUM 255
             dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
             dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
@@ -185,13 +194,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             printf("%d, %d, %d, %d, %.6f, 1\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
-            test_frame_count++;
-            if (test_frame_count >= DISTANCE_TEST_MODE_FRAME_NUM)
-            {
-                app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
-                DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
-                test_frame_count = 0;
-            }
+
             break;
         }
         default:
