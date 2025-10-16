@@ -185,7 +185,7 @@ void app_cmd_do_ft_calibration(const char *cmd) {
             printf("\n");
             #endif
             #ifdef DTOF_FT_CALIBRATE_B
-            printf("distance = %u, distance_k=%.2f, distance_b=%.2f\n", cal_data.kb_data.far_distance, cal_data.kb_data.k, cal_data.kb_data.b);
+            printf("distance = %u, distance_k=%d, distance_b=%d\n", distance, ft_data.distance_k, ft_data.distance_b);
             #endif
 
         }
