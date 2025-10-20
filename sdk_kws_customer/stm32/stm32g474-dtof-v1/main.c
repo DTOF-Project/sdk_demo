@@ -242,6 +242,9 @@ int main(void)
                     DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
                     uint16_t xtalk_data[18];
                     dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
+                    extern dtof_int16_t g_pos_cal_result;
+                    extern dtof_uint16_t g_maxratio_cal_result;
+                    printf("pos_cal_result = %d, maxratio_cal_result = %d\n", g_pos_cal_result, g_maxratio_cal_result);
                     // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
                 }
                 else if (strcmp(uart_buf, "x") == 0)

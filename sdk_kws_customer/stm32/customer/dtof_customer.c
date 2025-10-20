@@ -18,6 +18,10 @@
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
 
+// kws新需求
+dtof_int16_t g_pos_cal_result;
+dtof_uint16_t g_maxratio_cal_result;
+
 // 字节序转换辅助函数
 static void dtof_convert_endian(uint16_t *data, uint16_t len)
 {
@@ -315,7 +319,7 @@ DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
+DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data, dtof_int16_t pos_cal_result, dtof_uint16_t maxratio_cal_result)
 {
     uint64_t xtalk_data64[18];
     for(dtof_uint16_t i = 0; i < 18; i++)
@@ -323,6 +327,10 @@ DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
         xtalk_data64[i] = (uint64_t)(*(xtalk_data + i));
     }
     stm32_flash_write_u64(DTOF_CG_DATA_FLASH_PAGE_START_ADDR, xtalk_data64, 18);
+
+    g_pos_cal_result = pos_cal_result;
+    g_maxratio_cal_result = maxratio_cal_result;
+
     return DTOF_RET_SUCCESS;
 }
 
