@@ -195,18 +195,44 @@ void app_cmd_do_ft_calibration(const char *cmd) {
     }
 }
 
+void app_cmd_set_refspad(const char *cmd) {
+    dtof_uint16_t ref_spad;
+    if (sscanf(cmd, "refspad,%hu", &ref_spad) == 1)
+    {
+        printf("set refspad = %u\n", ref_spad);
+        #define DTOF_FT_DATA_START 0x2000
+        #define DTOF_FT_DATA_B_OFFSET 4
+        DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "MCU sleep failed");
+
+        dtof_uint16_t ram_data[2];
+        dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
+
+        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+        DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
+
+        ram_data[0] = ref_spad;
+        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
+
+        DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
+
+        dtof_reload_ft_data();
+    }
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
     { "d",   0, app_cmd_start_distance_measure_debug_mode },
     { "e",   0, app_cmd_start_distance_measure_test_mode },
+    { "clear", 0, app_cmd_clear_cal_info },
+    { "v",   0, app_cmd_get_version },
+    { "p",   0, app_cmd_print_chip_info },
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
     { "ft,", 1, app_cmd_do_ft_calibration },
-    { "v",   0, app_cmd_get_version },
-    { "p",   0, app_cmd_print_chip_info },
-    { "clear", 0, app_cmd_clear_cal_info },
+    {"refspad,", 1, app_cmd_set_refspad },
 };
 
 // ========== 命令解析器 ==========
