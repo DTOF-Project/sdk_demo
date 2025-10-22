@@ -60,11 +60,11 @@ void app_cmd_reg_burst_read(const char *cmd) {
 
     if (sscanf(cmd, "rb,%d,%d", &reg_addr, &reg_num) == 2) {
         dtof_reg_burst_read(reg_addr, reg_max, reg_num);
-        printf("burst reg read 0x%04x:\n", reg_addr);
+        dtof_printf("burst reg read 0x%04x:\n", reg_addr);
         for (int i = 0; i < reg_num; i++) {
-            printf("%d, ", reg_max[i]);
+            dtof_printf("%d, ", reg_max[i]);
         }
-        printf("\n");
+        dtof_printf("\n");
     }
 
     DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
@@ -74,7 +74,7 @@ void app_cmd_reg_read_running(const char *cmd) {
     int reg_addr = atoi(&cmd[3]);
     uint16_t reg_value;
     DTOF_CHECK_RET_VOID(dtof_read_reg_running(reg_addr, &reg_value), "read reg running failed\n");
-    printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+    dtof_printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
 }
 
 void app_cmd_reg_write_running(const char *cmd) {
@@ -82,7 +82,7 @@ void app_cmd_reg_write_running(const char *cmd) {
     if (sscanf(uart_buf, "wi,%d,%d", &reg_addr, &reg_value) == 2)
     {
         dtof_write_reg_running(reg_addr, reg_value);
-        printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+        dtof_printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
     }
 }
 
@@ -94,55 +94,55 @@ void app_cmd_get_version(const char *cmd) {
     DTOF_LOG("chip uuid: ");
     for (int i = 0; i < DTOF_UUID_LENGTH; i++)
     {
-        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+        dtof_printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
     }
 }
 
 void app_cmd_print_chip_info(const char *cmd) {
-    printf("chip uuid: ");
+    dtof_printf("chip uuid: ");
     for (int i = 0; i < DTOF_UUID_LENGTH; i++)
     {
-        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+        dtof_printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
     }
-    printf("\n");
-    printf("otp list:\n");
+    dtof_printf("\n");
+    dtof_printf("otp list:\n");
     dtof_uint8_t otp_data[128];
     DTOF_CHECK_WARN(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
     for (int i = 0; i < 128; i++)
     {
-        printf("%d, ", otp_data[i]);
+        dtof_printf("%d, ", otp_data[i]);
     }
-    printf("\n");
+    dtof_printf("\n");
 
     dtof_ft_data_t ft_data_read;
     dtof_bool_t is_legal_data = DTOF_FALSE;
     dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
     if (is_legal_data == DTOF_FALSE)
     {
-        printf("ft data is illegal, all 0xFF\n");
+        dtof_printf("ft data is illegal, all 0xFF\n");
     }
     else
     {
         #ifdef DTOF_FT_CALIBRATE_BINOFFSET
-        printf("bin_offset = %u\n", ft_data_read.bin_offset);
+        dtof_printf("bin_offset = %u\n", ft_data_read.bin_offset);
         #endif
         #ifdef DTOF_FT_CALIBRATE_REFSPAD
-        printf("ref_spad = %u\n", ft_data_read.ref_spad);
+        dtof_printf("ref_spad = %u\n", ft_data_read.ref_spad);
         #endif
         #ifdef DTOF_FT_CALIBRATE_CG
-        printf("cg_reg: ");
+        dtof_printf("cg_reg: ");
         dtof_uint16_t cg_reg;
         for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
         {
             cg_reg = ft_data_read.cg_data[i * 2 + 1] * 256 + ft_data_read.cg_data[i * 2];
-            printf("%u, ", cg_reg);
+            dtof_printf("%u, ", cg_reg);
         }
-        printf("\n");
+        dtof_printf("\n");
         #endif
         #ifdef DTOF_FT_CALIBRATE_B
-        printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
+        dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
         #endif
-        }
+    }
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
@@ -162,35 +162,35 @@ void app_cmd_do_ft_calibration(const char *cmd) {
             dtof_ft_data_t ft_data;
             dtof_bool_t is_legal_data = DTOF_FALSE;
             dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
-            printf("FT success:\n");
+            dtof_printf("FT success:\n");
             if (is_legal_data != DTOF_TRUE)
             {
-                printf("ft data is illegal\n");
+                dtof_printf("ft data is illegal\n");
                 return;
             }
             #ifdef DTOF_FT_CALIBRATE_BINOFFSET
-            printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
+            dtof_printf("bin_offset = %u\n", cal_data.binoffset_cal_data.binoffset);
             #endif
             #ifdef DTOF_FT_CALIBRATE_REFSPAD
-            printf("otp_ref_spad_mask = %u, ref_spad = %u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.ref_spad_cal.ref_spad);
+            dtof_printf("otp_ref_spad_mask = %u, ref_spad = %u\n", cal_data.ref_spad_cal.otp_ref_spad_mask, cal_data.ref_spad_cal.ref_spad);
             #endif
             #ifdef DTOF_FT_CALIBRATE_CG
-            printf("cg_reg: ");
+            dtof_printf("cg_reg: ");
             dtof_uint16_t cg_reg;
             for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
             {
                 cg_reg = ft_data.cg_data[i * 2 + 1] * 256 + ft_data.cg_data[i * 2];
-                printf("%u, ", cg_reg);
+                dtof_printf("%u, ", cg_reg);
             }
-            printf("\n");
+            dtof_printf("\n");
             #endif
             #ifdef DTOF_FT_CALIBRATE_B
-            printf("distance = %u, distance_k=%d, distance_b=%d\n", distance, ft_data.distance_k, ft_data.distance_b);
+            dtof_printf("distance = %u, distance_k=%d, distance_b=%d\n", distance, ft_data.distance_k, ft_data.distance_b);
             #endif
 
         }
         else{
-            printf("ft calibration failed\n");
+            dtof_printf("ft calibration failed\n");
         }
     }
 }
@@ -199,7 +199,7 @@ void app_cmd_set_refspad(const char *cmd) {
     dtof_uint16_t ref_spad;
     if (sscanf(cmd, "refspad,%hu", &ref_spad) == 1)
     {
-        printf("set refspad = %u\n", ref_spad);
+        dtof_printf("set refspad = %u\n", ref_spad);
         #define DTOF_FT_DATA_START 0x2000
         #define DTOF_FT_DATA_B_OFFSET 4
         DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "MCU sleep failed");
@@ -251,7 +251,7 @@ static void handle_uart_cmd(const char *uart_buf) {
             }
         }
     }
-    printf("unknown command: %s\n", uart_buf);
+    dtof_printf("unknown command: %s\n", uart_buf);
 }
 
 static int is_end_of_command(char byte) {
