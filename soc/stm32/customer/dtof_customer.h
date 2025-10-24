@@ -55,6 +55,10 @@ dtof_bool_t dtof_get_interrupt_flag(void);
  */
 void dtof_sleep_ms(dtof_uint32_t time);
 
+#ifndef FLASH_PAGE_SIZE
+#define FLASH_PAGE_SIZE                 0x800U  /* 2 KB */
+#endif
+
 #define DTOF_FT_DATA_FLASH_PAGE 224
 #define DTOF_FT_DATA_FLASH_PAGE_START_ADDR (0x08000000 + DTOF_FT_DATA_FLASH_PAGE * FLASH_PAGE_SIZE)
 #define DTOF_FT_DATA_FLASH_PAGE_NUM 1
@@ -62,6 +66,9 @@ void dtof_sleep_ms(dtof_uint32_t time);
 void stm32_flash_write_init(uint32_t page, uint32_t page_num);
 DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data);
 DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len);
+
+void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
+void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
 
 #ifdef __cplusplus
 }
