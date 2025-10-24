@@ -3,7 +3,7 @@
 
 // determine whether the frame is legal
 #define FLOAT_EPSILON 1e-6f
-#define DISTANCE_STEP_NUM 6
+#define DISTANCE_STEP_NUM 7
 #define LEGAL_FRAME 1
 #define ILLEGAL_FRAME 0
 
@@ -62,16 +62,12 @@ int dtof_clac_confidence(int16_t first_target, uint16_t first_intensity, float a
     {
         if (first_target < confidence_param[index].dis_th)
         {
-            if (snr > confidence_param[index].snr_th)
-            {
-                return LEGAL_FRAME;
-            }
-            else
+            if (snr <= confidence_param[index].snr_th)
             {
                 return ILLEGAL_FRAME;
             }
         }
     }
 
-    return ILLEGAL_FRAME;
+    return LEGAL_FRAME;
 }

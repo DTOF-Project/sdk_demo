@@ -5,7 +5,6 @@
 #define _DTOF_REG_H_
 
 #include <stdint.h>
-#include "inc/dtof_base_type.h"
 
 #ifdef __cplusplus
 extern "C"
