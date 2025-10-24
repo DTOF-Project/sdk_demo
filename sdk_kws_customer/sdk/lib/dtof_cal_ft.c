@@ -15,7 +15,7 @@
 #define CT_CAL_TRY_COUNT 3
 
 // 包含binoffset校准和cg校准
-DTOF_RET dtof_do_xtalk_calibration(dtof_uint8_t device_id, dtof_uint16_t* ft_data)
+DTOF_RET dtof_do_xtalk_calibration(dtof_uint8_t device_id, dtof_uint16_t* ft_data, dtof_int16_t* pos_cal_result, dtof_uint16_t* max_ratio_cal_result)
 {
     DTOF_RET ret;
     dtof_uint16_t bin_offset;
@@ -61,7 +61,12 @@ DTOF_RET dtof_do_xtalk_calibration(dtof_uint8_t device_id, dtof_uint16_t* ft_dat
         return DTOF_RET_INIT_FAILED;
     }
 
-    // DTOF_CHECK_RET(dtof_start_distance_measure(device_id), "start distance measure failed\n");
+#define MAX_RATIO_CAL_MAX 10 // maxratio标定结果限定0-10 (黑介)
+#define POS_CAL_SAMPLE_INDEX 7 // Pos标定结果限定: -6<x<-2 (黑介)
+    // 借用ac[7]的值, 让 pos_cal_result范围为 -5~-1
+    *pos_cal_result = (ct_reg_data[POS_CAL_SAMPLE_INDEX] % 3) - 5;
+    // 借用dc的值, 让 max_ratio_cal_result范围为0~10
+    *max_ratio_cal_result = (ct_reg_data[DTOF_CT_REG_NUM - 1] > MAX_RATIO_CAL_MAX) ? MAX_RATIO_CAL_MAX : ct_reg_data[DTOF_CT_REG_NUM - 1];
 
     return DTOF_RET_SUCCESS;
 }

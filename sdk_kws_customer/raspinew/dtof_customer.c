@@ -261,7 +261,7 @@ DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data)
+DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data, dtof_int16_t pos_cal_result, dtof_uint16_t maxratio_cal_result)
 {
     DTOF_LOG("on raspi, save xtalk to file");
     if (xtalk_data == NULL) {

@@ -64,7 +64,7 @@ void file_io_test(dtof_uint8_t test_uuid) {
     int ret;
     ret = dtof_set_distance_offset_to_flash(test_uuid, write_b);
     // DTOF_LOG("file_io_test(): write_b ret = %d \n", ret);
-    ret = dtof_set_xtalk_data_from_flash(test_uuid, write_xtalk);
+    ret = dtof_set_xtalk_data_from_flash(test_uuid, write_xtalk, 0 ,0);
     // DTOF_LOG("file_io_test(): write_xtalk ret = %d \n", ret);
 }
 

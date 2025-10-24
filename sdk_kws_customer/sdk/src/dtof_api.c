@@ -443,6 +443,8 @@ DTOF_RET dtof_set_calibration_data(dtof_uint8_t device_id, dtof_start_mode_t dto
 {
     dtof_uint16_t xtalk_data[XTALK_DATA_SIZE] = {6939, 6427, 6682, 7196, 7452, 14634, 14908, 11567, 11567, 10027, 9253, 8739, 8225, 7711, 6941, 6426, 1, 11};
     dtof_int32_t distance_offset = 0;
+    dtof_int16_t pos_cal_result;
+    dtof_uint16_t maxratio_cal_result;
     switch(dtof_start_mode)
     {
         case NORMAL_DISTANCE_MODE:
@@ -455,8 +457,8 @@ DTOF_RET dtof_set_calibration_data(dtof_uint8_t device_id, dtof_start_mode_t dto
         }
         case DO_XTALK_CALIBRATION_MODE:
         {
-            DTOF_CHECK_RET(dtof_do_xtalk_calibration(device_id, xtalk_data), "do xtalk calibration failed\n");
-            dtof_set_xtalk_data_from_flash(device_id, xtalk_data);
+            DTOF_CHECK_RET(dtof_do_xtalk_calibration(device_id, xtalk_data, &pos_cal_result, &maxratio_cal_result), "do xtalk calibration failed\n");
+            dtof_set_xtalk_data_from_flash(device_id, xtalk_data, pos_cal_result, maxratio_cal_result);
             break;
         }
         case DO_OFFSET_CALIBRATION_MODE:
