@@ -35,6 +35,8 @@ void app_cmd_start_distance_measure(const char *cmd) {
 void app_cmd_stop_distance_measure(const char *cmd) {
     // app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
     DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+    dtof_sleep_ms(33); //TODO: 待优化, 要等可能存在的上一帧跑完
+    app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
 }
 
 void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
@@ -124,7 +126,6 @@ void app_cmd_print_chip_info(const char *cmd) {
     else
     {
         dtof_uint16_t ft_cali_type = ~(ft_data_read.ft_calibration_type);
-        dtof_printf("ft calibration type: 0x%04x\n", ft_cali_type);
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
         {
             dtof_printf("bin_offset = %u\n", ft_data_read.dtof_ft_data.bin_offset);
@@ -168,7 +169,7 @@ void app_cmd_clear_cal_info(const char *cmd) {
 static dtof_uint16_t is_to_sky_flag = 1;
 void app_cmd_do_ft_calibration(const char *cmd) {
     // stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
-    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+    // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
     dtof_uint16_t ft_cali_type;
     dtof_uint16_t ft_cali_param; // 可以是otp_ref_spad_mask, 也可以是distance, 目前这种设计下, 不能同时做refspad和b校准
 
@@ -176,6 +177,7 @@ void app_cmd_do_ft_calibration(const char *cmd) {
     {
         // 设置校准类型
         dtof_set_ft_calibration_type(ft_cali_type);
+        dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
         DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
         if (ret == DTOF_RET_SUCCESS) {
             dtof_ft_cali_param_t ft_cali_param;
