@@ -7,7 +7,7 @@
 
 #ifndef _DTOF_CUSTOMER_H_
 #define _DTOF_CUSTOMER_H_
-
+#include "sdk/inc/dtof_driver.h"
 #include <stdint.h>
 #include "inc/dtof_base_type.h"
 #ifdef __cplusplus
@@ -23,8 +23,8 @@ extern "C" {
  *         DTOF_RET_INVALID_PARAM 参数无效
  *         DTOF_RET_DEVICE_ERROR 设备错误
  */
-DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
-DTOF_RET dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len);
+// DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+// DTOF_RET dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len);
 
 /**
  * @brief 批量读取寄存器
@@ -35,7 +35,7 @@ DTOF_RET dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const ui
  *         DTOF_RET_INVALID_PARAM 参数无效
  *         DTOF_RET_DEVICE_ERROR 设备错误
  */
-DTOF_RET dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
+// DTOF_RET dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
 /**
  * @brief 设置中断标志

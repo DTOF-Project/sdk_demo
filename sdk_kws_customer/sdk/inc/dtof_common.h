@@ -9,25 +9,34 @@
 #define _DTOF_COMMON_H_
 
 #include <stdint.h>
-#include "inc/dtof_global_config.h"
 #include "inc/dtof_base_type.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define DTOF_INTERRUPT_MODE
+// #define DTOF_POLLING_MODE
+
+#if defined(DTOF_INTERRUPT_MODE) && defined(DTOF_POLLING_MODE)
+#error "DTOF_INTERRUPT_MODE and DTOF_POLLING_MODE cannot be defined at the same time!"
+#endif
+
 // 基础寄存器定义
 #define DTOF_CHIP_ID_REG_ADDR        0x00
+#define DTOF_CONFIG_REG_ADDR         0x03
 #define DTOF_IO_CTRL_REG_ADDR        0x05
 #define DTOF_SAVE_RESULT_REG_ADDR    0x50
-#define DTOF_TRIGGER_FLAG_REG_ADDR   0x5D
 #define DTOF_CHECK_UPGRADE_REG_ADDR  0x64
 #define DTOF_ERROR_INFO_REG_ADDR     0x6E
 #define DTOF_CHECK_CRC_REG_ADDR      0x6F
 #define DTOF_RESET_REG_ADDR          0x75
+#define DTOF_DEBUG_STATUS_REG_ADDR   0x88
 #define DTOF_FRAME_CONTROL_REG       0xCA
+#define DTOF_JMP_MODE_REG_ADDR       0xD3
+#define DTOF_TRIM_REG_ADDR           0xEB
+#define DTOF_WRITE_RAM_START_REG_ADDR 0xFE
 #define DTOF_READ_RAM_START_REG_ADDR 0xFF
-#define XTALK_DATA_SIZE 18
 
 // 系统常量定义
 #define DTOF_MAX_RETRY_COUNT        3
@@ -40,6 +49,9 @@ extern "C" {
 #define DTOF_VAL_SYS_ERROR_CLR             0x00
 #define DTOF_VAL_SYS_ERROR_GET             0x01
 #define DTOF_VAL_SYS_ERROR_EYE_SAFETY_CLR  0x02
+
+#define CROSS_TALK_OTP_NUM 34
+#define DTOF_UUID_LENGTH              16
 
 // 命令定义
 typedef enum {

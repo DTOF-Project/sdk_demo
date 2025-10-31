@@ -3,6 +3,8 @@
 #include "inc/dtof_log.h"
 #include "dtof_reg.h"
 #include "dtof_hal.h"
+#include "inc/dtof_api.h"
+
 
 static DTOF_RET get_ram_address(dtof_uint16_t* address)
 {
@@ -10,7 +12,7 @@ static DTOF_RET get_ram_address(dtof_uint16_t* address)
     dtof_uint16_t bnk_status;
     if (*address < 0x400)
     {
-        ret = dtof_reg_burst_read(0, DTOF_REG137, &bnk_status, 1);
+        ret = dtof_reg_burst_read( DTOF_REG137, &bnk_status, 1);
         if(ret != DTOF_RET_SUCCESS){
             DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
             return ret;
@@ -29,7 +31,7 @@ DTOF_RET dtof_ram_read(dtof_uint16_t address, dtof_uint16_t * value_p, dtof_uint
     dtof_uint16_t index = 0;
     dtof_uint16_t temp;
 
-    ret = dtof_reg_burst_read(0, DTOF_REG134, &temp, 1);
+    ret = dtof_reg_burst_read(DTOF_REG134, &temp, 1);
     if(ret != DTOF_RET_SUCCESS){
         DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
         return ret;
@@ -55,13 +57,13 @@ DTOF_RET dtof_ram_read(dtof_uint16_t address, dtof_uint16_t * value_p, dtof_uint
                 }
 
                 dtof_uint16_t ram_start_addr = address + (j * 0x40) + i;
-                ret = dtof_reg_burst_write(0, DTOF_REG254, &ram_start_addr, 1);
+                ret = dtof_reg_burst_write( DTOF_REG254, &ram_start_addr, 1);
                 if(ret != DTOF_RET_SUCCESS){
                     DTOF_LOG("file: %s, line: %d, reg write fail\n", __FILE__, __LINE__);
                     return ret;
                 }
 
-                ret = dtof_reg_burst_read(0, DTOF_REG255, value_p + index, 1);
+                ret = dtof_reg_burst_read( DTOF_REG255, value_p + index, 1);
                 if(ret != DTOF_RET_SUCCESS){
                     DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
                     return ret;
@@ -72,7 +74,7 @@ DTOF_RET dtof_ram_read(dtof_uint16_t address, dtof_uint16_t * value_p, dtof_uint
         }
         // (*((volatile dtof_uint16_t *)(DEFAULT_LLDSP_BASE+DRIVER_RAM_STARTA_ADD*DRIVER_REG_MULTIPLE))) = address + *0x40;
     }else{
-        ret = dtof_reg_burst_write(0, DTOF_REG254, &address, 1);
+        ret = dtof_reg_burst_write( DTOF_REG254, &address, 1);
         if(ret != DTOF_RET_SUCCESS){
             DTOF_LOG("file: %s, line: %d, reg write fail\n", __FILE__, __LINE__);
             return ret;
@@ -80,7 +82,7 @@ DTOF_RET dtof_ram_read(dtof_uint16_t address, dtof_uint16_t * value_p, dtof_uint
 
         // read the value from 0xff
         for(; index < len ; index++) {
-            ret = dtof_reg_burst_read(0, DTOF_REG255, value_p + index, 1);
+            ret = dtof_reg_burst_read( DTOF_REG255, value_p + index, 1);
             if(ret != DTOF_RET_SUCCESS){
                 DTOF_LOG("file: %s, line: %d, reg burst read fail\n", __FILE__, __LINE__);
             }
@@ -114,13 +116,13 @@ DTOF_RET dtof_dsp_fifo_read(dtof_uint16_t addr_offset, dtof_uint16_t * value_p, 
 // {
 //     DTOF_RET ret;
 
-//     ret = dtof_io_interaction(0, DTOF_CMD_READ_REG, reg_addr);
+//     ret = dtof_io_interaction(DTOF_CMD_READ_REG, reg_addr);
 //     if(ret != DTOF_RET_SUCCESS){
 //         DTOF_LOG("file: %s, line: %d, send io cmd fail\n", __FILE__, __LINE__);
 //         return ret;
 //     }
 
-//     ret = dtof_reg_burst_read(0, DTOF_REG110, reg_data, 1);
+//     ret = dtof_reg_burst_read(DTOF_REG110, reg_data, 1);
 //     if(ret != DTOF_RET_SUCCESS){
 //         DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
 //         return ret;

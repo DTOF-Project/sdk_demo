@@ -1,27 +1,26 @@
 #ifndef _DTOF_GLOBAL_CONFIG_H_
 #define _DTOF_GLOBAL_CONFIG_H_
 
-#define  DTOF_L3 1
-// #define  DTOF_A05 1
+#include "inc/dtof_base_type.h"
+#include "inc/dtof_common.h"
 
-#ifdef DTOF_L3
-#undef DTOF_A05
-#endif
+#define DTOF_L3_CHIPID  0x4120
+#define DTOF_A05_CHIPID 0x0001
 
-// 芯片型号配置
-#ifdef DTOF_L3
-    #define DTOF_CHIP_ID             0x4120
-    #define DTOF_VCCIO_VSEL_AUTO    0x00
-    #define DTOF_VCCIO_VSEL_1_2V    0x01
-    #define DTOF_VCCIO_VSEL_1_8V    0x02
-    #define DTOF_VCCIO_VSEL_3_3V    0x03
-#elif defined(DTOF_A05)
-    #define DTOF_CHIP_ID             0x0001
-    #define DTOF_VCCIO_VSEL_AUTO    0x04
-    #define DTOF_VCCIO_VSEL_1_2V    0x05
-    #define DTOF_VCCIO_VSEL_1_8V    0x06
-    #define DTOF_VCCIO_VSEL_3_3V    0x07
-#endif
+#pragma pack(2)
 
+typedef struct {
+    uint16_t chip_id;           // 芯片ID
+    uint16_t vccio_vsel_auto;   // 自动电压选择
+    uint16_t vccio_vsel_1_2v;   // 1.2V 电压选择
+    uint16_t vccio_vsel_1_8v;   // 1.8V 电压选择
+    uint16_t vccio_vsel_3_3v;   // 3.3V 电压选择
+    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
+} dtof_chip_config_t;
+
+#pragma pack()
+
+dtof_chip_config_t *dtof_get_chip_config(void);
+DTOF_RET dtof_find_chip_config(dtof_uint16_t chip_id, dtof_uint8_t *chip_uuid, dtof_uint32_t chip_uuid_len);
 
 #endif

@@ -8,7 +8,7 @@
 #define I2C_BUS "/dev/i2c-1"
 // I2C 从设备地址
 #define DEVICE_ADDR 0x41
-
+//DTOF_RET rpi_i2c_init(int iic_id);
 typedef struct {
     DTOF_RET (*init)(int device_id);
     DTOF_RET (*deinit)(int device_id);

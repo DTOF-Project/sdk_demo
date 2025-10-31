@@ -4,7 +4,7 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/stat.h>
-
+#include "sdk/inc/dtof_driver.h"
 #include "i2c_init.h"
 #include "dtof_customer.h"
 #include "sdk/inc/dtof_base_type.h"
@@ -20,7 +20,7 @@ static void dtof_convert_endian(uint16_t *data, uint16_t len)
     }
 }
 
-DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len) {
+DTOF_RET dtof_reg_burst_write( uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len) {
 
 #ifdef DEBUG_LOG_FLAG
     DTOF_LOG("write 0x%02x reg_data_p[0] = 0x%04x\n", reg_addr, reg_data_p[0]);
@@ -38,7 +38,7 @@ DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg
 #endif
 
     // 调用底层写函数
-    int ret = device_iic_driver_ops.write_block(device_id, reg_addr, (uint8_t *)reg_data_p, len);
+    int ret = device_iic_driver_ops.write_block(1, reg_addr, (uint8_t *)reg_data_p, len);
 
     // 写完转回
     dtof_convert_endian(reg_data_p, len);
@@ -49,11 +49,11 @@ DTOF_RET dtof_reg_burst_write(uint8_t device_id, uint8_t reg_addr, uint16_t *reg
     return ret;
 }
 
-DTOF_RET dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len) {
+DTOF_RET dtof_reg_burst_write_burn( uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len) {
     // write 和 write_burn 的区别: 不需要再次大小端转换，烧写处理好（包括大小端转换）的程序
 
     // 调用底层写函数
-    int ret = device_iic_driver_ops.write_block(device_id, reg_addr, reg_data_p, len);
+    int ret = device_iic_driver_ops.write_block(1, reg_addr, (uint8_t *)reg_data_p, len);
 
     if (ret == DTOF_RET_ERROR) {
         perror("dtof_reg_burst_write_burn() WRITE ERROR");
@@ -61,8 +61,8 @@ DTOF_RET dtof_reg_burst_write_burn(uint8_t device_id, uint8_t reg_addr, const ui
     return ret;
 }
 
-DTOF_RET dtof_reg_burst_read(uint8_t device_id, uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len) {
-    int ret = device_iic_driver_ops.read_block(device_id, reg_addr, (uint8_t *)reg_data_p, len);
+DTOF_RET dtof_reg_burst_read( uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len) {
+    int ret = device_iic_driver_ops.read_block(1, reg_addr, (uint8_t *)reg_data_p, len);
 
 // #ifdef DEBUG_LOG_FLAG
 //     DTOF_LOG("read 0x%02x reg_data_p[0] (src) = 0x%04x\n", reg_addr, reg_data_p[0]);

@@ -17,18 +17,15 @@ extern "C"
 
 #define PACK_IO_INTERACTION_DATA(cmd, value) ((0x2 << 14) + (cmd << 8) + value)
 
-DTOF_RET dtof_reg_burst_read(dtof_uint8_t device_id, dtof_uint8_t reg_addr, dtof_uint16_t *reg_data_p, dtof_uint16_t len);
-DTOF_RET dtof_reg_burst_write(dtof_uint8_t device_id, dtof_uint8_t reg_addr, dtof_uint16_t *reg_data_p, dtof_uint16_t len);
-DTOF_RET dtof_reg_burst_write_burn(dtof_uint8_t device_id, dtof_uint8_t reg_addr, const dtof_uint16_t *reg_data_p, dtof_uint16_t len);
-DTOF_RET dtof_io_interaction(dtof_uint8_t device_id, dtof_uint16_t cmd, dtof_uint16_t value);
+DTOF_RET dtof_reg_burst_read(dtof_uint8_t reg_addr, dtof_uint16_t *reg_data_p, dtof_uint16_t len);
+DTOF_RET dtof_reg_burst_write(dtof_uint8_t reg_addr, dtof_uint16_t *reg_data_p, dtof_uint16_t len);
+DTOF_RET dtof_reg_burst_write_burn(dtof_uint8_t reg_addr, const dtof_uint16_t *reg_data_p, dtof_uint16_t len);
+DTOF_RET dtof_io_interaction(dtof_uint16_t cmd, dtof_uint16_t value);
 void dtof_set_interrupt_flag(dtof_bool_t flag);
 dtof_bool_t dtof_get_interrupt_flag(void);
 void dtof_sleep_ms(dtof_uint32_t time);
-DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_t *distance_offset);
-DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset);
-DTOF_RET dtof_get_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data);
-DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *xtalk_data, dtof_int16_t pos_cal_result, dtof_uint16_t maxratio_cal_result);
-char uart_getchar(void);
+DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data);
+DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len);
 
 #ifdef __cplusplus
 }

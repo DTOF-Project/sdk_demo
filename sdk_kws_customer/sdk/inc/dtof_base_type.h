@@ -57,6 +57,10 @@ typedef uint32_t       dtof_tick_t;
 typedef int32_t        DTOF_RET;
 typedef dtof_int32_t   dev_handle_t;
 
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
+
 // 浮点数类型定义
 #ifdef CALC_USING_FIX1616
     typedef dtof_int32_t dtof_real32_t;

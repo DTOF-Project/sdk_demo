@@ -27,7 +27,7 @@ SRC = $(wildcard raspinew/*.c)\
 # SRC := $(filter-out raspinew/command_receiver.c raspinew/dtof_frame_control.c raspinew/dtof_interrupt_handler.c, $(SRC))
 
 # INCLUDES = -I sdk -I raspinew -I . -I $(CJSON_DIR) 
-INCLUDES = -I sdk -I raspinew -I . 
+INCLUDES = -I sdk -I raspinew -I . -I ./l3_a05_30hz_sdk
 
 # 对象文件
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

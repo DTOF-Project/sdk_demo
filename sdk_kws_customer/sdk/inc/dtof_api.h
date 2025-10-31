@@ -15,48 +15,54 @@ extern "C" {
 #endif
 
 #pragma pack(1)
-
 // 距离测量结果结构
 typedef struct {
     dtof_uint16_t frame_id;          // 帧ID
-    dtof_int16_t first_target;       // 第一目标距离
+    dtof_int16_t first_target;      // 第一目标距离
     dtof_uint16_t first_intensity;   // 第一目标强度
     dtof_uint16_t main_nflash;       // 主闪光
     dtof_real32_t ambient;           // 环境光
-    dtof_int32_t is_legal_frame;     // 是否合法帧, 1合法, 0非法
-    dtof_uint16_t reserved[8];       // 保留
+    dtof_uint16_t reserved[6];       // 保留
 } dtof_distance_result_t;
 
 typedef struct {
-    dtof_uint8_t  device_id;
-    dtof_bool_t  is_init;
+    dtof_bool_t  chip_is_init;
+#ifdef DTOF_POLLING_MODE
     dtof_uint16_t first_frame;
     dtof_uint16_t frame_id_pre;
-    dtof_int32_t distance_offset;
+#endif
 } dtof_device_info_t;
 
-typedef enum {
-    NORMAL_DISTANCE_MODE = 0, // 正常测距模式
-    DO_XTALK_CALIBRATION_MODE = 1, // 600mm处做xtalk校准
-    DO_OFFSET_CALIBRATION_MODE = 2  // 20mm处做测距offset校准
-} dtof_start_mode_t;
+typedef struct {
+    dtof_uint16_t cg_data[CROSS_TALK_OTP_NUM];
+    dtof_uint16_t distance_k;
+    dtof_uint16_t distance_b;
+    dtof_uint16_t ref_spad;
+    dtof_uint16_t bin_offset;
+} dtof_ft_data_t;
 
 #pragma pack()
 
-// 设备数
-#define DTOF_DEVICE_0 0
-#define DTOF_DEVICE_1 1
-#define DTOF_MAX_DEVICE_NUM  2
 // 开始测距
 #define DTOF_START_DISATNCE_MODE 0X7788
 // 停止测距
 #define DTOF_STOP_DISATNCE_MODE 0X6688
 // 退出测距
 #define DTOF_QUIT_DISATNCE_MODE 0X1234
+// 开始做FT校准
+#define DTOF_FT_CAL_START_MODE 0X5588
+// 重新加载FT数据
+#define DTOF_RELOAD_FT_DATA_MODE 0X4488
+// MCU睡眠指令
+#define DTOF_SET_MCU_SLEEP_MODE 0X3388
+// MCU睡眠FLAG
+#define DTOF_SET_MCU_SLEEP_VALUE 0x17b9
+#define DTOF_SLEEP_FLAG  0xFD
+#define DTOF_WAKEUP_FLAG 0xDF
 
 // 距离测量结果长度
 #define DTOF_DISTANCE_RESULT_LEN (sizeof(dtof_distance_result_t) / sizeof(dtof_uint16_t))
-// 上报距离/8为真实距离
+// 上报距离(distance / 8 - 100)为真实距离
 #define DTOF_DISTANCE_RESULT_DIVISOR  8
 #define DTOF_DISTANCE_RESULT_OFFSET   100
 // 上报第一目标强度/2为真实第一目标强度
@@ -67,10 +73,6 @@ typedef enum {
 // MCU状态定义
 #define DTOF_MCU_STATE_WAKEUP         0x00
 #define DTOF_MCU_STATE_SLEEP_DIRECT   DTOF_CMD_MCU_SLEEP_DIR
-#define DTOF_MCU_STATE_SLEEP_INDIRECT DTOF_CMD_MCU_SLEEP_INDIR
-
-// UUID长度定义
-#define DTOF_UUID_LENGTH              16
 
 // IO电压配置
 typedef enum {
@@ -107,29 +109,30 @@ typedef enum {
 } dtof_error_code_t;
 
 // API函数声明
-void dtof_set_distance_offset(dtof_uint8_t device_id, dtof_int32_t offset);
-dtof_int32_t dtof_get_distance_offset(dtof_uint8_t device_id);
-DTOF_RET dtof_get_fifo(dtof_uint8_t device_id, dtof_start_mode_t dtof_start_mode, dtof_distance_result_t* result_info_p);
-DTOF_RET dtof_get_distance_result(dtof_uint8_t device_id, dtof_start_mode_t dtof_start_mode, dtof_distance_result_t* result_info_p, dtof_bool_t *is_new_frame);
-DTOF_RET dtof_get_uuid(dtof_uint8_t device_id, dtof_uint8_t *uuid, dtof_uint8_t len);
-DTOF_RET dtof_set_mcu_status(dtof_uint8_t device_id, dtof_uint32_t status);
-DTOF_RET dtof_get_error_info(dtof_uint8_t device_id, dtof_uint32_t *status);
-DTOF_RET dtof_clear_error_info(dtof_uint8_t device_id);
-DTOF_RET dtof_clear_eye_safety_error_info(dtof_uint8_t device_id);
-DTOF_RET dtof_set_io_voltage(dtof_uint8_t device_id, dtof_uint8_t value);
-DTOF_RET dtof_ram_code_burn(dtof_uint8_t device_id, const dtof_uint16_t *ram_code,
-                           dtof_uint16_t len,
-                           dtof_uint8_t mode,
-                           dtof_uint16_t ram_offset);
-DTOF_RET dtof_init_and_wait_for_ready(dtof_uint8_t device_id, dtof_uint16_t * chip_id_p, dtof_start_mode_t dtof_start_mode);
-DTOF_RET dtof_version_upgrade(dtof_uint8_t device_id, dtof_uint8_t *uuid_p, dtof_uint8_t *ft_data_p, dtof_uint16_t len);
-DTOF_RET dtof_start_distance_measure(dtof_uint8_t device_id);
-DTOF_RET dtof_stop_distance_measure(dtof_uint8_t device_id);
-DTOF_RET dtof_quit_distance_measure(dtof_uint8_t device_id);
-DTOF_RET dtof_do_distance_calibration(dtof_uint8_t device_id, dtof_int32_t *distance_offset);
+void dtof_init_device_info(void);
+DTOF_RET dtof_get_distance_result(dtof_distance_result_t* result_info);
+#ifdef DTOF_POLLING_MODE
+DTOF_RET dtof_get_distance_result_polling(dtof_distance_result_t* result_info_p, dtof_bool_t *is_new_frame);
+#endif
+DTOF_RET dtof_write_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t reg_data);
+DTOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data);
+DTOF_RET dtof_get_uuid(dtof_uint8_t *uuid, dtof_uint8_t len);
+DTOF_RET dtof_set_mcu_status(dtof_uint32_t status);
+DTOF_RET dtof_set_mcu_status_ram(dtof_uint32_t status);
+DTOF_RET dtof_get_error_info(dtof_uint32_t *status);
+DTOF_RET dtof_clear_error_info(void);
+DTOF_RET dtof_clear_eye_safety_error_info(void);
+DTOF_RET dtof_set_io_voltage(dtof_uint8_t value);
+DTOF_RET dtof_ram_code_burn(const dtof_uint16_t *ram_code, dtof_uint16_t len, dtof_uint8_t mode, dtof_uint16_t ram_offset);
+DTOF_RET dtof_sensor_init(void);
+DTOF_RET dtof_start_distance_measure(void);
+DTOF_RET dtof_stop_distance_measure(void);
+DTOF_RET dtof_quit_distance_measure(void);
+DTOF_RET dtof_start_ft_calibrate(void);
+DTOF_RET dtof_reload_ft_data(void);
+DTOF_RET dtof_set_ft_data(dtof_uint16_t *dtof_calibrate_data_ft_p);
 const char* dtof_get_sdk_version(void);
-void dtof_init_all_device_info(void);
-dtof_uint16_t dtof_get_chip_version(dtof_uint8_t device_id);
+dtof_uint16_t dtof_get_chip_version(void);
 
 #ifdef __cplusplus
 }
