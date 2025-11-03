@@ -73,6 +73,50 @@ void app_cmd_reg_burst_read(const char *cmd) {
     DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
 }
 
+void app_cmd_reg_burst_write(const char *cmd)
+{
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+
+    int reg_addr, reg_num;
+    dtof_uint16_t reg_values[255];
+    const char *p = cmd;
+
+    if (sscanf(p, "wb,%d,%d", &reg_addr, &reg_num) == 2) {
+        // 找到第三个逗号(跳过wb,addr,num)
+        const char *values_str = strchr(p, ',');
+        if (values_str) values_str = strchr(values_str + 1, ',');
+        if (values_str) values_str = strchr(values_str + 1, ',');
+
+        if (values_str) {
+            values_str++; // 跳过逗号
+            int count = 0;
+            const char *token = values_str;
+            while (count < reg_num && token && *token) {
+                reg_values[count++] = (dtof_uint16_t)atoi(token);
+                token = strchr(token, ',');
+                if (token) token++;
+            }
+
+            // 检查数量是否匹配
+            if (count == reg_num) {
+                dtof_reg_burst_write(reg_addr, reg_values, reg_num);
+                dtof_printf("burst reg write 0x%04x (%d regs): ", reg_addr, reg_num);
+                for (int i = 0; i < reg_num; i++) {
+                    dtof_printf("%d, ", reg_values[i]);
+                }
+                dtof_printf("\n");
+            } else {
+                dtof_printf("param count mismatch (expected %d, got %d)\n", reg_num, count);
+            }
+        }
+    } else {
+        dtof_printf("cmd format error. example: wb,1024,3,11,22,33\n");
+    }
+
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+}
+
+
 void app_cmd_reg_read_running(const char *cmd) {
     int reg_addr = atoi(&cmd[3]);
     uint16_t reg_value;
@@ -154,17 +198,7 @@ void app_cmd_print_chip_info(const char *cmd) {
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
-    // uint16_t a = 0xfffb;
-    // uint16_t b = 0xfff3;
-    // uint16_t a_r;
-    // uint16_t b_r;
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
-    // stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, (uint64_t *)&a, 1);
-    // stm32_flash_read_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, (uint64_t *)&a_r, 1);
-    // printf("a = 0x%04x, a_r = 0x%04x\n", a, a_r);
-    // stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, (uint64_t *)&b, 1);
-    // stm32_flash_read_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, (uint64_t *)&b_r, 1);
-    // printf("a = 0x%04x, a_r = 0x%04x\n", b, b_r);
 }
 
 static dtof_uint16_t is_to_sky_flag = 1;
@@ -245,6 +279,45 @@ void app_cmd_set_refspad(const char *cmd) {
     }
 }
 
+void app_cmd_dtof_init(const char *cmd) {
+    dtof_uint16_t reset_value = 0xffff;
+    dtof_uint16_t bypass_value = 0x17b9;
+
+    // bypass inner mcu
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypass_value, 1), "dtof bypass fail\n");
+
+    // reset chip
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_RESET_REG_ADDR, &reset_value, 1), "chip reset fail\n");
+
+    // reinit
+    dtof_init_device_info();
+    DTOF_CHECK_RET_VOID(dtof_sensor_init(), "dtof sensor init failed\n");
+    dtof_printf("dtof init success\n");
+}
+
+void app_cmd_help(const char *cmd) {
+    dtof_printf("\n");
+    dtof_printf("cmd     function                 format           example\n");
+    dtof_printf("s       start distance measure   --               s\n");
+    dtof_printf("t       stop distance measure    --               t\n");
+    dtof_printf("d       start debug mode         --               d\n");
+    dtof_printf("e       start test mode          --               e\n");
+    dtof_printf("clear   clear flash cal info     --               clear\n");
+    dtof_printf("v       print version info       --               v\n");
+    dtof_printf("p       print chip info          --               p\n");
+    dtof_printf("init    dtof reinit              --               init\n");
+    dtof_printf("ri      read reg from inner mcu  ri,addr          ri,0\n");
+    dtof_printf("wi      write reg use inner mcu  wi,addr,data     wi,0,0\n");
+    dtof_printf("rb      burst read reg           rb,addr,num      rb,0,2\n");
+    dtof_printf("wb      burst write reg          wb,addr,num,data wb,0,2,0,0\n");
+    dtof_printf("refspad set refspad              refspad,0        refspad,0\n");
+    dtof_printf("ft      do ft calibration        ft,type,param    \n");
+    dtof_printf("        type bit0 = 1->binoffset ft,1,dc          ft,1,0\n");
+    dtof_printf("        type bit1 = 1->refspad   ft,2,spad_mask   ft,2,254\n");
+    dtof_printf("        type bit2 = 1->cg        ft,4,is_to_sky   ft,4,1 (1 to sky, 0 to object)\n");
+    dtof_printf("        type bit3 = 1->b         ft,8,distance    ft,8,300\n");
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -253,11 +326,14 @@ cmd_entry_t cmd_table[] = {
     { "clear", 0, app_cmd_clear_cal_info },
     { "v",   0, app_cmd_get_version },
     { "p",   0, app_cmd_print_chip_info },
+    { "init",   0, app_cmd_dtof_init },
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
+    { "wb,", 1, app_cmd_reg_burst_write },
     { "ft,", 1, app_cmd_do_ft_calibration },
     {"refspad,", 1, app_cmd_set_refspad },
+    { "h",   0, app_cmd_help },
 };
 
 // ========== 命令解析器 ==========
