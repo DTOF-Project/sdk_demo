@@ -129,7 +129,7 @@ void dump_hist_log(int dev_handle, dtof_data_dump_func_t dump_func, dtof_uint16_
 #define COMPILE_I2C_CMDS
 
 // 主循环接收命令
-int main_cmd_loop(int serial){
+void main_cmd_loop(int serial){
 
     DTOF_RET ret;
     dtof_uint16_t chip_id;
@@ -179,6 +179,8 @@ int main_cmd_loop(int serial){
             {
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
+                dtof_sensor_init();
+                
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 debug_flag = DTOF_FALSE;
@@ -187,6 +189,7 @@ int main_cmd_loop(int serial){
             {
                 // 启动并开始测距（DEBUG模式，输出每一帧的数据，不会自动停止）
                 //DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
+                dtof_sensor_init();
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 debug_flag = DTOF_TRUE;
@@ -195,7 +198,8 @@ int main_cmd_loop(int serial){
             {
                 // 启动并开始测距（DEBUG模式 + 启动frame_cnt, 前50帧跳过， 到达200帧自动停止）
               //  DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-                is_init = DTOF_TRUE;
+              dtof_sensor_init(); 
+              is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 frame_cnt_flag = DTOF_TRUE;
                 debug_flag = DTOF_TRUE;
@@ -490,7 +494,7 @@ int main() {
         return 1;
     }
 
-    //rpi_i2c_init(1);
+    rpi_i2c_init(1);
 
     // 初始化串口
     int serial = rpi_serial_init(SERIAL_PORT);

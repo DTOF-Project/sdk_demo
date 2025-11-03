@@ -682,6 +682,7 @@ DTOF_RET dtof_sensor_init(void)
 
     if (dtof_device_info.chip_is_init == DTOF_FALSE)
     {
+        printf("10");
         DTOF_CHECK_RET(dtof_reset(&chip_id, chip_uuid, DTOF_UUID_LENGTH), "dtof reset failed\n");
         DTOF_CHECK_RET(dtof_find_chip_config(chip_id, chip_uuid, DTOF_UUID_LENGTH), "find chip config failed\n");
         DTOF_CHECK_RET(dtof_select_working_mode(), "dtof select working mode failed\n");
@@ -691,7 +692,7 @@ DTOF_RET dtof_sensor_init(void)
     DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_data, sizeof(dtof_ft_data_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
 
     if (is_legal_ft_data == DTOF_TRUE)
-    {
+    {printf("11");
         DTOF_CHECK_RET(dtof_set_ft_data((dtof_uint16_t *)&ft_data), "set ft data failed\n");
     }
 
