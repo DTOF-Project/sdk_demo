@@ -10,7 +10,7 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include <string.h>
-
+#define DTOF_POLLING_MODE
 #include "i2c_init.h"
 // #include <cJSON.h>  // 添加在文件开头的其他include语句之后
 #include <openssl/buffer.h>  // Add this for BUF_MEM
@@ -32,6 +32,12 @@
 #define DO_OFFSET_CALIBRATION_MODE 2
 #define DO_XTALK_CALIBRATION_MODE 1
 #define CMD_BUFFER_SIZE 256
+
+dtof_device_info_t dtof_device_info={
+    .first_frame=1,
+    .frame_id_pre=0,
+};
+
 
 // extern device_driver_ops_t device_iic_driver_ops;
 
@@ -134,10 +140,10 @@ void main_cmd_loop(int serial){
     DTOF_RET ret;
     dtof_uint16_t chip_id;
     dtof_uint8_t device_id = 0;
-
+  dtof_uint16_t frame_id;
     dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
     dtof_distance_result_t distance_result;
-    dtof_bool_t is_new_flag;
+    dtof_bool_t is_new_flag=DTOF_FALSE;
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
 
@@ -180,7 +186,7 @@ void main_cmd_loop(int serial){
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
                 dtof_sensor_init();
-                
+                printf("2");
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 debug_flag = DTOF_FALSE;
@@ -289,7 +295,8 @@ void main_cmd_loop(int serial){
                 // 输出 distance_offset
                 // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
              //   DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                is_init = DTOF_TRUE;
+             dtof_sensor_init();   
+             is_init = DTOF_TRUE;
                // rpi_serial_printf(serial,"distance offset = %d\n", dtof_get_distance_offset(device_id));
             }
             else if (strcmp(cmd_buffer, "clear") == 0)
@@ -304,7 +311,8 @@ void main_cmd_loop(int serial){
                 // 从flash获取xtalk_data
                 // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
               //  DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-                uint16_t xtalk_data[18];
+              dtof_sensor_init();
+              uint16_t xtalk_data[18];
                 dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
                 // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
             }
@@ -426,14 +434,39 @@ void main_cmd_loop(int serial){
             // 检查是否有中断触发
             // rpi_gpio_debug_up_down(1);
             ret = dtof_get_distance_result(&distance_result);
-            // rpi_gpio_debug_up_down(0);
             
-        }
+            frame_id=distance_result.frame_id;
+
+            if(dtof_device_info.first_frame)
+            {
+                dtof_device_info.first_frame=0;
+                dtof_device_info.frame_id_pre=frame_id;
+                
+            }
+            else if (frame_id == dtof_device_info.frame_id_pre);
+            
+
+           else if (((frame_id - dtof_device_info.frame_id_pre) != 1) && ((frame_id - dtof_device_info.frame_id_pre) != 2)) {
+            // 异常帧
+            dtof_device_info.first_frame = 1;
+           
+               }
+            
+           else
+           {
+           is_new_flag = DTOF_TRUE;
+             dtof_device_info.frame_id_pre = frame_id;
+           }
+          
+            
+
+        }  
+
+
         
         if (is_new_flag == DTOF_TRUE)
         {   
-            // rpi_gpio_debug_up_down(1);
-
+            is_new_flag=DTOF_FALSE;
             
             if (debug_flag == DTOF_TRUE)
             {

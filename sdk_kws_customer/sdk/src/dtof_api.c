@@ -673,12 +673,22 @@ DTOF_RET dtof_set_ft_data(dtof_uint16_t *dtof_calibrate_data_ft_p)
     return DTOF_RET_SUCCESS;
 }
 
+
+
 DTOF_RET dtof_sensor_init(void)
 {
     dtof_uint16_t chip_id;
     dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
     dtof_ft_data_t ft_data;
     dtof_bool_t is_legal_ft_data = DTOF_FALSE;
+
+//     dtof_ft_data_t ft_data = {
+//     .cg_data = {0x1234, 0x5678, 0x9ABC},
+//     .distance_k = 0x0001,       // 给distance_k赋值
+//     .distance_b = 0x0002,       // 给distance_b赋值
+//     .ref_spad = 0x0003,         // 给ref_spad赋值
+//     .bin_offset = 0x0004        // 给bin_offset赋值
+// };
 
     if (dtof_device_info.chip_is_init == DTOF_FALSE)
     {
@@ -689,7 +699,7 @@ DTOF_RET dtof_sensor_init(void)
         dtof_device_info.chip_is_init = DTOF_TRUE;
     }
 
-    DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_data, sizeof(dtof_ft_data_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+  DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_data, sizeof(dtof_ft_data_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
 
     if (is_legal_ft_data == DTOF_TRUE)
     {printf("11");

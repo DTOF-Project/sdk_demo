@@ -28,62 +28,6 @@ extern dtof_chip_config_t dtof_chip_config;
 
 
 
-#define FT_DATA_NUM 38
-#define FILE_BUFFER_SIZE2 50
-
-/**
- * 从树莓派文件中读取FT数据（基于file_read函数，使用UUID定位）
- * @param ft_data 输出参数，用于存储读取的16位FT数据
- * @param len 输入参数，ft_data缓冲区的长度（应至少为FT_DATA_NUM）
- * @param is_legal_data 输出参数，指示数据是否合法（非全无效值）
- * @return DTOF_RET 操作结果
- */
-DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
-{
-    // 参数合法性检查
-    if (ft_data == NULL || is_legal_data == NULL) {
-        return DTOF_RET_INVALID_PARAM;  // 无效参数
-    }
-    if (len < FT_DATA_NUM) {
-        return DTOF_RET_LIMIT;  // 缓冲区不足
-    }
-
-    // 初始化输出参数（默认数据非法）
-    *is_legal_data = DTOF_FALSE;
-
-    
-
-    dtof_uint8_t uuid = dtof_chip_config.chip_uuid[0];
-
-    // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
-    dtof_int32_t read_buf[FILE_BUFFER_SIZE2];
-
-    // 调用file_read读取数据
-    int read_ret = file_read(uuid, read_buf);
-    if (read_ret != DTOF_RET_SUCCESS) {
-        
-        return DTOF_RET_ERROR;  
-    }
-
-    // 检查数据是否合法：原逻辑判断是否存在非0xFFFFFFFFFFFFFFFF的值，
-    
-    for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
-        if (read_buf[i] != 0xFFFFFFFF) {  // 存在有效数据
-            *is_legal_data = DTOF_TRUE;
-            break;
-        }
-    }
-
-    // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
-    if (*is_legal_data == DTOF_TRUE) {
-        for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
-            // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
-            ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
-        }
-    }
-
-    return DTOF_RET_SUCCESS;
-}
 
 
 
@@ -347,4 +291,74 @@ DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
     }
     
     return file_write(device_id, buffer);
+}
+
+
+
+#define FT_DATA_NUM 38
+#define FILE_BUFFER_SIZE2 50
+
+/**
+ * 从树莓派文件中读取FT数据（基于file_read函数，使用UUID定位）
+ * @param ft_data 输出参数，用于存储读取的16位FT数据
+ * @param len 输入参数，ft_data缓冲区的长度（应至少为FT_DATA_NUM）
+ * @param is_legal_data 输出参数，指示数据是否合法（非全无效值）
+ * @return DTOF_RET 操作结果
+ */
+DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
+{
+   
+    // 参数合法性检查
+    if (ft_data == NULL || is_legal_data == NULL) {
+        return DTOF_RET_INVALID_PARAM;  // 无效参数
+    }
+     if (len < FT_DATA_NUM) {
+        return DTOF_RET_LIMIT;  // 缓冲区不足
+    }
+
+    
+    *is_legal_data = DTOF_FALSE;
+dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
+    if (chip_cfg == NULL) {
+        
+        return DTOF_RET_ERROR;  
+    }
+
+    
+    
+    dtof_uint8_t uuid = chip_cfg->chip_uuid[0];  // 使用结构体中的UUID数
+    
+ printf("单字节UUID (chip_uuid[0]): 十进制=%hhu, 十六进制=0x%02X\n", 
+           chip_cfg->chip_uuid[0], chip_cfg->chip_uuid[0]);
+   
+
+    // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
+    dtof_int32_t read_buf[FILE_BUFFER_SIZE2];
+
+    // 调用file_read读取数据
+    int read_ret = file_read(uuid, read_buf);
+    if (read_ret != DTOF_RET_SUCCESS) {
+        
+        return DTOF_RET_ERROR;  
+    }
+
+    // 检查数据是否合法：原逻辑判断是否存在非0xFFFFFFFFFFFFFFFF的值，
+    
+    for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
+        if (read_buf[i] != 0xFFFFFFFF) { 
+            printf("6"); // 存在有效数据
+            *is_legal_data = DTOF_TRUE;
+            break;
+        }
+    }
+
+    // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
+    if (*is_legal_data == DTOF_TRUE) {
+        for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
+            // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
+            ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
+        }
+    }
+
+    return DTOF_RET_SUCCESS;
 }
