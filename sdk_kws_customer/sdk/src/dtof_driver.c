@@ -90,7 +90,7 @@ void DTOF_WEAK dtof_sleep_ms(dtof_uint32_t time)
     return;
 }
 
-DTOF_RET  dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
+DTOF_RET DTOF_WEAK dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
 {
     DTOF_LOG("get ft data use weak func!\n");
 

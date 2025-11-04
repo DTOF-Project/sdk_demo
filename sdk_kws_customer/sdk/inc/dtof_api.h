@@ -34,7 +34,7 @@ typedef struct {
 } dtof_device_info_t;
 
 typedef struct {
-    dtof_uint16_t cg_data[CROSS_TALK_OTP_NUM];
+    dtof_uint16_t cg_data[CROSS_TALK_OTP_NUM]; //34
     dtof_uint16_t distance_k;
     dtof_uint16_t distance_b;
     dtof_uint16_t ref_spad;
