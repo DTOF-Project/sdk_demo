@@ -137,6 +137,7 @@ static int ensure_data_directory_exists(void)
 static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
 {
     char file_path[256];
+
     snprintf(file_path, sizeof(file_path), "./data/data_%02x.bin", uuid);
 
     FILE *filePointer = fopen(file_path, "rb");
@@ -159,6 +160,46 @@ static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
     return DTOF_RET_SUCCESS;
 }
 
+static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
+{
+   // printf("888");
+    char file_path[256];
+    char uuid_str[33] = {0}; // 16字节 * 2个字符/字节 + 终止符 '\0'
+    for (int i = 0; i < 16; i++) 
+    {
+        //printf("777");
+    snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
+     }
+
+     printf("转换后的UUID字符串: %s\n", uuid_str); 
+
+    snprintf(file_path, sizeof(file_path), "./data/data_%s.bin", uuid_str);
+
+    //printf("999");
+    
+     printf("尝试打开的文件路径: %s\n", file_path);
+
+    FILE *filePointer = fopen(file_path, "rb");
+    if (filePointer == NULL) {
+       printf("444");
+        return DTOF_RET_FAILED;
+    }
+    
+    // 读取文件内容
+    size_t elements_read = fread(read_buf, sizeof(dtof_int32_t), FILE_BUFFER_SIZE, filePointer);
+    fclose(filePointer);
+    
+    // 检查是否读取了足够的数据
+    if (elements_read != FILE_BUFFER_SIZE) {
+        printf("555");
+        DTOF_LOG("警告: 文件 %s 数据不完整，只读取了 %zu/%d 个元素\n", 
+            file_path, elements_read, FILE_BUFFER_SIZE);
+        return DTOF_RET_FAILED;
+    }
+    
+    return DTOF_RET_SUCCESS;
+}
+
 static int file_write(dtof_uint8_t uuid, const dtof_int32_t *write_buf)
 {
     // 确保数据目录存在
@@ -168,6 +209,63 @@ static int file_write(dtof_uint8_t uuid, const dtof_int32_t *write_buf)
     
     char file_path[256];
     snprintf(file_path, sizeof(file_path), "./data/data_%02x.bin", uuid);
+    
+    // 如果write_buf全为0，则删除文件
+    int all_zero = 1;
+    for (int i = 0; i < FILE_BUFFER_SIZE; i++) {
+        if (write_buf[i] != 0) {
+            all_zero = 0;
+            break;
+        }
+    }
+    
+    if (all_zero) {
+        if (remove(file_path) == 0) {
+            return DTOF_RET_SUCCESS;
+        } else if (errno != ENOENT) { // 文件不存在不是错误
+            perror("删除文件失败");
+            return DTOF_RET_FAILED;
+        }
+        return DTOF_RET_SUCCESS;
+    }
+    
+    // 打开文件进行写入
+    FILE *filePointer = fopen(file_path, "wb");
+    if (filePointer == NULL) {
+        perror("打开文件失败");
+        return DTOF_RET_FAILED;
+    }
+    
+    // 写入数据
+    size_t elements_written = fwrite(write_buf, sizeof(dtof_int32_t), FILE_BUFFER_SIZE, filePointer);
+    fclose(filePointer);
+    
+    // 检查是否成功写入所有数据
+    if (elements_written != FILE_BUFFER_SIZE) {
+        DTOF_LOG("错误: 只写入了 %zu/%d 个元素到文件 %s\n", 
+                elements_written, FILE_BUFFER_SIZE, file_path);
+        return DTOF_RET_FAILED;
+    }
+    
+    return DTOF_RET_SUCCESS;
+}
+
+static int file_write_2(dtof_uint8_t uuid[16], const dtof_int32_t *write_buf)
+{
+    // 确保数据目录存在
+    if (ensure_data_directory_exists() != DTOF_RET_SUCCESS) {
+        //printf("333");
+        return DTOF_RET_FAILED;
+    }
+    
+    char file_path[256];
+   char uuid_str[33] = {0}; // 16字节 * 2个字符/字节 + 终止符 '\0'
+    for (int i = 0; i < 16; i++) 
+    {
+    snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
+     }
+    snprintf(file_path, sizeof(file_path), "./data/data_%s.bin", uuid_str);
+
     
     // 如果write_buf全为0，则删除文件
     int all_zero = 1;
@@ -325,18 +423,17 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
     }
 
     
-    
-    dtof_uint8_t uuid = chip_cfg->chip_uuid[0];  // 使用结构体中的UUID数
-    
- printf("单字节UUID (chip_uuid[0]): 十进制=%hhu, 十六进制=0x%02X\n", 
-           chip_cfg->chip_uuid[0], chip_cfg->chip_uuid[0]);
+    printf("666");
    
 
     // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
     dtof_int32_t read_buf[FILE_BUFFER_SIZE2];
+     dtof_int32_t write_buf[FILE_BUFFER_SIZE2];
+    int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
 
+    
     // 调用file_read读取数据
-    int read_ret = file_read(uuid, read_buf);
+    int read_ret = file_read_2(chip_cfg->chip_uuid, read_buf);
     if (read_ret != DTOF_RET_SUCCESS) {
         
         return DTOF_RET_ERROR;  
@@ -346,7 +443,8 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
     
     for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
         if (read_buf[i] != 0xFFFFFFFF) { 
-            printf("6"); // 存在有效数据
+            printf("333"); // 存在有效数据
+            printf("获取的数据: %x\n", read_buf);
             *is_legal_data = DTOF_TRUE;
             break;
         }
@@ -357,6 +455,7 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
         for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
             // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
             ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
+            printf("ft获取的数据:%x\n",ft_data);
         }
     }
 
