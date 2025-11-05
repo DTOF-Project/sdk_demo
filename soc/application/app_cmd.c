@@ -245,6 +245,22 @@ void app_cmd_set_refspad(const char *cmd) {
     }
 }
 
+void app_cmd_set_frame_rate(const char *cmd) {
+    dtof_uint16_t frame_rate;
+    if (sscanf(cmd, "rate,%hu", &frame_rate) == 1)
+    {
+        dtof_printf("set frame rate = %u Hz\n", frame_rate);
+        if (frame_rate == 30) {
+            dtof_switch_frame_rate(DTOF_30HZ_FRAME_CNT);
+        } else if (frame_rate == 120) {
+            dtof_switch_frame_rate(DTOF_120HZ_FRAME_CNT);
+        }
+        else {
+            dtof_printf("unsupported frame rate, only support 30Hz and 120Hz\n");
+        }
+    }
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -258,6 +274,7 @@ cmd_entry_t cmd_table[] = {
     { "rb,", 1, app_cmd_reg_burst_read },
     { "ft,", 1, app_cmd_do_ft_calibration },
     {"refspad,", 1, app_cmd_set_refspad },
+    {"rate,", 1, app_cmd_set_frame_rate },
 };
 
 // ========== 命令解析器 ==========
