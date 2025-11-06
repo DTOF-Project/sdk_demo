@@ -31,17 +31,21 @@ typedef struct {
     dtof_uint16_t first_frame;
     dtof_uint16_t frame_id_pre;
 #endif
+    dtof_uint16_t ft_calibration_type;
 } dtof_device_info_t;
 
 typedef struct {
-    dtof_uint16_t cg_data[CROSS_TALK_OTP_NUM]; //34
+    dtof_uint16_t cg_data[CROSS_TALK_OTP_NUM];
     dtof_uint16_t distance_k;
-    dtof_uint16_t distance_b;
+    dtof_int16_t distance_b;
     dtof_uint16_t ref_spad;
     dtof_uint16_t bin_offset;
 } dtof_ft_data_t;
 
-
+typedef struct {
+    dtof_uint16_t ft_calibration_type;
+    dtof_ft_data_t dtof_ft_data;
+} dtof_ft_cali_param_t;
 
 
 #pragma pack()
@@ -136,6 +140,8 @@ DTOF_RET dtof_reload_ft_data(void);
 DTOF_RET dtof_set_ft_data(dtof_uint16_t *dtof_calibrate_data_ft_p);
 const char* dtof_get_sdk_version(void);
 dtof_uint16_t dtof_get_chip_version(void);
+dtof_uint16_t dtof_get_ft_calibration_type(void);
+void dtof_set_ft_calibration_type(dtof_uint16_t type);
 
 #ifdef __cplusplus
 }

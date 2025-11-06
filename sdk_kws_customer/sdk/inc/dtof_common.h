@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-//#define DTOF_INTERRUPT_MODE
+// #define DTOF_INTERRUPT_MODE
 // #define DTOF_POLLING_MODE
 
 #if defined(DTOF_INTERRUPT_MODE) && defined(DTOF_POLLING_MODE)

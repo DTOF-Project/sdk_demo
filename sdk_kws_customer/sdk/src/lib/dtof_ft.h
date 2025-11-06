@@ -55,6 +55,7 @@ DTOF_RET dtof_calibration_refbinoffset_calculate(binoffset_cal_t *binoffset_cal_
 DTOF_RET dtof_ref_spad_calibrate(dtof_uint16_t otp_ref_spad_mask, dtof_uint16_t *ref_spad_cal, dtof_spad_info_t *spad_info);
 DTOF_RET dtof_do_cross_talk_calibration(cross_talk_data_t *cross_talk_data_p, dtof_uint16_t is_to_object);
 DTOF_RET dtof_do_distance_calibration_b(dtof_uint16_t distance, kb_data_t *calibrate_data_p);
+DTOF_RET dtof_do_distance_calibration_b_use_sdk(dtof_uint16_t distance, kb_data_t *calibrate_data_p);
 
 #ifdef __cplusplus
 }

@@ -185,12 +185,44 @@ void main_cmd_loop(int serial){
             {
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
+            
                 dtof_sensor_init();
                 printf("2");
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 debug_flag = DTOF_FALSE;
             }
+            else if (strcmp(cmd_buffer,"z")==0)
+            { printf("888");
+                    dtof_uint16_t burn_end_flag ;
+                   dtof_reg_burst_read(0x64, &burn_end_flag, 1);
+
+                   printf("brun=%hu",burn_end_flag);
+                }
+                
+            //     uint16_t reg_value[256];
+            //     for(int i=0;i<256;i++)
+            //     {
+            //     dtof_reg_burst_read(i,&reg_value,1);
+            //     for (int j=0; j<256; j++) 
+            //     {
+            //  printf("reg_data[%d] = %hu, ", j, reg_value[j]);
+            //         }
+            //     }
+            
+
+
+
+
+
+            
+             else if (strcmp(cmd_buffer,"m")==0)
+                {//printf("888");
+                    dtof_uint16_t burn_end_flag ;
+                   dtof_reg_burst_read(0x64, &burn_end_flag, 1);
+
+                   printf("brun=%hu",burn_end_flag);
+                }
             else if (strcmp(cmd_buffer, "d") == 0)
             {
                 // 启动并开始测距（DEBUG模式，输出每一帧的数据，不会自动停止）

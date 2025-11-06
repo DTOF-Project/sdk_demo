@@ -4,7 +4,7 @@
 #include "inc/dtof_base_type.h"
 #include "inc/dtof_common.h"
 
-#define DTOF_L3_CHIPID  0x4120
+#define DTOF_L3_CHIPID  0x4121
 #define DTOF_A05_CHIPID 0x0001
 
 #pragma pack(2)
@@ -15,7 +15,8 @@ typedef struct {
     uint16_t vccio_vsel_1_2v;   // 1.2V 电压选择
     uint16_t vccio_vsel_1_8v;   // 1.8V 电压选择
     uint16_t vccio_vsel_3_3v;   // 3.3V 电压选择
-    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH]; //16
+    uint16_t version_lenth;     // 版本长度
+    dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
 } dtof_chip_config_t;
 
 #pragma pack()
