@@ -134,8 +134,8 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
     {
         case DISTANCE_NORMAL_MODE:
         {
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+            printf("%d, %d, %d, %d, %.6f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
             break;
         }
         case DISTANCE_DEBUG_MODE:
@@ -158,9 +158,8 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_enable_distance_debug_mode();
 
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
-            break;
+            printf("%d, %d, %d, %d, %.6f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
         }
         case DISTANCE_TEST_MODE:
         {
@@ -192,9 +191,8 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_enable_distance_debug_mode();
 
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
-
+            printf("%d, %d, %d, %d, %.6f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
             break;
         }
         default:
