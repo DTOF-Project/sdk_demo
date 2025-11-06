@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "dtof_base_type.h": "c"
+        "dtof_base_type.h": "c",
+        "dtof_driver.h": "c",
+        "dtof_customer.h": "c"
     }
 }
