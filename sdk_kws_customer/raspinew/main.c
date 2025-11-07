@@ -186,7 +186,7 @@ void main_cmd_loop(int serial){
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
                 dtof_sensor_init();
-                printf("2");
+               
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
                 debug_flag = DTOF_FALSE;

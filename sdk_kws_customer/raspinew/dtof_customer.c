@@ -162,26 +162,24 @@ static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
 
 static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
 {
-   // printf("888");
+   
     char file_path[256];
     char uuid_str[33] = {0}; // 16字节 * 2个字符/字节 + 终止符 '\0'
     for (int i = 0; i < 16; i++) 
     {
-        //printf("777");
+       
     snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
      }
 
-     printf("转换后的UUID字符串: %s\n", uuid_str); 
+    
 
     snprintf(file_path, sizeof(file_path), "./data/data_%s.bin", uuid_str);
 
-    //printf("999");
-    
-     printf("尝试打开的文件路径: %s\n", file_path);
+   
 
     FILE *filePointer = fopen(file_path, "rb");
     if (filePointer == NULL) {
-       printf("444");
+      
         return DTOF_RET_FAILED;
     }
     
@@ -191,7 +189,7 @@ static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
     
     // 检查是否读取了足够的数据
     if (elements_read != FILE_BUFFER_SIZE) {
-        printf("555");
+        
         DTOF_LOG("警告: 文件 %s 数据不完整，只读取了 %zu/%d 个元素\n", 
             file_path, elements_read, FILE_BUFFER_SIZE);
         return DTOF_RET_FAILED;
@@ -254,7 +252,7 @@ static int file_write_2(dtof_uint8_t uuid[16], const dtof_int32_t *write_buf)
 {
     // 确保数据目录存在
     if (ensure_data_directory_exists() != DTOF_RET_SUCCESS) {
-        //printf("333");
+        
         return DTOF_RET_FAILED;
     }
     
@@ -423,7 +421,7 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
     }
 
     
-    printf("666");
+    
    
 
     // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
@@ -443,8 +441,8 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
     
     for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
         if (read_buf[i] != 0xFFFFFFFF) { 
-            printf("333"); // 存在有效数据
-            printf("获取的数据: %x\n", read_buf);
+            
+            
             *is_legal_data = DTOF_TRUE;
             break;
         }
@@ -455,7 +453,7 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
         for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
             // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
             ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
-            printf("ft获取的数据:%x\n",ft_data);
+            
         }
     }
 

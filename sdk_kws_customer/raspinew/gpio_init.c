@@ -83,8 +83,8 @@ DTOF_RET rpi_gpio_init(void) {
     }
 
     // 配置引脚为带上拉电阻的输入，检测下降沿
-    ret = gpiod_line_request_falling_edge_events_flags(intr_line, "interrupt_handler",
-                                                     GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
+    // ret = gpiod_line_request_falling_edge_events_flags(intr_line, "interrupt_handler",
+    //                                                  GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
     if (ret < 0) {
         perror("无法请求 GPIO 事件");
         gpiod_line_release(line);  // 释放 line 资源
