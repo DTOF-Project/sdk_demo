@@ -417,6 +417,7 @@ DTOF_RET dtof_ram_code_burn(const dtof_uint16_t *ram_code, dtof_uint16_t len, dt
 
         // wake up inner mcu
         ret = dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+        printf("0x00寄存器的值:%hu\n",DTOF_MCU_STATE_WAKEUP);
         if (ret != DTOF_RET_SUCCESS)
         {
             DTOF_LOG("file: %s, line: %d, wake up mcu fail\n", __FILE__, __LINE__);
@@ -426,6 +427,7 @@ DTOF_RET dtof_ram_code_burn(const dtof_uint16_t *ram_code, dtof_uint16_t len, dt
         if (dtof_get_chip_config()->chip_id == DTOF_L3_CHIPID)
         {
             ret = dtof_reg_burst_read(DTOF_CHECK_CRC_REG_ADDR, &crc_result, 1);
+            printf("crc的值是:%hu\n",crc_result);
             if (ret != DTOF_RET_SUCCESS)
             {
                 DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
@@ -485,7 +487,7 @@ static DTOF_RET dtof_reset(dtof_uint16_t *chip_id, dtof_uint8_t *chip_uuid, dtof
 
 static DTOF_RET dtof_version_upgrade(const dtof_uint16_t *ram_code, dtof_uint16_t len, dtof_uint8_t mode, dtof_uint16_t ram_offset, dtof_uint16_t check_code)
 {
-    printf("6666");
+    
 #define DTOF_RAM_JUDGE_RES_DELAY 1
     DTOF_RET ret;
     dtof_uint16_t burn_end_flag = 0;
@@ -503,7 +505,7 @@ static DTOF_RET dtof_version_upgrade(const dtof_uint16_t *ram_code, dtof_uint16_
             do
             {
                 DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_CHECK_UPGRADE_REG_ADDR, &burn_end_flag, 1), "reg read fail\n");
-                printf("burn=%hu",burn_end_flag);
+                // printf("burn=%hu",burn_end_flag);
                 if (burn_end_flag == check_code)
                 {
                     break;
@@ -645,7 +647,7 @@ DTOF_RET dtof_sensor_init(void)
     dtof_bool_t is_legal_ft_data = DTOF_FALSE;
 
     if (dtof_device_info.chip_is_init == DTOF_FALSE)
-    { printf("333");
+    { 
         DTOF_CHECK_RET(dtof_reset(&chip_id, chip_uuid, DTOF_UUID_LENGTH), "dtof reset failed\n");
         DTOF_CHECK_RET(dtof_find_chip_config(chip_id, chip_uuid, DTOF_UUID_LENGTH), "find chip config failed\n");
         DTOF_CHECK_RET(dtof_select_working_mode(), "dtof select working mode failed\n");

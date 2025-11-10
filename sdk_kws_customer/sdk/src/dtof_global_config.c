@@ -6,7 +6,7 @@ dtof_chip_config_t *g_chip_config = NULL;
 static dtof_chip_config_t chip_configs[] = {
     // L3 芯片配置
     {
-        .chip_id          = DTOF_L3_CHIPID,
+        .chip_id          = DTOF_L3_CHIPID, //4121
         .vccio_vsel_auto  = 0x00,
         .vccio_vsel_1_2v  = 0x01,
         .vccio_vsel_1_8v  = 0x02,

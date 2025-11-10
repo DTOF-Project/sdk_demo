@@ -1,6 +1,6 @@
 import smbus2
 import time
-import struct
+
 
 
 import struct
@@ -89,11 +89,11 @@ def read_i2c_block(slave_addr, reg_addr, num_bytes, bus_number=1):
         reversed_pairs = []
         for i in range(0, len(data_array), 2):
             if i + 1 < len(data_array):
-                # 交换第i和i+1个字节（低位在前→高位在前）
+                
                 reversed_pairs.append(data_array[i+1])
                 reversed_pairs.append(data_array[i])
             else:
-                # 若数组长度为奇数，最后一个字节直接保留
+                
                 reversed_pairs.append(data_array[i])
         return reversed_pairs
     
@@ -131,7 +131,15 @@ def write_i2c_register(slave_addr, reg_addr, data, bus_number=1):
     except Exception as e:
         print(f"其他错误: {e}")
         return False
-
+def convert_13_to_words(l3):
+     words=[]
+     for block in l3:
+          if block is not None:
+               for i in range(0,len(block),2):
+                    if i+1<len(block):
+                         word=(block[i]<<8|block[i+1])
+                         words.append(word)
+     return words
 
 if __name__ == "__main__":
     # 配置参数（根据你的设备填写）
@@ -141,8 +149,8 @@ if __name__ == "__main__":
     REG_ADDR3= 0xFF         # 操作的寄存器地址
     I2C_BUS_NUMBER = 1          # 总线号（树莓派3/4/5通常为1）
     TEST_DATA = 0x1234          # 测试写入的数据（可改为十进制，如4660）
-    l3length =16
-    READ_COUNT=58
+    l3length =2
+    READ_COUNT=470*1
     # 步骤1：写入数
     print(f"尝试向寄存器0x{REG_ADDR:04X}")
     print(f"尝试向寄存器0x{REG_ADDR2:04X}")
@@ -156,24 +164,35 @@ if __name__ == "__main__":
         l3=[]
         for i in range(READ_COUNT):
             print(f"正在执行第{i+1}/{READ_COUNT}次读取...")
-            # start_addr = REG_ADDR3 + i * 16  # 每次起始地址递增32
-            read_data = read_i2c_block(
-                I2C_SLAVE_ADDR, 
-                REG_ADDR3, 
-                l3length, 
-                I2C_BUS_NUMBER
-            )
-        l3.append([read_data])
-        print("l3的长度（读取的总次数）：", len(l3))
+            read_data = read_i2c_block(I2C_SLAVE_ADDR, REG_ADDR3, l3length,I2C_BUS_NUMBER)
+            l3.append(read_data)
+           
+        print("l3的长度（读取的总次数）:", len(l3))
+       
         for idx, block in enumerate(l3):
-            if block is not None:  # 跳过读取失败的情况
-                print(f"第{idx+1}次读取(起始地址0x{REG_ADDR3 + idx*32:04X}):")
+          
                 for byte in block:
                     print(f"0x{byte:02X}")
-            else:
-                print(f"第{idx+1}次读取失败，请检查地址0x{REG_ADDR3 + idx*32:04X}")
-        
+                else:
+                    print(f"第{idx+1}次读取失败")
+    else:
+        print("写入操作失败，请检查设备连接或参数")
+    l32=convert_13_to_words(l3)
+    difference=[]    
+    for i in range(READ_COUNT):
+                    if l32[i]==l3_distance_init[i]:
+                        print("a=1")
+                    else:
+                        difference.append(i,f"0x{l3_distance_init[i]:04x}",f"0x{l32[i]:04x}")
+    if difference:
+        print("差异:")
+        for i,exp,act in difference:
+             print(f"位置{i}:预期{exp},实际{act}")
+    else:
+         print("match")
+
          
+
         
 
          
@@ -183,8 +202,7 @@ if __name__ == "__main__":
         #    for i, byte in enumerate(l3):
         #     print(f"  第{i+1}个字节：0x{byte:02X}（十进制：{byte}）")
     
-    else:
-        print("写入操作失败，请检查设备连接或参数")
+   
          
           # data =read_i2c_register(0x41,0x00,1)
         # if data is not None :
