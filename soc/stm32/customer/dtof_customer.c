@@ -183,7 +183,7 @@ void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words
     }
 }
 
-#define FT_DATA_NUM (sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t))
+#define FT_DATA_NUM (sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t))
 DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
 {
     uint64_t ft_data64[FT_DATA_NUM];
