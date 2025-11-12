@@ -16,8 +16,6 @@
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
 
-#include "dev/dtof_hal.h"
-
 #include "user/device/ds_sal.h"
 #include "user/device/ds_dev.h"
 #include "user/device/device.h"
