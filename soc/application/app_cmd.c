@@ -25,6 +25,10 @@
 static char uart_buf[UART_BUF_SIZE];
 static int buf_pos = 0;
 
+#define RUNNING_RATE_30HZ  30
+#define RUNNING_RATE_120HZ 120
+static int g_running_rate = RUNNING_RATE_30HZ;
+
 // ========== 命令处理函数 ==========
 void app_cmd_start_distance_measure(const char *cmd) {
     app_set_distance_mode(DISTANCE_NORMAL_MODE);
@@ -151,6 +155,8 @@ void app_cmd_print_chip_info(const char *cmd) {
             dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
         }
     }
+
+    dtof_printf("running rate: %d Hz\n", g_running_rate);
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
@@ -250,10 +256,12 @@ void app_cmd_set_frame_rate(const char *cmd) {
     if (sscanf(cmd, "rate,%hu", &frame_rate) == 1)
     {
         dtof_printf("set frame rate = %u Hz\n", frame_rate);
-        if (frame_rate == 30) {
+        if (frame_rate == RUNNING_RATE_30HZ) {
             dtof_switch_frame_rate(DTOF_30HZ_FRAME_CNT);
-        } else if (frame_rate == 120) {
+            g_running_rate = RUNNING_RATE_30HZ;
+        } else if (frame_rate == RUNNING_RATE_120HZ) {
             dtof_switch_frame_rate(DTOF_120HZ_FRAME_CNT);
+            g_running_rate = RUNNING_RATE_120HZ;
         }
         else {
             dtof_printf("unsupported frame rate, only support 30Hz and 120Hz\n");
