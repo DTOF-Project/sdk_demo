@@ -418,7 +418,7 @@ DTOF_RET dtof_ram_code_burn(const dtof_uint16_t *ram_code, dtof_uint16_t len, dt
                 DTOF_LOG("file: %s, line: %d, reg read fail\n", __FILE__, __LINE__);
                 return ret;
             }
-
+            
             // check crc result
             if ((crc_result & 0xff) == 0xAA)
             {
@@ -530,6 +530,7 @@ static DTOF_RET dtof_reset(dtof_uint16_t *chip_id, dtof_uint8_t *chip_uuid, dtof
 
 static DTOF_RET dtof_version_upgrade(const dtof_uint16_t *ram_code, dtof_uint16_t len, dtof_uint8_t mode, dtof_uint16_t ram_offset, dtof_uint16_t check_code)
 {
+    
 #define DTOF_RAM_JUDGE_RES_DELAY 1
     DTOF_RET ret;
     dtof_uint16_t burn_end_flag = 0;
@@ -539,6 +540,7 @@ static DTOF_RET dtof_version_upgrade(const dtof_uint16_t *ram_code, dtof_uint16_
     do
     {
         ret = dtof_ram_code_burn(ram_code, len, mode, ram_offset);
+        
         if (!ret)
         {
             // 判断升级结束flag
@@ -546,6 +548,7 @@ static DTOF_RET dtof_version_upgrade(const dtof_uint16_t *ram_code, dtof_uint16_
             do
             {
                 DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_CHECK_UPGRADE_REG_ADDR, &burn_end_flag, 1), "reg read fail\n");
+               
                 if (burn_end_flag == check_code)
                 {
                     break;
@@ -692,12 +695,12 @@ DTOF_RET dtof_sensor_init(void)
         dtof_device_info.chip_is_init = DTOF_TRUE;
     }
 
-  DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_data, sizeof(dtof_ft_data_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+//   DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_data, sizeof(dtof_ft_data_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
 
-    if (is_legal_ft_data == DTOF_TRUE)
-    {
-        DTOF_CHECK_RET(dtof_set_ft_data((dtof_uint16_t *)&ft_data), "set ft data failed\n");
-    }
+//     if (is_legal_ft_data == DTOF_TRUE)
+//     {
+//         DTOF_CHECK_RET(dtof_set_ft_data((dtof_uint16_t *)&ft_data), "set ft data failed\n");
+//     }
 
     return DTOF_RET_SUCCESS;
 }

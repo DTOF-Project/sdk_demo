@@ -23,11 +23,12 @@
 #include "sdk/inc/dtof_api.h"
 #include "sdk/inc/dtof_driver.h"
 #include "sdk/inc/dtof_endian.h"
-
+#include "sdk/inc/dtof_global_config.h"
 #include "raspinew/dtof_customer.h"
 // #include "stm32/customer/dtof_customer.h"
 // #include "stm32/dev/dtof_hal.c"
-
+// #define DTOF_CHIP_TYPE_L3 0x4120
+// #define DTOF_CHIP_TYPE_A05 0x0001
 #define XTALK_DATA_SIZE 18
 #define DO_OFFSET_CALIBRATION_MODE 2
 #define DO_XTALK_CALIBRATION_MODE 1
@@ -38,7 +39,78 @@ dtof_device_info_t dtof_device_info={
     .frame_id_pre=0,
 };
 
+#define SPECIAL_BYPASS_VALUE 7
+#define SPECIAL_LOOP_VALUE 136
+#define DTOF_ENABLE_DEBUG_MODE 1
+#define DTOF_DISABLE_DEBUG_MODE 0
+#define DTOF_WFI_STATUS_FLAG_ADDR 0x6e
+#define DTOF_WFI_STATUS_FLAG 0xab
+DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag)
+{
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, intr_control_flag, 1), "read reg 0x6e failed\n");
 
+    return DTOF_RET_SUCCESS;
+}
+DTOF_RET dtof_debug_mode_bypass(dtof_uint16_t chip_type)
+{
+    DTOF_RET ret = DTOF_RET_SUCCESS;
+    if (chip_type == DTOF_A05_CHIPID)
+    {
+        // a05使用inner mcu中断里的bypass, 偶发会导致inner mcu crash, 需要特殊处理, 使用外部的bypass, 且bypass前关闭timer, dsp, eyesafe中断, 进入wfi, 唤醒后
+        dtof_uint16_t intr_control_flag;
+        dtof_uint16_t bypassvalue = 0x17b9;
+        DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
+        if (intr_control_flag != DTOF_WFI_STATUS_FLAG)
+        {
+            DTOF_LOG_ERR("intr_control_flag is 0x%x\n", intr_control_flag);
+            ret = DTOF_RET_FAILED;
+        }
+
+        DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
+    }
+    else if (chip_type == DTOF_L3_CHIPID)
+    {
+        DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    }
+    else
+    {
+        DTOF_LOG_ERR("unknown chip type\n");
+        ret = DTOF_RET_FAILED;
+    }
+    return ret;
+}
+void parse_inner_mcu_error_code(dtof_uint32_t error_code)
+{
+#define SYSTEM_ERROR_OTP_CPT_CHECKFAILED  0
+#define SYSTEM_ERROR_OTP_FT_CHECKFAILED  1
+#define SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED  2
+#define SYSTEM_WDT_RESET  3
+#define SYSTEM_05_REG_RESET  4
+#define SYSTEM_ERROR_EYESAFETY  5
+#define SYSTEM_ERROR_OTP_CPA_CHECKFAILED  6
+#define SYSTEM_SMOKE_STAGE1_ERROR  7
+    typedef struct {
+        dtof_uint8_t bit;
+        const char *msg;
+    } error_info_t;
+
+    static const error_info_t error_table[] = {
+        {SYSTEM_ERROR_OTP_CPT_CHECKFAILED, "SYSTEM_ERROR_OTP_CPT_CHECKFAILED"},
+        {SYSTEM_ERROR_OTP_FT_CHECKFAILED, "SYSTEM_ERROR_OTP_FT_CHECKFAILED"},
+        {SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED, "SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED"},
+        {SYSTEM_WDT_RESET, "SYSTEM_WDT_RESET"},
+        {SYSTEM_05_REG_RESET, "SYSTEM_05_REG_RESET"},
+        {SYSTEM_ERROR_EYESAFETY, "SYSTEM_ERROR_EYESAFETY"},
+        {SYSTEM_ERROR_OTP_CPA_CHECKFAILED, "SYSTEM_ERROR_OTP_CPA_CHECKFAILED"},
+        {SYSTEM_SMOKE_STAGE1_ERROR, "SYSTEM_SMOKE_STAGE1_ERROR"},
+    };
+
+    for (size_t i = 0; i < sizeof(error_table) / sizeof(error_table[0]); i++) {
+        if (DTOF_BIT_GET(error_code, error_table[i].bit)) {
+            dtof_printf("%s\n", error_table[i].msg);
+        }
+    }
+}
 // extern device_driver_ops_t device_iic_driver_ops;
 
 void dtof_reg_test() {
@@ -50,10 +122,6 @@ void dtof_reg_test() {
     dtof_reg_burst_write( 0x05, input_buf, 1);
     uint16_t output_buf[1] = {0};
     dtof_reg_burst_read( 0x00, output_buf, 1);
-
-    // uint8_t test_read_result[2];
-    // device_iic_driver_ops.read_block(1, DEVICE_ADDR, test_read_result, 2);
-    // printf("=> test_read_result: %x %x \n", test_read_result[0], test_read_result[1]);
 }
 
 void file_io_test(dtof_uint8_t test_uuid) {
@@ -136,7 +204,8 @@ void dump_hist_log(int dev_handle, dtof_data_dump_func_t dump_func, dtof_uint16_
 
 // 主循环接收命令
 void main_cmd_loop(int serial){
-
+    static dtof_uint16_t is_to_sky_flag = 1;
+    dtof_bool_t first_new_flag = DTOF_TRUE;
     DTOF_RET ret;
     dtof_uint16_t chip_id;
     dtof_uint8_t device_id = 0;
@@ -146,7 +215,8 @@ void main_cmd_loop(int serial){
     dtof_bool_t is_new_flag=DTOF_FALSE;
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
-
+    dtof_uint16_t reg80;
+    dtof_uint32_t status = 0;
     uint8_t byte;
     char cmd_buffer[CMD_BUFFER_SIZE] = {0};
     uint8_t uart_index = 0;
@@ -185,7 +255,7 @@ void main_cmd_loop(int serial){
             {
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-                dtof_sensor_init();
+               DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
@@ -195,26 +265,52 @@ void main_cmd_loop(int serial){
             {
                 // 启动并开始测距（DEBUG模式，输出每一帧的数据，不会自动停止）
                 //DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-                dtof_sensor_init();
+                DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                 is_init = DTOF_TRUE;
+                dtof_reg_burst_read(80, &reg80, 1);
                 dtof_start_distance_measure();
+                if (dtof_get_chip_config()->chip_id == DTOF_A05_CHIPID)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
                 debug_flag = DTOF_TRUE;
             }
             else if (strcmp(cmd_buffer, "e") == 0)
             {
                 // 启动并开始测距（DEBUG模式 + 启动frame_cnt, 前50帧跳过， 到达200帧自动停止）
               //  DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-              dtof_sensor_init(); 
+             DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
               is_init = DTOF_TRUE;
+              dtof_reg_burst_read(80, &reg80, 1);
                 dtof_start_distance_measure();
+                if (dtof_get_chip_config()->chip_id == DTOF_A05_CHIPID)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
                 frame_cnt_flag = DTOF_TRUE;
                 debug_flag = DTOF_TRUE;
             }
             else if (strcmp(cmd_buffer, "t") == 0)
             {
+            STOP_DISTANCE_MEASURE:
                 // 停止测距
                 dtof_stop_distance_measure();
+                if(debug_flag == DTOF_TRUE)
+                {
+                if (dtof_get_chip_config()->chip_id == DTOF_A05_CHIPID)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
+                }
+                
             }
+            else if (strncmp(cmd_buffer, "ri,", 3) == 0)
+                {
+                    int reg_addr = atoi(&cmd_buffer[3]);
+                    uint16_t reg_value;
+                    dtof_read_reg_running(reg_addr, &reg_value);
+                    printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                }
             else if (strncmp(cmd_buffer, "c,", 2) == 0)
             {
                 // "c,<value:int>", 设置b偏移为<value>
@@ -267,29 +363,68 @@ void main_cmd_loop(int serial){
                     rpi_serial_printf(serial,"reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
                 }
             }
+            else if (strncmp(cmd_buffer, "wi,", 3) == 0)
+                {
+                    int reg_addr, reg_value;
+                    if (sscanf(cmd_buffer, "wi,%d,%d", &reg_addr, &reg_value) == 2)
+                    {
+                        if (reg_addr == 300){
+                            is_to_sky_flag = reg_addr;
+                            printf("reg write 0x%x: 0x%04x, set 300->1 for let cg cal to sky \n", reg_addr, reg_value);
+                        }else{
+                            dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
+                            printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                        }
+                    }
+                }
             else if (strcmp(cmd_buffer, "p") == 0)
-            {
-                // 输出chip uuid, distance offset, xtalk data
-                dtof_uint8_t chip_uuid[DTOF_UUID_LENGTH];
-                dtof_int32_t read_distance_offset = 0;
-                dtof_uint16_t xtalk_data_read[XTALK_DATA_SIZE];
-                DTOF_CHECK_WARN(dtof_get_uuid( chip_uuid, DTOF_UUID_LENGTH), "get uuid failed\n");
-                rpi_serial_printf(serial,"chip uuid: ");
-                for (int i = 0; i < DTOF_UUID_LENGTH; i++)
-                {
-                    rpi_serial_printf(serial,"%d, ", chip_uuid[i]); // TODO
+             {
+                    printf("chip uuid: ");
+                    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+                    {
+                        printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+                    }
+                    printf("\n");
+                    printf("otp list:\n");
+                    dtof_uint8_t otp_data[128];
+                    //DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+                    for (int i = 0; i < 128; i++)
+                    {
+                        printf("%d, ", otp_data[i]);
+                    }
+                    printf("\n");
+                    // dtof_read_otp
+                    dtof_ft_data_t ft_data_read;
+                    dtof_bool_t is_legal_data = DTOF_FALSE;
+                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                    if (is_legal_data == DTOF_FALSE)
+                    {
+                        printf("ft data is illegal, all 0xFF\n");
+                    }
+                    else
+                    {
+                        #ifdef DTOF_FT_CALIBRATE_BINOFFSET
+                        printf("bin_offset = %u\n", ft_data_read.bin_offset);
+                        #endif
+                        #ifdef DTOF_FT_CALIBRATE_REFSPAD
+                        printf("ref_spad = %u\n", ft_data_read.ref_spad);
+                        #endif
+                        #ifdef DTOF_FT_CALIBRATE_CG
+                        printf("cg_reg: ");
+                        dtof_uint16_t cg_reg;
+                        for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+                        {
+                            cg_reg = ft_data_read.cg_data[i * 2 + 1] * 256 + ft_data_read.cg_data[i * 2];
+                            printf("%u, ", cg_reg);
+                        }
+                        printf("\n");
+                        #endif
+                        #ifdef DTOF_FT_CALIBRATE_B
+                        printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
+                        #endif
+                        }
+                    parse_inner_mcu_error_code(status);
                 }
-                rpi_serial_printf(serial,"\n");
-                dtof_get_distance_offset_from_flash(device_id, &read_distance_offset);
-                rpi_serial_printf(serial,"distance offset = %d\n", read_distance_offset);
-                dtof_get_xtalk_data_from_flash(device_id, xtalk_data_read);
-                rpi_serial_printf(serial,"xtalk data = ");
-                for (int i = 0; i < XTALK_DATA_SIZE; i++)
-                {
-                    rpi_serial_printf(serial,"%d, ", xtalk_data_read[i]);
-                }
-                rpi_serial_printf(serial,"\n");
-            }   
             else if (strcmp(cmd_buffer, "cal") == 0)
             {   
                 // 输出 distance_offset
@@ -316,6 +451,56 @@ void main_cmd_loop(int serial){
                 dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
                 // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
             }
+            // else if (strncmp(cmd_buffer, "ft,", 3) == 0)
+            //     {
+            //         dtof_uint16_t ft_cali_type;
+            //         dtof_uint16_t ft_cali_param;
+
+            //         if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
+            //         {
+            //             // 设置校准类型
+            //             dtof_set_ft_calibration_type(ft_cali_type);
+            //             dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
+            //             DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
+            //             if (ret == DTOF_RET_SUCCESS) {
+            //                 dtof_ft_cali_param_t ft_cali_param;
+            //                 dtof_bool_t is_legal_data = DTOF_FALSE;
+            //                 dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
+            //                 dtof_printf("FT success:\n");
+            //                 if (is_legal_data != DTOF_TRUE)
+            //                 {
+            //                     dtof_printf("ft data is illegal\n");
+            //                     continue;
+            //                 }
+            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+            //                 {
+            //                     dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
+            //                 }
+            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+            //                 {
+            //                     dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
+            //                 }
+            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+            //                 {
+            //                     dtof_printf("cg_reg: ");
+            //                     dtof_uint16_t cg_reg;
+            //                     for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            //                     {
+            //                         cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
+            //                         dtof_printf("%u, ", cg_reg);
+            //                     }
+            //                     dtof_printf("\n");
+            //                 }
+            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+            //                 {
+            //                     dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
+            //                 }
+            //             }
+            //             else{
+            //                 dtof_printf("ft calibration failed\n");
+            //             }
+            //         }
+            //     }
             else if (strcmp(cmd_buffer, "x") == 0)
             {
                 // 写入串扰数据并原样输出ram？
@@ -387,7 +572,35 @@ void main_cmd_loop(int serial){
                 DTOF_CHECK_RET(dtof_set_mcu_status( DTOF_MCU_STATE_WAKEUP), "set mcu sleep failed\n");
                 
             }
-
+            else if (strcmp(cmd_buffer, "init") == 0)
+                {
+                    dtof_init_device_info();
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                }
+                else if (strcmp(cmd_buffer, "uuid") == 0)
+                {
+                    dtof_uint8_t chip_uuid_buffer[DTOF_UUID_LENGTH];
+                    DTOF_CHECK_WARN(dtof_get_uuid(chip_uuid_buffer, DTOF_UUID_LENGTH), "get uuid failed\n");
+                    printf("chip uuid: ");
+                    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+                    {
+                        printf("%d, ", chip_uuid_buffer[i]);
+                    }
+                }
+                else if (strcmp(cmd_buffer, "error_code") == 0)
+                {
+                    dtof_uint32_t error_code;
+                    DTOF_CHECK_WARN(dtof_get_error_info(&error_code), "get error info failed\n");
+                    printf("error code: 0x%x\n", error_code);
+                }
+                else if (strncmp(cmd_buffer, "osc_cal,", 8) == 0)
+                {
+                    int osc_cal_mode;
+                    if (sscanf(cmd_buffer, "osc_cal,%d", &osc_cal_mode) == 1)
+                    {
+                        DTOF_CHECK_WARN(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, (osc_cal_mode << 12) | 0x0388), "dtof start failed\n");
+                    }
+                }
             
 
 
@@ -431,8 +644,14 @@ void main_cmd_loop(int serial){
         // on_loop_step_done 每次循环执行
         if (is_init == DTOF_TRUE)
         {
-            // 检查是否有中断触发
-            // rpi_gpio_debug_up_down(1);
+#ifdef DTOF_INTERRUPT_MODE
+            if (dtof_get_interrupt_flag() == DTOF_TRUE)
+            {
+                is_new_flag = DTOF_TRUE;
+                dtof_get_distance_result(&distance_result);
+                dtof_set_interrupt_flag(DTOF_FALSE);
+            }
+#elif defined(DTOF_POLLING_MODE)
             ret = dtof_get_distance_result(&distance_result);
             
             frame_id=distance_result.frame_id;
@@ -459,15 +678,30 @@ void main_cmd_loop(int serial){
            }
           
             
-
+#endif
         }  
+#ifdef DTOF_POLLING_MODE
+        if (dtof_get_chip_config()->chip_id== DTOF_A05_CHIPID)
+        {
+            if (first_new_flag == DTOF_TRUE)
+            {
+                if (debug_flag == DTOF_TRUE)
+                {
+                    if ((reg80 != distance_result.frame_id) && (is_new_flag != DTOF_TRUE))
+                    {
+                        dtof_io_interaction(0x30, 0x01);
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                        first_new_flag = DTOF_FALSE;
+                    }
+                }
+            }
+        }
+#endif
 
 
         
-        if (is_new_flag == DTOF_TRUE)
-        {   
-            is_new_flag=DTOF_FALSE;
-            
+       if (is_new_flag == DTOF_TRUE)
+        {
             if (debug_flag == DTOF_TRUE)
             {
                 if (frame_cnt_flag == DTOF_TRUE)
@@ -475,23 +709,22 @@ void main_cmd_loop(int serial){
                     frame_cnt++;
                     if (frame_cnt < 50)
                     {
+                        if (dtof_get_chip_config()->chip_id == DTOF_A05_CHIPID)
+                        {
+                            dtof_io_interaction(0x30, 0x01);
+                            DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                        }
                         goto PASS;
                     }
-                    if (frame_cnt == 200)
-                    {
-                        debug_flag = DTOF_FALSE;
-                        frame_cnt = 0;
-                        dtof_stop_distance_measure();
-                        DTOF_LOG("frame_cnt == 200, stopped.");
-                    }
                 }
-                
-                // bypass, read debug info
-#define TOTAL_REG_NUM 255
-                dtof_set_mcu_status( DTOF_MCU_STATE_SLEEP_DIRECT);
+                if (debug_flag == DTOF_TRUE)
+                {
+                    DTOF_CHECK_WARN(dtof_debug_mode_bypass(dtof_get_chip_config()->chip_id), "debug mode bypass failed\n");
+                }
 
+#define TOTAL_REG_NUM 255
                 dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
-                dump_hist_log(serial, rpi_serial_send, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+                dump_hist_log(serial, rpi_serial_send,buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
                 dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
                 dump_hist_log(serial, rpi_serial_send, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
                 dtof_dsp_fifo_read(0, buffer, DTOF_SINGLE_FIFO_LEN);
@@ -500,14 +733,34 @@ void main_cmd_loop(int serial){
                 dump_hist_log(serial, rpi_serial_send, buffer, TOTAL_REG_NUM);
 
                 dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+
+                if (dtof_get_chip_config()->chip_id == DTOF_A05_CHIPID)
+                {
+                    dtof_io_interaction(0x30, 0x01);
+                    DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                }
+
+                if (frame_cnt_flag == DTOF_TRUE)
+                {
+                    if (frame_cnt == 200)
+                    {
+                        debug_flag = DTOF_FALSE;
+                        frame_cnt_flag = DTOF_FALSE;
+                        frame_cnt = 0;
+                        rpi_serial_printf(serial,"%d, %d, %d, %d, %.6f, %d\n",
+                distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.reserved[6]
+            );
+                        is_new_flag = DTOF_FALSE;
+                        goto STOP_DISTANCE_MEASURE;
+                    }
+                }
             }
-            rpi_serial_printf(serial,
+             rpi_serial_printf(serial,
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.reserved[6]
             );
-            
-            // rpi_gpio_debug_up_down(0);
-        }      
+            is_new_flag = DTOF_FALSE;
+        }
         PASS:
         {
             
@@ -519,8 +772,9 @@ void main_cmd_loop(int serial){
 int main() {
     // TODO: 编译前 需要先查一下当前的 arm 是 32 还是 64的，然后将makefile中的 lds 做修改，指定为是 64的 或 32的
     int ret;
-    extern int rpi_gpio_init(void);
     
+    extern int rpi_gpio_init(void);
+  
     ret = rpi_gpio_init();
     if(ret){
         printf("Failed to init rpi gpio");
@@ -528,9 +782,11 @@ int main() {
     }
 
     rpi_i2c_init(1);
-
+    
     // 初始化串口
     int serial = rpi_serial_init(SERIAL_PORT);
+    dtof_sensor_init();
+    
     printf("serial init...\n");
 
     // 主循环接收命令
