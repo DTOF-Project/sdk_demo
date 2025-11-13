@@ -9,6 +9,7 @@
 #include "inc/dtof_log.h"
 #include "inc/dtof_driver.h"
 #include "inc/dtof_endian.h"
+#include "inc/dtof_common.h"
 #include "inc/dtof_calibration_ft.h"
 #include "inc/dtof_global_config.h"
 #include "inc/dev/dtof_dev_api.h"
@@ -133,6 +134,77 @@ DTOF_RET dtof_debug_mode_bypass(dtof_chip_type_t chip_type)
     return ret;
 }
 
+void parse_inner_mcu_error_code(dtof_uint32_t error_code)
+{
+#define SYSTEM_ERROR_OTP_CPT_CHECKFAILED  0
+#define SYSTEM_ERROR_OTP_FT_CHECKFAILED  1
+#define SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED  2
+#define SYSTEM_WDT_RESET  3
+#define SYSTEM_05_REG_RESET  4
+#define SYSTEM_ERROR_EYESAFETY  5
+#define SYSTEM_ERROR_OTP_CPA_CHECKFAILED  6
+#define SYSTEM_SMOKE_STAGE1_ERROR  7
+    typedef struct {
+        dtof_uint8_t bit;
+        const char *msg;
+    } error_info_t;
+
+    static const error_info_t error_table[] = {
+        {SYSTEM_ERROR_OTP_CPT_CHECKFAILED, "SYSTEM_ERROR_OTP_CPT_CHECKFAILED"},
+        {SYSTEM_ERROR_OTP_FT_CHECKFAILED, "SYSTEM_ERROR_OTP_FT_CHECKFAILED"},
+        {SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED, "SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED"},
+        {SYSTEM_WDT_RESET, "SYSTEM_WDT_RESET"},
+        {SYSTEM_05_REG_RESET, "SYSTEM_05_REG_RESET"},
+        {SYSTEM_ERROR_EYESAFETY, "SYSTEM_ERROR_EYESAFETY"},
+        {SYSTEM_ERROR_OTP_CPA_CHECKFAILED, "SYSTEM_ERROR_OTP_CPA_CHECKFAILED"},
+        {SYSTEM_SMOKE_STAGE1_ERROR, "SYSTEM_SMOKE_STAGE1_ERROR"},
+    };
+
+    for (size_t i = 0; i < sizeof(error_table) / sizeof(error_table[0]); i++) {
+        if (DTOF_BIT_GET(error_code, error_table[i].bit)) {
+            dtof_printf("%s\n", error_table[i].msg);
+        }
+    }
+}
+
+
+// void parse_inner_mcu_error_code(dtof_uint32_t error_code)
+// {
+
+//     if(DTOF_BIT_GET(error_code, SYSTEM_ERROR_OTP_CPT_CHECKFAILED))
+//     {
+//         dtof_printf("SYSTEM_ERROR_OTP_CPT_CHECKFAILED\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_ERROR_OTP_FT_CHECKFAILED))
+//     {
+//         dtof_printf("SYSTEM_ERROR_OTP_FT_CHECKFAILED\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED))
+//     {
+//         dtof_printf("SYSTEM_ERROR_OTP_USERMODE_CHECKFAILED\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_WDT_RESET))
+//     {
+//         dtof_printf("SYSTEM_WDT_RESET\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_05_REG_RESET))
+//     {
+//         dtof_printf("SYSTEM_05_REG_RESET\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_ERROR_EYESAFETY))
+//     {
+//         dtof_printf("SYSTEM_ERROR_EYESAFETY\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_ERROR_OTP_CPA_CHECKFAILED))
+//     {
+//         dtof_printf("SYSTEM_ERROR_OTP_CPA_CHECKFAILED\n");
+//     }
+//     if(DTOF_BIT_GET(error_code, SYSTEM_SMOKE_STAGE1_ERROR))
+//     {
+//         dtof_printf("SYSTEM_SMOKE_STAGE1_ERROR\n");
+//     }
+// }
+
 /**
  * @brief
  * @return int
@@ -149,6 +221,7 @@ int main(void)
     dtof_bool_t first_new_flag = DTOF_TRUE; // polling模式下, 不取第一帧, debug模式下需要特殊处理, 因为新的bypass交互流程
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
+    dtof_uint32_t status = 0;
 
     DTOF_CHECK_WARN(platform_init(), "platform init failed\n");
 
@@ -161,6 +234,9 @@ int main(void)
 
     // save chip type
     DTOF_CHECK_WARN(ds_get_chip_type(dtof_get_chip_config()->chip_id, &dev->chip_type), "get chip type failed\n");
+
+    // get error info
+    DTOF_CHECK_WARN(dtof_get_error_info(&status), "get error info failed\n");
 
     uint8_t byte;
     char uart_buf[32] = {0};
@@ -311,6 +387,7 @@ int main(void)
                         printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
                         #endif
                         }
+                    parse_inner_mcu_error_code(status);
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
                 {
