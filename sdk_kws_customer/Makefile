@@ -4,7 +4,8 @@ CC = gcc
 CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
-LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm64-64.lds
+LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm64-64.lds \
+sdk/src/lib/dtof_ft.a
 
 # 目录设置
 BUILD_DIR = Build

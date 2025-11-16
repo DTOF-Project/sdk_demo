@@ -31,6 +31,7 @@ typedef struct {
     dtof_uint16_t first_frame;
     dtof_uint16_t frame_id_pre;
 #endif
+dtof_uint16_t ft_calibration_type
 } dtof_device_info_t;
 
 typedef struct {
@@ -41,6 +42,10 @@ typedef struct {
     dtof_uint16_t bin_offset;
 } dtof_ft_data_t;
 
+typedef struct {
+    dtof_uint16_t ft_calibration_type;
+    dtof_ft_data_t dtof_ft_data;
+} dtof_ft_cali_param_t;
 
 
 

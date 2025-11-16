@@ -13,7 +13,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+typedef enum {
+    DTOF_CHIP_TYPE_A05 = 0x0001,
+    DTOF_CHIP_TYPE_L3 = 0x4120,
+    DTOF_CHIP_TYPE_UNKNOWN = 0xffff,
+} dtof_chip_type_t;
 /**
  * @brief 批量写入寄存器
  * @param reg_addr 起始寄存器地址

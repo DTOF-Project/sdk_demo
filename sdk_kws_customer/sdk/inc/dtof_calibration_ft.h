@@ -1,15 +1,17 @@
 #ifndef _DTOF_CALIBRATION_FT_H_
 #define _DTOF_CALIBRATION_FT_H_
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// #define DTOF_FT_CALIBRATE_BINOFFSET
-// #define DTOF_FT_CALIBRATE_REFSPAD
-#define DTOF_FT_CALIBRATE_CG
-// #define DTOF_FT_CALIBRATE_B
-
+#define DTOF_FT_CALIBRATE_BINOFFSET 0
+#define DTOF_FT_CALIBRATE_REFSPAD 1 
+#define DTOF_FT_CALIBRATE_CG 2
+#define DTOF_FT_CALIBRATE_B 3
+#define DTOF_REF_BIN_OFFSET_STEP 32
+#define DTOF_REF_BIN_OFFSET_SUB 29
 #include "inc/dtof_base_type.h"
 #include "inc/dtof_api.h"
 #include "src/lib/dtof_ft.h"

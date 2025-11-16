@@ -25,10 +25,10 @@ DTOF_RET dtof_do_ft_calibration(dtof_uint16_t otp_ref_spad_mask, dtof_uint16_t d
     cal_data.ref_spad_cal.otp_ref_spad_mask = otp_ref_spad_mask;
     ret = dtof_ref_spad_calibrate(
         cal_data.ref_spad_cal.otp_ref_spad_mask,
-        &cal_data.ref_spad_cal.ref_spad_cal,
+        &cal_data.ref_spad_cal.ref_spad,
         spad_info);
     DTOF_CHECK_RET(ret, "ft refspad cal failed\n");
-    ft_data.ref_spad = cal_data.ref_spad_cal.ref_spad_cal;
+    ft_data.ref_spad = cal_data.ref_spad_cal.ref_spad;
 #endif
 
 #ifdef DTOF_FT_CALIBRATE_BINOFFSET

@@ -25,6 +25,8 @@
 #include "sdk/inc/dtof_endian.h"
 #include "sdk/inc/dtof_global_config.h"
 #include "raspinew/dtof_customer.h"
+#include "sdk/inc/dtof_calibration_ft.h"
+#include "sdk/src/lib/dtof_ft.h"
 // #include "stm32/customer/dtof_customer.h"
 // #include "stm32/dev/dtof_hal.c"
 // #define DTOF_CHIP_TYPE_L3 0x4120
@@ -35,10 +37,15 @@
 #define CMD_BUFFER_SIZE 256
 
 dtof_device_info_t dtof_device_info={
+    .chip_is_init =DTOF_FALSE,
     .first_frame=1,
     .frame_id_pre=0,
+    .ft_calibration_type =0
 };
-
+void dtof_set_ft_calibration_type(dtof_uint16_t type)
+{
+    dtof_device_info.ft_calibration_type = type;
+}
 #define SPECIAL_BYPASS_VALUE 7
 #define SPECIAL_LOOP_VALUE 136
 #define DTOF_ENABLE_DEBUG_MODE 1
@@ -311,26 +318,6 @@ void main_cmd_loop(int serial){
                     dtof_read_reg_running(reg_addr, &reg_value);
                     printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
                 }
-            else if (strncmp(cmd_buffer, "c,", 2) == 0)
-            {
-                // "c,<value:int>", 设置b偏移为<value>
-                int value = atoi(&cmd_buffer[2]);
-                rpi_serial_printf(serial,"set b offset: %d\n", value);
-                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // TODO
-                dtof_set_distance_offset_to_flash(device_id, value);
-            }
-            else if (strncmp(cmd_buffer, "r,", 2) == 0)
-            {   
-                // "r,<reg_addr:int>", 读地址为<reg_addr>的寄存器的值
-                int reg_addr = atoi(&cmd_buffer[2]);
-                uint16_t reg_value;
-                
-                dtof_reg_burst_read( reg_addr, &reg_value, 1);
-                rpi_serial_printf(serial, "reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
-                // rpi_serial_printf(serial,
-                // "reg read 0x%x: 0x%4x\n", reg_addr, reg_value
-                // );
-            }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
             {
                 // "rb,<reg_addr:int>,<reg_num:int>", 批量读地址为<reg_addr>的寄存器中，长度为<reg_num>的值
@@ -351,17 +338,6 @@ void main_cmd_loop(int serial){
                     rpi_serial_printf(serial,"burst reg read 0x%04x end.\n", reg_addr);
                 }
                 DTOF_CHECK_RET(dtof_set_mcu_status( DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
-            }
-            else if (strncmp(cmd_buffer, "w,", 2) == 0)
-            {
-                // "w,<reg_addr:int>,<reg_value:int>" 向<reg_addr>寄存器写<reg_value>
-                int reg_addr, reg_value;
-                if (sscanf(cmd_buffer, "w,%d,%d", &reg_addr, &reg_value) == 2)
-                {   
-                    dtof_reg_burst_write( reg_addr, (uint16_t *)&reg_value, 1);
-                    // dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 cmd_buffer 中解析的值
-                    rpi_serial_printf(serial,"reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
-                }
             }
             else if (strncmp(cmd_buffer, "wi,", 3) == 0)
                 {
@@ -425,15 +401,6 @@ void main_cmd_loop(int serial){
                         }
                     parse_inner_mcu_error_code(status);
                 }
-            else if (strcmp(cmd_buffer, "cal") == 0)
-            {   
-                // 输出 distance_offset
-                // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
-             //   DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_OFFSET_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-             dtof_sensor_init();   
-             is_init = DTOF_TRUE;
-               // rpi_serial_printf(serial,"distance offset = %d\n", dtof_get_distance_offset(device_id));
-            }
             else if (strcmp(cmd_buffer, "clear") == 0)
             {
                 // 清除flash（flash单点写入时只能从1置0，因此写入数据必须先置1）
@@ -446,61 +413,60 @@ void main_cmd_loop(int serial){
                 // 从flash获取xtalk_data
                 // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
               //  DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-              dtof_sensor_init();
-              uint16_t xtalk_data[18];
+              uint16_t xtalk_data[18];  
                 dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
                 // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
             }
-            // else if (strncmp(cmd_buffer, "ft,", 3) == 0)
-            //     {
-            //         dtof_uint16_t ft_cali_type;
-            //         dtof_uint16_t ft_cali_param;
+            else if (strncmp(cmd_buffer, "ft,", 3) == 0)
+                {
+                    dtof_uint16_t ft_cali_type;
+                    dtof_uint16_t ft_cali_param;
 
-            //         if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
-            //         {
-            //             // 设置校准类型
-            //             dtof_set_ft_calibration_type(ft_cali_type);
-            //             dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-            //             DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
-            //             if (ret == DTOF_RET_SUCCESS) {
-            //                 dtof_ft_cali_param_t ft_cali_param;
-            //                 dtof_bool_t is_legal_data = DTOF_FALSE;
-            //                 dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
-            //                 dtof_printf("FT success:\n");
-            //                 if (is_legal_data != DTOF_TRUE)
-            //                 {
-            //                     dtof_printf("ft data is illegal\n");
-            //                     continue;
-            //                 }
-            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
-            //                 {
-            //                     dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
-            //                 }
-            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
-            //                 {
-            //                     dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
-            //                 }
-            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
-            //                 {
-            //                     dtof_printf("cg_reg: ");
-            //                     dtof_uint16_t cg_reg;
-            //                     for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
-            //                     {
-            //                         cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
-            //                         dtof_printf("%u, ", cg_reg);
-            //                     }
-            //                     dtof_printf("\n");
-            //                 }
-            //                 if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
-            //                 {
-            //                     dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
-            //                 }
-            //             }
-            //             else{
-            //                 dtof_printf("ft calibration failed\n");
-            //             }
-            //         }
-            //     }
+                    if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
+                    {
+                        // 设置校准类型
+                        dtof_set_ft_calibration_type(ft_cali_type);
+                        dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
+                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
+                        if (ret == DTOF_RET_SUCCESS) {
+                            dtof_ft_cali_param_t ft_cali_param;
+                            dtof_bool_t is_legal_data = DTOF_FALSE;
+                            dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                            dtof_printf("FT success:\n");
+                            if (is_legal_data != DTOF_TRUE)
+                            {
+                                dtof_printf("ft data is illegal\n");
+                                continue;
+                            }
+                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+                            {
+                                dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
+                            }
+                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+                            {
+                                dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
+                            }
+                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+                            {
+                                dtof_printf("cg_reg: ");
+                                dtof_uint16_t cg_reg;
+                                for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+                                {
+                                    cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
+                                    dtof_printf("%u, ", cg_reg);
+                                }
+                                dtof_printf("\n");
+                            }
+                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+                            {
+                                dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
+                            }
+                        }
+                        else{
+                            dtof_printf("ft calibration failed\n");
+                        }
+                    }
+                }
             else if (strcmp(cmd_buffer, "x") == 0)
             {
                 // 写入串扰数据并原样输出ram？
@@ -533,45 +499,6 @@ void main_cmd_loop(int serial){
                 // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
             }
 #endif
-            else if (strcmp(cmd_buffer, "regtest") == 0) {
-                // 测试寄存器读写api
-                dtof_reg_test(device_id);
-            }
-            else if (strcmp(cmd_buffer, "filetest") == 0) {
-                // 测试文件读写api
-                file_io_test(0x0a);
-            }
-            else if (strcmp(cmd_buffer, "tt") == 0) {
-                // 测试文件读写api
-                
-                // DTOF_LOG("DTOF_LOG\n");
-                // printf("printf\n");
-                rpi_serial_printf(serial,"start test\n");
-                DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-                uint16_t reg_value;
-
-                for (int i = 0; i<10000;i++){
-                    dtof_reg_burst_read( 0, &reg_value, 1);
-                    if (reg_value != 0x4120){
-                        rpi_serial_printf(serial,"read error value is %x\n", reg_value);
-                    }
-
-                }
-                rpi_serial_printf(serial,"end read test for 10000 times\n");
-                
-                
-                
-            }
-            else if (strcmp(cmd_buffer, "sleep") == 0) {
-                // 测试文件读写api
-                DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
-                
-            }
-            else if (strcmp(cmd_buffer, "wake") == 0) {
-                // 测试文件读写api
-                DTOF_CHECK_RET(dtof_set_mcu_status( DTOF_MCU_STATE_WAKEUP), "set mcu sleep failed\n");
-                
-            }
             else if (strcmp(cmd_buffer, "init") == 0)
                 {
                     dtof_init_device_info();
