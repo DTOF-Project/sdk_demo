@@ -119,7 +119,7 @@ int main(void)
     extern int stm32_uart_read(int uart_id, void *buf, int nbyte);
 
     uint8_t byte;
-    char uart_buf[32] = {0};
+    char uart_buf[128] = {0};
     uint8_t uart_index = 0;
 
     dtof_bool_t frame_cnt_flag = DTOF_FALSE;
@@ -270,6 +270,64 @@ int main(void)
 
                     DTOF_CHECK_RET(dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
                 }
+                else if (strncmp(uart_buf, "wft,", 4) == 0)
+                {
+                #define READ_FT_DATA_NUM 19
+                    // 复制一份，因为 strtok 会修改字符串
+                    char buf_copy[128];
+                    strncpy(buf_copy, uart_buf, sizeof(buf_copy));
+                    buf_copy[sizeof(buf_copy) - 1] = '\0';
+
+                    char *token = strtok(buf_copy, ","); // 第一个 token: "r18"
+                    int values[READ_FT_DATA_NUM];
+                    int count = 0;
+
+                    while ((token = strtok(NULL, ",")) != NULL) {
+                        if (count >= READ_FT_DATA_NUM) {
+                            printf("Too many numbers, need exactly 19\n");
+                            continue;
+                        }
+
+                        char *endptr;
+                        long val = strtol(token, &endptr, 10);
+                        if (*endptr != '\0') {
+                            printf("Invalid number: %s\n", token);
+                            continue;
+                        }
+
+                        values[count++] = (int)val;
+                    }
+
+                    if (count != READ_FT_DATA_NUM) {
+                        printf("Need 19 numbers, but got %d\n", count);
+                        continue;
+                    }
+
+                    printf("set ft data:\n");
+                    for (int i = 0; i < READ_FT_DATA_NUM; i++) {
+                        printf("%d, ", values[i]);
+                    }
+                    printf("\n");
+
+                    stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM);
+                    stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM);
+
+                    #define READ_XTALK_DATA_CNT 18
+                    #define READ_B_DATA_CNT 1
+                    uint16_t xtalk_data[READ_XTALK_DATA_CNT];
+                    int32_t b_value = values[READ_FT_DATA_NUM-1];
+                    extern DTOF_RET dtof_set_xtalk_data(dtof_uint8_t device_id, dtof_uint16_t* xtalk_data);
+                    for(int i = 0; i < READ_XTALK_DATA_CNT; i++)
+                    {
+                        xtalk_data[i] = values[i];
+                    }
+                    dtof_set_xtalk_data_from_flash(device_id, xtalk_data, -4, 1);
+                    dtof_set_xtalk_data(device_id, xtalk_data);
+
+                    dtof_set_distance_offset(device_id, b_value);
+                    dtof_set_distance_offset_to_flash(device_id, b_value);
+                }
+
                 else if (strcmp(uart_buf, "v") == 0)
                 {
                     DTOF_LOG("sdk version: %s\n", dtof_get_sdk_version());
