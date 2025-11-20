@@ -23,6 +23,7 @@ TARGET = $(BIN_DIR)/my_program  # 定义最终目标文件（可根据需要修�
 SRC = $(wildcard raspinew/*.c)\
       $(wildcard sdk/**/*.c) \
 	  $(wildcard sdk/**/**/*.c)
+	  
 #       $(CJSON_SRC)
 
 # SRC := $(filter-out raspinew/command_receiver.c raspinew/dtof_frame_control.c raspinew/dtof_interrupt_handler.c, $(SRC))
