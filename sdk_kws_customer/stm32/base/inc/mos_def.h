@@ -29,12 +29,12 @@
 // add for UT
 #if !defined(__linux__) && !defined(WIN32)
 struct timespec {
-    time_t tv_sec;
+    timer_t tv_sec;
     uint64_t tv_nsec;
 };
 struct timeval
 {
-  time_t tv_sec;
+  timer_t tv_sec;
   long tv_usec;
 };
 #endif   //  __linux__

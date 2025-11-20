@@ -223,6 +223,17 @@ int main(void)
                         printf("%d, ", xtalk_data_read[i]);
                     }
                     printf("\n");
+                    printf("otp list:\n");
+                    dtof_uint8_t otp_data[128];
+                    DTOF_CHECK_RET(dtof_read_otp(device_id, 0, otp_data, 128), "read otp failed\n");
+                    for (int i = 0; i < 128; i++)
+                    {
+                        printf("%d, ", otp_data[i]);
+                    }
+                    printf("\n");
+                    extern dtof_int16_t g_pos_cal_result;
+                    extern dtof_uint16_t g_maxratio_cal_result;
+                    printf("pos_cal_result = %d, maxratio_cal_result = %d\n", g_pos_cal_result, g_maxratio_cal_result);
                 }
                 else if (strcmp(uart_buf, "cal") == 0)
                 {

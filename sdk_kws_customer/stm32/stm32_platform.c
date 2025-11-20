@@ -195,7 +195,7 @@ int gettimeofday(struct timeval *tp, void *tzp)
 }
 
 
-time_t time(time_t *calptr)
+timer_t time(timer_t *calptr)
 {
     struct timeval tp;
     int ret;
@@ -208,6 +208,6 @@ time_t time(time_t *calptr)
         }
         return tp.tv_sec;
     }
-    return (time_t)-1;
+    return (timer_t)-1;
 }
 

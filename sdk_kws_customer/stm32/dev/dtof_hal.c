@@ -1,6 +1,7 @@
 #include "inc/dtof_base_type.h"
 #include "inc/dtof_driver.h"
 #include "inc/dtof_log.h"
+#include "inc/dtof_api.h"
 #include "dtof_reg.h"
 #include "dtof_hal.h"
 
@@ -161,3 +162,43 @@ DTOF_RET dtof_write_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t reg_data)
 
     return ret;
 }
+
+DTOF_RET dtof_read_otp(dtof_uint8_t device_id, dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len){
+    DTOF_RET ret;
+    dtof_uint16_t reg3;
+    dtof_addressREG3_t *reg3_p = (dtof_addressREG3_t *)&reg3;
+    dtof_uint16_t temp;
+    dtof_uint16_t cfgDoneR_backup;
+    temp = 0x800 + offset;
+
+    dtof_set_mcu_status(device_id, DTOF_MCU_STATE_SLEEP_DIRECT);
+    DTOF_CHECK_RET(dtof_reg_burst_read(device_id, DTOF_REG3, &reg3, 1), "read reg 3 fail");
+    cfgDoneR_backup = reg3_p->cfgDoneR;
+    reg3_p->cfgDoneR = 0;
+    DTOF_CHECK_RET(dtof_reg_burst_write(device_id, DTOF_REG3, &reg3, 1), "write reg 3 fail");
+
+    // otp_read_enable(DTOF_TRUE);
+    ret = dtof_reg_burst_write(device_id, DTOF_REG254, &temp, 1);
+    if(ret != DTOF_RET_SUCCESS)
+    {
+        return ret;
+    }
+    for (dtof_uint16_t i = 0; i < len; i++)
+    {
+        ret = dtof_reg_burst_read(device_id, DTOF_REG255, &temp, 1);
+        if(ret != DTOF_RET_SUCCESS)
+        {
+            return ret;
+        }
+        *(buf + i) =  temp&0xff;
+    }
+    temp = 0x0000;
+    ret = dtof_reg_burst_write(device_id, DTOF_REG254, &temp, 1);
+
+    reg3_p->cfgDoneR = cfgDoneR_backup;
+    DTOF_CHECK_RET(dtof_reg_burst_write(device_id, DTOF_REG3, &reg3, 1), "write reg 3 backup fail");
+    // otp_read_enable(DTOF_FALSE);
+    dtof_set_mcu_status(device_id, DTOF_MCU_STATE_WAKEUP);
+	return ret;
+}
+
