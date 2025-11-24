@@ -9,6 +9,7 @@
 #include "inc/dtof_endian.h"
 #include "inc/dtof_global_config.h"
 #include "inc/dtof_calibration_ft.h"
+#include "inc/dev/dtof_dev_api.h"
 
 #include "application/inc/soc_version.h"
 #include "application/inc/app_cmd.h"
@@ -195,6 +196,7 @@ void app_cmd_print_chip_info(const char *cmd) {
             dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
         }
     }
+    dtof_parse_inner_mcu_error_code();
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
