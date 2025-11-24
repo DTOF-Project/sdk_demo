@@ -112,37 +112,37 @@ DTOF_RET dtof_dsp_fifo_read(dtof_uint16_t addr_offset, dtof_uint16_t * value_p, 
 }
 
 DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len){
-    DTOF_RET ret;
     dtof_uint16_t reg3;
-    dtof_uint16_t bypass = 0x17b9;
     dtof_addressREG3_t *reg3_p = (dtof_addressREG3_t *)&reg3;
+    dtof_uint16_t cfgdone_backup;
+    dtof_uint16_t ram_start;
+    dtof_uint16_t ram_start_backup;
     dtof_uint16_t temp;
-    temp = 0x800 + offset;
+    ram_start = 0x800 + offset;
 
-    dtof_reg_burst_write(0x05, &bypass, 1);
-    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG3, &reg3, 1), "read reg 3 fail");
+    // disable cfgdone
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG3, &reg3, 1), "read reg 3 fail\n");
+    cfgdone_backup = reg3_p->cfgDoneR;
     reg3_p->cfgDoneR = 0;
-    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail");
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail\n");
 
-    // otp_read_enable(DTOF_TRUE);
-    ret = dtof_reg_burst_write(DTOF_REG254, &temp, 1);
-    if(ret != DTOF_RET_SUCCESS)
-    {
-        return ret;
-    }
+    // set otp start addr
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG254, &ram_start_backup, 1), "read reg 254 fail\n");
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG254, &ram_start, 1), "write reg 254 fail\n");
+
+    // read otp
     for (dtof_uint16_t i = 0; i < len; i++)
     {
-        ret = dtof_reg_burst_read(DTOF_REG255, &temp, 1);
-        if(ret != DTOF_RET_SUCCESS)
-        {
-            return ret;
-        }
-        *(buf + i) =  temp&0xff;
+        DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG255, &temp, 1), "read reg 255 fail\n");
+        *(buf + i) =  temp & 0xff;
     }
-    temp = 0x0000;
-    ret = dtof_reg_burst_write(DTOF_REG254, &temp, 1);
-    // otp_read_enable(DTOF_FALSE);
-	return ret;
+
+    // restore reg
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG254, &ram_start_backup, 1), "write reg 254 fail\n");
+    reg3_p->cfgDoneR = cfgdone_backup;
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail\n");
+
+	return DTOF_RET_SUCCESS;
 }
 
 // TOF_RET dtof_read_reg_running(dtof_uint16_t reg_addr, dtof_uint16_t *reg_data)

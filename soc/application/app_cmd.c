@@ -155,7 +155,9 @@ void app_cmd_print_chip_info(const char *cmd) {
     dtof_printf("\n");
     dtof_printf("otp list:\n");
     dtof_uint8_t otp_data[128];
+    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
     DTOF_CHECK_WARN(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+    dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP);
     for (int i = 0; i < 128; i++)
     {
         dtof_printf("%d, ", otp_data[i]);
