@@ -351,42 +351,50 @@ int main(void)
                     printf("\n");
                     printf("otp list:\n");
                     dtof_uint8_t otp_data[128];
+                    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
                     DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+                    dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP);
                     for (int i = 0; i < 128; i++)
                     {
                         printf("%d, ", otp_data[i]);
                     }
                     printf("\n");
                     // dtof_read_otp
-                    dtof_ft_data_t ft_data_read;
+                    dtof_ft_cali_param_t ft_data_read;
                     dtof_bool_t is_legal_data = DTOF_FALSE;
-                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
                     if (is_legal_data == DTOF_FALSE)
                     {
-                        printf("ft data is illegal, all 0xFF\n");
+                        dtof_printf("ft data is illegal, all 0xFF\n");
                     }
                     else
                     {
-                        #ifdef DTOF_FT_CALIBRATE_BINOFFSET
-                        printf("bin_offset = %u\n", ft_data_read.bin_offset);
-                        #endif
-                        #ifdef DTOF_FT_CALIBRATE_REFSPAD
-                        printf("ref_spad = %u\n", ft_data_read.ref_spad);
-                        #endif
-                        #ifdef DTOF_FT_CALIBRATE_CG
-                        printf("cg_reg: ");
-                        dtof_uint16_t cg_reg;
-                        for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+                        dtof_uint16_t ft_cali_type = ~(ft_data_read.ft_calibration_type);
+                        dtof_printf("ft cali type: 0x%04x\n", ft_cali_type);
+                        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
                         {
-                            cg_reg = ft_data_read.cg_data[i * 2 + 1] * 256 + ft_data_read.cg_data[i * 2];
-                            printf("%u, ", cg_reg);
+                            dtof_printf("bin_offset = %u\n", ft_data_read.dtof_ft_data.bin_offset);
                         }
-                        printf("\n");
-                        #endif
-                        #ifdef DTOF_FT_CALIBRATE_B
-                        printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
-                        #endif
+                        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+                        {
+                            dtof_printf("ref_spad = %u\n", ft_data_read.dtof_ft_data.ref_spad);
                         }
+                        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+                        {
+                            dtof_printf("cg_reg: ");
+                            dtof_uint16_t cg_reg;
+                            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+                            {
+                                cg_reg = ft_data_read.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_data_read.dtof_ft_data.cg_data[i * 2];
+                                dtof_printf("%u, ", cg_reg);
+                            }
+                            dtof_printf("\n");
+                        }
+                        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+                        {
+                            dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
+                        }
+                    }
                     parse_inner_mcu_error_code(status);
                 }
                 else if (strcmp(uart_buf, "clear") == 0)
