@@ -199,17 +199,10 @@ DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, 
         }
     }
 
-    if (*is_legal_data == DTOF_FALSE)
-    {
-        return DTOF_RET_SUCCESS;
-    }
-
     for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
         *(ft_data+i) = (dtof_uint16_t)ft_data64[i];
     }
-
-    printf("cal type = 0x%04x\n", *ft_data);
 
     return DTOF_RET_SUCCESS;
 }
@@ -217,24 +210,15 @@ DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, 
 DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
 {
     uint64_t ft_data64[FT_DATA_NUM];
-    uint64_t ft_data64_read[FT_DATA_NUM];
-    stm32_flash_read_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64_read, FT_DATA_NUM);
 
     for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
     {
         ft_data64[i] = (uint64_t)(*(ft_data + i));
     }
 
-    if(ft_data64_read[0] != 0xFFFFFFFFFFFFFFFF)
-    {
-        ft_data64[0] = ft_data64[0] & ft_data64_read[0];
-    }
-
-    // printf("ft_data64[0]: 0x%llx\n", ft_data64[0]);
-
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
-
     stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
+
     return DTOF_RET_SUCCESS;
 }
 

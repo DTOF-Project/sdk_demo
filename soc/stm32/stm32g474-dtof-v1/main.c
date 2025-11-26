@@ -294,7 +294,7 @@ int main(void)
                     }
                     else
                     {
-                        dtof_uint16_t ft_cali_type = ~(ft_data_read.ft_calibration_type);
+                        dtof_uint16_t ft_cali_type = ft_data_read.ft_calibration_type;
                         dtof_printf("ft cali type: 0x%04x\n", ft_cali_type);
                         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
                         {
@@ -329,14 +329,12 @@ int main(void)
                 else if (strncmp(uart_buf, "ft,", 3) == 0)
                 {
                     dtof_uint16_t ft_cali_type;
-                    dtof_uint16_t ft_cali_param;
+                    dtof_uint16_t ft_actual_param;
 
-                    if (sscanf(uart_buf, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
+                    if (sscanf(uart_buf, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
                     {
-                        // 设置校准类型
-                        dtof_set_ft_calibration_type(ft_cali_type);
                         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
+                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_actual_param);
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
                             dtof_bool_t is_legal_data = DTOF_FALSE;
