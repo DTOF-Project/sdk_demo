@@ -472,7 +472,7 @@ int main(void)
                 if (frame_cnt_flag == DTOF_TRUE)
                 {
                     frame_cnt++;
-                    if (frame_cnt < 50)
+                    if (frame_cnt < 0)
                     {
                         if (dev->chip_type == DTOF_CHIP_TYPE_A05)
                         {
@@ -507,7 +507,7 @@ int main(void)
 
                 if (frame_cnt_flag == DTOF_TRUE)
                 {
-                    if (frame_cnt == 200)
+                    if (frame_cnt == 150)
                     {
                         debug_flag = DTOF_FALSE;
                         frame_cnt_flag = DTOF_FALSE;
