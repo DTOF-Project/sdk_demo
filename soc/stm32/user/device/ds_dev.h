@@ -73,6 +73,8 @@ int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len);
 
 DTOF_RET device_driver_ops_init(dtof_device_t *dev);
 
+DTOF_RET dtof_sensor_hard_rst(void);
+
 DTOF_RET dtof_peripheral_device_init(void);
 DTOF_RET ds_get_chip_type(dtof_uint16_t chip_id, dtof_chip_type_t* chiptype);
 

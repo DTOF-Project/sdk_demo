@@ -182,6 +182,17 @@ static int board_peripheral()
     return 0;
 }
 
+DTOF_RET dtof_sensor_hard_rst(void){
+    DTOF_RET ret = DTOF_RET_SUCCESS;
+    // extern void dtof_sleep_us(uint64_t us);
+    // extern DTOF_RET stm32_write_gpio(dtof_uint32_t gpio, dtof_uint32_t value);
+    ret = device_gpio_write(PLATFORM_RST_PIN, DTOF_FALSE);
+    dtof_sleep_us(500);
+    ret = device_gpio_write(PLATFORM_RST_PIN, DTOF_TRUE);
+    dtof_sleep_us(500);
+    return ret;
+}
+
 DTOF_RET dtof_peripheral_device_init(void)
 {
     /*

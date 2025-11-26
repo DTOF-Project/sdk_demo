@@ -55,6 +55,12 @@ dtof_bool_t dtof_get_interrupt_flag(void);
  */
 void dtof_sleep_ms(dtof_uint32_t time);
 
+/**
+ * @brief us延时
+ * @param time 延时时间(us)
+ */
+void dtof_sleep_us(dtof_uint32_t time);
+
 #define DTOF_FT_DATA_FLASH_PAGE 224
 #define DTOF_FT_DATA_FLASH_PAGE_START_ADDR (0x08000000 + DTOF_FT_DATA_FLASH_PAGE * FLASH_PAGE_SIZE)
 #define DTOF_FT_DATA_FLASH_PAGE_NUM 1

@@ -136,6 +136,11 @@ void dtof_sleep_ms(dtof_uint32_t time)
     usleep(time * 1000);
 }
 
+void dtof_sleep_us(dtof_uint32_t time)
+{
+    usleep(time);
+}
+
 void stm32_flash_write_init(uint32_t page, uint32_t page_num)
 {
     FLASH_EraseInitTypeDef eraseInit;

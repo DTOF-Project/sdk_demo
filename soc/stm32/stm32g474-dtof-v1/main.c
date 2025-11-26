@@ -168,6 +168,8 @@ void parse_inner_mcu_error_code(dtof_uint32_t error_code)
 }
 
 
+
+
 // void parse_inner_mcu_error_code(dtof_uint32_t error_code)
 // {
 
@@ -477,6 +479,12 @@ int main(void)
                     {
                         DTOF_CHECK_WARN(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, (osc_cal_mode << 12) | 0x0388), "dtof start failed\n");
                     }
+                }
+                else if (strcmp(uart_buf, "rst") == 0)
+                {
+                    DTOF_CHECK_WARN(dtof_sensor_hard_rst(), "rst failed\n");
+                    is_init = DTOF_FALSE;
+                    printf("rst finish\n");
                 }
                 else
                 {
