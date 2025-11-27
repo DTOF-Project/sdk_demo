@@ -643,11 +643,6 @@
               <FileType>1</FileType>
               <FilePath>..\customer\dtof_customer.c</FilePath>
             </File>
-            <File>
-              <FileName>dtof_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\dev\dtof_hal.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

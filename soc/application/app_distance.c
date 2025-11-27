@@ -6,11 +6,9 @@
 #include "inc/dtof_driver.h"
 #include "inc/dtof_api.h"
 #include "inc/dtof_log.h"
+#include "inc/dev/dtof_hal.h"
 
 #include "application/inc/app_distance.h"
-
-// TODO: 不要放在stm32的文件夹下
-#include "dev/dtof_hal.h"
 
 int g_distance_mode = DISTANCE_UNKNOWN_MODE;
 
