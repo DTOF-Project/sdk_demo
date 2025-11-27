@@ -15,8 +15,7 @@
 #include "application/inc/app_cmd.h"
 #include "application/inc/app_distance.h"
 
-// TODO: 不要放在stm32的文件夹下
-#include "dev/dtof_hal.h"
+#include "inc/dev/dtof_hal.h"
 #include "customer/dtof_customer.h"
 
 #define ECO_TEST_MODE

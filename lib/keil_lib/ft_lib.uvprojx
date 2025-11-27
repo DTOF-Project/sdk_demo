@@ -413,6 +413,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\soc\sdk\src\dev\dtof_dev_api.c</FilePath>
             </File>
+            <File>
+              <FileName>dtof_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\soc\sdk\src\dev\dtof_hal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
