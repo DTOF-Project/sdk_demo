@@ -164,7 +164,7 @@ int main(void)
     DTOF_CHECK_WARN(ds_get_chip_type(dtof_get_chip_config()->chip_id, &dev->chip_type), "get chip type failed\n");
 
     uint8_t byte;
-    char uart_buf[32] = {0};
+    char uart_buf[128] = {0};
     uint8_t uart_index = 0;
 
     dtof_bool_t frame_cnt_flag = DTOF_FALSE;
@@ -409,11 +409,93 @@ int main(void)
                         DTOF_CHECK_WARN(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, (osc_cal_mode << 12) | 0x0388), "dtof start failed\n");
                     }
                 }
+                else if (strncmp(uart_buf, "wft,", 4) == 0)
+                {
+                #define FT_MAX_NUM 39 // type + 34cg+ binoffset + k + b + refspad
+                    char buf_copy[128];
+                    strncpy(buf_copy, uart_buf, sizeof(buf_copy));
+                    buf_copy[sizeof(buf_copy) - 1] = '\0';
+
+                    char *token = strtok(buf_copy, ","); // 第一个 token: "r18"
+                    int values[FT_MAX_NUM];
+                    int count = 0;
+
+                    while ((token = strtok(NULL, ",")) != NULL) {
+                        if (count >= FT_MAX_NUM) {
+                            printf("Too many numbers, need exactly 39\n");
+                            continue;
+                        }
+
+                        char *endptr;
+                        long val = strtol(token, &endptr, 10);
+                        if (*endptr != '\0') {
+                            printf("Invalid number: %s\n", token);
+                            continue;
+                        }
+
+                        values[count++] = (int)val;
+                    }
+
+                    if (count < 2) {
+                        printf("count < 2, = %d\n", count);
+                        goto CLEAR_REV_BUFFER;
+                    }
+
+                    dtof_uint16_t ft_cali_type;
+                    dtof_ft_cali_param_t ft_cali_param;
+                    dtof_bool_t is_legal_ft_data = DTOF_FALSE;
+
+                    DTOF_CHECK_WARN(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_cali_param, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+
+                    ft_cali_type = values[0];
+
+                    if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+                    {
+                        ft_cali_param.dtof_ft_data.bin_offset = values[1];
+                        printf("set binoffset = %d\n", values[1]);
+                    }
+                    if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+                    {
+                        ft_cali_param.dtof_ft_data.ref_spad = values[1];
+                        printf("set refspad = %d\n", values[1]);
+                    }
+                    if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+                    {
+                        if (count < 18) {
+                            printf("count < 18, = %d\n", count);
+                            goto CLEAR_REV_BUFFER;
+                        }
+
+                        printf("set cg: ");
+                        for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+                        {
+                            ft_cali_param.dtof_ft_data.cg_data[i * 2] = values[i + 1] & 0xff;
+                            ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] = (values[i + 1] & 0xff00) >> 8;
+                            printf("%d, ", values[i + 1]);
+                        }
+                        printf("\n");
+                    }
+                    if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+                    {
+                        ft_cali_param.dtof_ft_data.distance_k = 1197;
+                        ft_cali_param.dtof_ft_data.distance_b = values[1];
+                        printf("set b value = %d\n", values[1]);
+                    }
+
+                    if (is_legal_ft_data == DTOF_TRUE) {
+                        ft_cali_param.ft_calibration_type |= ft_cali_type;
+                    } else {
+                        ft_cali_param.ft_calibration_type = ft_cali_type;
+                    }
+                    DTOF_CHECK_RET(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
+                    dtof_set_ft_calibration_type(ft_cali_param.ft_calibration_type);
+                    DTOF_CHECK_RET(dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t)), "set ft data to flash failed\n");
+                }
                 else
                 {
                     // printf("unknown command: %s\n", uart_buf);
                 }
-
+CLEAR_REV_BUFFER:
                 // 清空缓冲区
                 uart_index = 0;
                 memset(uart_buf, 0, sizeof(uart_buf));
