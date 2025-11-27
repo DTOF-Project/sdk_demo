@@ -42,10 +42,10 @@ dtof_device_info_t dtof_device_info={
     .frame_id_pre=0,
     .ft_calibration_type =0
 };
-void dtof_set_ft_calibration_type(dtof_uint16_t type)
-{
-    dtof_device_info.ft_calibration_type = type;
-}
+// void dtof_set_ft_calibration_type(dtof_uint16_t type)
+// {
+//     dtof_device_info.ft_calibration_type = type;
+// }
 #define SPECIAL_BYPASS_VALUE 7
 #define SPECIAL_LOOP_VALUE 136
 #define DTOF_ENABLE_DEBUG_MODE 1
@@ -262,11 +262,23 @@ void main_cmd_loop(int serial){
             {
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-               DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-               
+                // dtof_sensor_init();
+              // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+            //    rpi_serial_printf(serial,
+            //     "%d, %d, %d, %d, %.6f, %d\n",
+            //     distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.reserved[6]
+            // );
+                // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                 is_init = DTOF_TRUE;
-                dtof_start_distance_measure();
-                debug_flag = DTOF_FALSE;
+                   dtof_start_distance_measure();
+                  debug_flag = DTOF_FALSE;
+                if (ret==DTOF_TRUE)
+                  {is_init = DTOF_TRUE;
+                   dtof_start_distance_measure();
+                  debug_flag = DTOF_FALSE;
+                  ret=DTOF_TRUE;
+                  }
+                
             }
             else if (strcmp(cmd_buffer, "d") == 0)
             {
@@ -600,6 +612,7 @@ void main_cmd_loop(int serial){
             
            else
            {
+            
            is_new_flag = DTOF_TRUE;
              dtof_device_info.frame_id_pre = frame_id;
            }
@@ -608,24 +621,22 @@ void main_cmd_loop(int serial){
 #endif
         }  
 #ifdef DTOF_POLLING_MODE
-        if (dtof_get_chip_config()->chip_id== DTOF_A05_CHIPID)
-        {
-            if (first_new_flag == DTOF_TRUE)
-            {
-                if (debug_flag == DTOF_TRUE)
-                {
-                    if ((reg80 != distance_result.frame_id) && (is_new_flag != DTOF_TRUE))
-                    {
-                        dtof_io_interaction(0x30, 0x01);
-                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
-                        first_new_flag = DTOF_FALSE;
-                    }
-                }
-            }
-        }
+        // if (dtof_get_chip_config()->chip_id== DTOF_A05_CHIPID)
+        // {
+        //     if (first_new_flag == DTOF_TRUE)
+        //     {
+        //         if (debug_flag == DTOF_TRUE)
+        //         {
+        //             if ((reg80 != distance_result.frame_id) && (is_new_flag != DTOF_TRUE))
+        //             {
+        //                 dtof_io_interaction(0x30, 0x01);
+        //                 DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+        //                 first_new_flag = DTOF_FALSE;
+        //             }
+        //         }
+        //     }
+        // }
 #endif
-
-
         
        if (is_new_flag == DTOF_TRUE)
         {
@@ -695,13 +706,10 @@ void main_cmd_loop(int serial){
     }
 }
 
-
 int main() {
     // TODO: 编译前 需要先查一下当前的 arm 是 32 还是 64的，然后将makefile中的 lds 做修改，指定为是 64的 或 32的
     int ret;
-    
     extern int rpi_gpio_init(void);
-  
     ret = rpi_gpio_init();
     if(ret){
         printf("Failed to init rpi gpio");
@@ -709,14 +717,12 @@ int main() {
     }
 
     rpi_i2c_init(1);
-    
+
     // 初始化串口
     int serial = rpi_serial_init(SERIAL_PORT);
-    dtof_sensor_init();
-    
     printf("serial init...\n");
-
-    // 主循环接收命令
+     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+      // 主循环接收命令
     main_cmd_loop(serial);
 
     // 清理资源
