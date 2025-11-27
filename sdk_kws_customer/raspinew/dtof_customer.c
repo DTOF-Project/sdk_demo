@@ -11,6 +11,7 @@
 #include "sdk/inc/dtof_endian.h"
 #include "sdk/inc/dtof_log.h"
 #include "sdk/inc/dtof_global_config.h"
+#include "dtof_reg.h"
 extern device_driver_ops_t device_iic_driver_ops;
 
 static void dtof_convert_endian(uint16_t *data, uint16_t len)
@@ -402,8 +403,8 @@ DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
  * @return DTOF_RET 操作结果
  */
 DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
-{
-   
+{   
+    
     // 参数合法性检查
     if (ft_data == NULL || is_legal_data == NULL) {
         return DTOF_RET_INVALID_PARAM;  // 无效参数
@@ -458,4 +459,38 @@ dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
     }
 
     return DTOF_RET_SUCCESS;
+}
+DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len)
+{
+    dtof_uint16_t reg3;
+    dtof_addressREG3_t *reg3_p = (dtof_addressREG3_t *)&reg3;
+    dtof_uint16_t cfgdone_backup;
+    dtof_uint16_t ram_start;
+    dtof_uint16_t ram_start_backup;
+    dtof_uint16_t temp;
+    ram_start = 0x800 + offset;
+
+    // disable cfgdone
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG3, &reg3, 1), "read reg 3 fail\n");
+    cfgdone_backup = reg3_p->cfgDoneR;
+    reg3_p->cfgDoneR = 0;
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail\n");
+
+    // set otp start addr
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG254, &ram_start_backup, 1), "read reg 254 fail\n");
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG254, &ram_start, 1), "write reg 254 fail\n");
+
+    // read otp
+    for (dtof_uint16_t i = 0; i < len; i++)
+    {
+        DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_REG255, &temp, 1), "read reg 255 fail\n");
+        *(buf + i) =  temp & 0xff;
+    }
+
+    // restore reg
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG254, &ram_start_backup, 1), "write reg 254 fail\n");
+    reg3_p->cfgDoneR = cfgdone_backup;
+    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail\n");
+
+	return DTOF_RET_SUCCESS;
 }

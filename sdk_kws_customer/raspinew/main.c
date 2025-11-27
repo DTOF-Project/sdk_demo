@@ -26,7 +26,7 @@
 #include "sdk/inc/dtof_global_config.h"
 #include "raspinew/dtof_customer.h"
 #include "sdk/inc/dtof_calibration_ft.h"
-#include "sdk/src/lib/dtof_ft.h"
+#include "sdk/inc/lib/dtof_ft.h"
 // #include "stm32/customer/dtof_customer.h"
 // #include "stm32/dev/dtof_hal.c"
 // #define DTOF_CHIP_TYPE_L3 0x4120
@@ -42,10 +42,10 @@ dtof_device_info_t dtof_device_info={
     .frame_id_pre=0,
     .ft_calibration_type =0
 };
-void dtof_set_ft_calibration_type(dtof_uint16_t type)
-{
-    dtof_device_info.ft_calibration_type = type;
-}
+// void dtof_set_ft_calibration_type(dtof_uint16_t type)
+// {
+//     dtof_device_info.ft_calibration_type = type;
+// }
 #define SPECIAL_BYPASS_VALUE 7
 #define SPECIAL_LOOP_VALUE 136
 #define DTOF_ENABLE_DEBUG_MODE 1
@@ -259,10 +259,12 @@ void main_cmd_loop(int serial){
             }
 #ifdef COMPILE_I2C_CMDS
             else if (strcmp(cmd_buffer, "s") == 0)
-            {
+            {   
+                printf("togos");
+                // printf("进入s");
                 // 启动并开始测距（无输出）
             //    DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id), "dtof init and wait for ready failed\n");
-               DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+            //    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
                
                 is_init = DTOF_TRUE;
                 dtof_start_distance_measure();
@@ -299,6 +301,7 @@ void main_cmd_loop(int serial){
             }
             else if (strcmp(cmd_buffer, "t") == 0)
             {
+                printf("gotot");
             STOP_DISTANCE_MEASURE:
                 // 停止测距
                 dtof_stop_distance_measure();
@@ -363,7 +366,7 @@ void main_cmd_loop(int serial){
                     printf("\n");
                     printf("otp list:\n");
                     dtof_uint8_t otp_data[128];
-                    //DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+                    DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
                     for (int i = 0; i < 128; i++)
                     {
                         printf("%d, ", otp_data[i]);
@@ -408,26 +411,18 @@ void main_cmd_loop(int serial){
                 // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
                 // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
             }
-            else if (strcmp(cmd_buffer, "b") == 0)
-            {   
-                // 从flash获取xtalk_data
-                // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
-              //  DTOF_CHECK_WARN(dtof_init_and_wait_for_ready(device_id, &chip_id, DO_XTALK_CALIBRATION_MODE), "dtof init and wait for ready failed\n");
-              uint16_t xtalk_data[18];  
-                dtof_get_xtalk_data_from_flash(device_id, xtalk_data);
-                // is_init = DTOF_TRUE; // cg 和 b 都校准完才视为校准完成
-            }
+
             else if (strncmp(cmd_buffer, "ft,", 3) == 0)
-                {
+                {printf("1\n");
                     dtof_uint16_t ft_cali_type;
                     dtof_uint16_t ft_cali_param;
 
                     if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
-                    {
+                    {printf("2\n");
                         // 设置校准类型
                         dtof_set_ft_calibration_type(ft_cali_type);
                         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
+                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_cali_param);
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
                             dtof_bool_t is_legal_data = DTOF_FALSE;
@@ -570,7 +565,7 @@ void main_cmd_loop(int serial){
 
         // on_loop_step_done 每次循环执行
         if (is_init == DTOF_TRUE)
-        {
+        { 
 #ifdef DTOF_INTERRUPT_MODE
             if (dtof_get_interrupt_flag() == DTOF_TRUE)
             {
@@ -629,8 +624,10 @@ void main_cmd_loop(int serial){
         
        if (is_new_flag == DTOF_TRUE)
         {
+            
             if (debug_flag == DTOF_TRUE)
             {
+               
                 if (frame_cnt_flag == DTOF_TRUE)
                 {
                     frame_cnt++;
@@ -682,6 +679,7 @@ void main_cmd_loop(int serial){
                     }
                 }
             }
+            
              rpi_serial_printf(serial,
                 "%d, %d, %d, %d, %.6f, %d\n",
                 distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.reserved[6]
@@ -712,7 +710,8 @@ int main() {
     
     // 初始化串口
     int serial = rpi_serial_init(SERIAL_PORT);
-    dtof_sensor_init();
+
+   DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
     
     printf("serial init...\n");
 
