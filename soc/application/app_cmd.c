@@ -132,7 +132,7 @@ void app_cmd_print_chip_info(const char *cmd) {
     }
     else
     {
-        dtof_uint16_t ft_cali_type = ~(ft_data_read.ft_calibration_type);
+        dtof_uint16_t ft_cali_type = ft_data_read.ft_calibration_type;
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
         {
             dtof_printf("bin_offset = %u\n", ft_data_read.dtof_ft_data.bin_offset);
@@ -180,14 +180,12 @@ void app_cmd_do_ft_calibration(const char *cmd) {
     // stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
     // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
     dtof_uint16_t ft_cali_type;
-    dtof_uint16_t ft_cali_param; // 可以是otp_ref_spad_mask, 也可以是distance, 目前这种设计下, 不能同时做refspad和b校准
+    dtof_uint16_t ft_actual_param;; // 可以是otp_ref_spad_mask, 也可以是distance, 目前这种设计下, 不能同时做两个或以上校准
 
-    if (sscanf(cmd, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
+    if (sscanf(cmd, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
     {
-        // 设置校准类型
-        dtof_set_ft_calibration_type(ft_cali_type);
         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_param, ft_cali_param, ft_cali_param);
+        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_actual_param);
         if (ret == DTOF_RET_SUCCESS) {
             dtof_ft_cali_param_t ft_cali_param;
             dtof_bool_t is_legal_data = DTOF_FALSE;
