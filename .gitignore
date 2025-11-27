@@ -62,6 +62,9 @@ lib/keil_lib/Objects/*.htm
 lib/keil_lib/Objects/*.dep
 lib/keil_lib/Objects/*.Scr
 
+# riscv build tool chain
+dtof_calibration_lib/xpack-riscv-none-embed-gcc-10.2.0-1.2
+
 # git hash
 soc/application/inc/git_hash.h
 
