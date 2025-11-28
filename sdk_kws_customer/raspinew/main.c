@@ -366,7 +366,9 @@ void main_cmd_loop(int serial){
                     printf("\n");
                     printf("otp list:\n");
                     dtof_uint8_t otp_data[128];
+                    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
                     DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+                    dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP);
                     for (int i = 0; i < 128; i++)
                     {
                         printf("%d, ", otp_data[i]);
