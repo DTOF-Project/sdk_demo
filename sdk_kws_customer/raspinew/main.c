@@ -320,6 +320,7 @@ void main_cmd_loop(int serial){
                     uint16_t reg_value;
                     dtof_read_reg_running(reg_addr, &reg_value);
                     printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                    fflush(stdout);
                 }
             else if (strncmp(cmd_buffer, "rb,", 3) == 0)
             {
@@ -353,6 +354,7 @@ void main_cmd_loop(int serial){
                         }else{
                             dtof_write_reg_running(reg_addr, reg_value); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
                             printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                            fflush(stdout);
                         }
                     }
                 }
@@ -415,16 +417,14 @@ void main_cmd_loop(int serial){
             }
 
             else if (strncmp(cmd_buffer, "ft,", 3) == 0)
-                {printf("1\n");
+                {
                     dtof_uint16_t ft_cali_type;
-                    dtof_uint16_t ft_cali_param;
+                    dtof_uint16_t ft_actual_param;
 
-                    if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_cali_param) == 2)
-                    {printf("2\n");
-                        // 设置校准类型
-                        dtof_set_ft_calibration_type(ft_cali_type);
+                    if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
+                    {
                         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_cali_param);
+                        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_actual_param);
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
                             dtof_bool_t is_legal_data = DTOF_FALSE;
@@ -509,6 +509,7 @@ void main_cmd_loop(int serial){
                     for (int i = 0; i < DTOF_UUID_LENGTH; i++)
                     {
                         printf("%d, ", chip_uuid_buffer[i]);
+                        fflush(stdout);
                     }
                 }
                 else if (strcmp(cmd_buffer, "error_code") == 0)
@@ -523,6 +524,7 @@ void main_cmd_loop(int serial){
                     if (sscanf(cmd_buffer, "osc_cal,%d", &osc_cal_mode) == 1)
                     {
                         DTOF_CHECK_WARN(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, (osc_cal_mode << 12) | 0x0388), "dtof start failed\n");
+
                     }
                 }
             
