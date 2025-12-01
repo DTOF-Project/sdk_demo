@@ -25,6 +25,15 @@
 static char uart_buf[UART_BUF_SIZE];
 static int buf_pos = 0;
 
+static int is_end_of_command(char byte) {
+    return (byte == '\n' || byte == '\r');
+}
+
+static void reset_uart_buffer(void) {
+    buf_pos = 0;
+    memset(uart_buf, 0, sizeof(uart_buf));
+}
+
 // ========== 命令处理函数 ==========
 void app_cmd_start_distance_measure(const char *cmd) {
     app_set_distance_mode(DISTANCE_NORMAL_MODE);
@@ -319,6 +328,92 @@ void app_cmd_help(const char *cmd) {
     dtof_printf("        type bit3 = 1->b         ft,8,distance    ft,8,300\n");
 }
 
+void app_cmd_write_ft_data(const char *cmd) {
+    if (strncmp(cmd, "wft,", 4) == 0) {
+        #define FT_MAX_NUM 39 // type + 34cg+ binoffset + k + b + refspad
+        char buf_copy[128];
+        strncpy(buf_copy, cmd, sizeof(buf_copy));
+        buf_copy[sizeof(buf_copy) - 1] = '\0';
+
+        char *token = strtok(buf_copy, ","); // 第一个 token: "r18"
+        int values[FT_MAX_NUM];
+        int count = 0;
+
+        while ((token = strtok(NULL, ",")) != NULL) {
+            if (count >= FT_MAX_NUM) {
+                printf("Too many numbers, need exactly 39\n");
+                continue;
+            }
+
+            char *endptr;
+            long val = strtol(token, &endptr, 10);
+            if (*endptr != '\0') {
+                printf("Invalid number: %s\n", token);
+                continue;
+            }
+
+            values[count++] = (int)val;
+        }
+
+        if (count < 2) {
+            printf("count < 2, = %d\n", count);
+            reset_uart_buffer();
+            return;
+        }
+
+        dtof_uint16_t ft_cali_type;
+        dtof_ft_cali_param_t ft_cali_param;
+        dtof_bool_t is_legal_ft_data = DTOF_FALSE;
+
+        DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_cali_param, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+
+        ft_cali_type = values[0];
+
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+        {
+            ft_cali_param.dtof_ft_data.bin_offset = values[1];
+            printf("set binoffset = %d\n", values[1]);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+        {
+            ft_cali_param.dtof_ft_data.ref_spad = values[1];
+            printf("set refspad = %d\n", values[1]);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+        {
+            if (count < 18) {
+                printf("count < 18, = %d\n", count);
+                reset_uart_buffer();
+                return;
+            }
+
+            printf("set cg: ");
+            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            {
+                ft_cali_param.dtof_ft_data.cg_data[i * 2] = values[i + 1] & 0xff;
+                ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] = (values[i + 1] & 0xff00) >> 8;
+                printf("%d, ", values[i + 1]);
+            }
+            printf("\n");
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+        {
+            ft_cali_param.dtof_ft_data.distance_k = 1197;
+            ft_cali_param.dtof_ft_data.distance_b = values[1];
+            printf("set b value = %d\n", values[1]);
+        }
+
+        if (is_legal_ft_data == DTOF_TRUE) {
+            ft_cali_param.ft_calibration_type |= ft_cali_type;
+        } else {
+            ft_cali_param.ft_calibration_type = ft_cali_type;
+        }
+        DTOF_CHECK_RET_VOID(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
+        dtof_set_ft_calibration_type(ft_cali_param.ft_calibration_type);
+        DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t)), "set ft data to flash failed\n");
+    }
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -335,6 +430,7 @@ cmd_entry_t cmd_table[] = {
     { "ft,", 1, app_cmd_do_ft_calibration },
     {"refspad,", 1, app_cmd_set_refspad },
     { "h",   0, app_cmd_help },
+    { "wft,", 1, app_cmd_write_ft_data },
 };
 
 // ========== 命令解析器 ==========
@@ -354,15 +450,6 @@ static void handle_uart_cmd(const char *uart_buf) {
         }
     }
     dtof_printf("unknown command: %s\n", uart_buf);
-}
-
-static int is_end_of_command(char byte) {
-    return (byte == '\n' || byte == '\r');
-}
-
-static void reset_uart_buffer(void) {
-    buf_pos = 0;
-    memset(uart_buf, 0, sizeof(uart_buf));
 }
 
 void parse_cmd_process(char byte)
