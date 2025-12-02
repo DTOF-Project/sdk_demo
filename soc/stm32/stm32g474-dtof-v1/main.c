@@ -345,7 +345,7 @@ int main(void)
                         printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
                     }
                     printf("\n");
-                    printf("otp list:\n");
+                    printf("otp list: ");
                     dtof_uint8_t otp_data[128];
                     dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
                     DTOF_CHECK_RET(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
@@ -567,6 +567,39 @@ int main(void)
                     DTOF_CHECK_WARN(dtof_sensor_hard_rst(), "rst failed\n");
                     is_init = DTOF_FALSE;
                     printf("rst finish\n");
+                }
+                else if (strncmp(uart_buf, "rrd,", 3) == 0)
+                {
+                    int reg_addr = atoi(&uart_buf[4]);
+                    uint16_t reg_value;
+                    dtof_reg_burst_read(reg_addr, &reg_value, 1);
+                    printf("reg read 0x%x: 0x%4x\n", reg_addr, reg_value);
+                }
+                else if (strncmp(uart_buf, "rrb,", 3) == 0)
+                {
+                    int reg_addr, reg_num;
+                    dtof_uint16_t reg_max[576];
+                    if (sscanf(uart_buf, "rrb,%d,%d", &reg_addr, &reg_num) == 2)
+                    {
+                        dtof_reg_burst_read(reg_addr, reg_max, reg_num);
+                        printf("burst reg read 0x%04x:\n", reg_addr);
+                        for (int i = 0; i < reg_num; i++)
+                        {
+                            printf("%d, ", reg_max[i]);
+                        }
+                        printf("\n");
+                    }
+                }
+                else if (strncmp(uart_buf, "wwd,", 3) == 0)
+                {
+                    int reg_addr, reg_value;
+                    uint16_t recv_reg_value = 0;
+                    if (sscanf(uart_buf, "wwd,%d,%d", &reg_addr, &reg_value) == 2)
+                    {
+                        recv_reg_value = (uint16_t)reg_value;
+                        dtof_reg_burst_write(reg_addr, &recv_reg_value, 1); // 示例：写入值为索引 i，你可根据实际需求改成 uart_buf 中解析的值
+                        printf("reg write 0x%x: 0x%04x\n", reg_addr, reg_value);
+                    }
                 }
                 else
                 {
