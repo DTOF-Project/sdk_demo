@@ -704,15 +704,15 @@ CLEAR_REV_BUFFER:
                         debug_flag = DTOF_FALSE;
                         frame_cnt_flag = DTOF_FALSE;
                         frame_cnt = 0;
-                        printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+                        printf("%d, %d, %d, %d, %.6f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
                         is_new_flag = DTOF_FALSE;
                         goto STOP_DISTANCE_MEASURE;
                     }
                 }
             }
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                   distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+            printf("%d, %d, %d, %d, %.6f, %d\n",
+                   distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
             is_new_flag = DTOF_FALSE;
         }
     PASS:
