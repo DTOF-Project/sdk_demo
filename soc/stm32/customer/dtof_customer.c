@@ -15,6 +15,8 @@
 #include "base/inc/mos_platform.h"
 #include "platform_user_config.h"
 #include "inc/dtof_api.h"
+#include "inc/dtof_float.h"
+#include "inc/lib/dtof_ft.h"
 
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
@@ -227,4 +229,25 @@ DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
     return DTOF_RET_SUCCESS;
 }
 
+DTOF_RET dtof_get_distance_result_no_swap(dtof_distance_result_t *result_info_p)
+{
+    DTOF_CHECK_PTR(result_info_p);
 
+    dtof_uint16_t distance_result[DTOF_DISTANCE_RESULT_LEN];
+
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_SAVE_RESULT_REG_ADDR, distance_result, DTOF_DISTANCE_RESULT_LEN), "读取距离结果失败");
+
+    // 填充结果数据
+    result_info_p->frame_id = distance_result[DTOF_FIFO_FRAME_ID];
+    result_info_p->first_target = (dtof_int16_t)(distance_result[DTOF_FIFO_DISTANCE0] / DTOF_DISTANCE_RESULT_DIVISOR - DTOF_DISTANCE_RESULT_OFFSET);
+    result_info_p->first_intensity = distance_result[DTOF_FIFO_INTENSITY0] >> DTOF_DISTANCE_INTENSITY_SHIFT;
+    result_info_p->main_nflash = distance_result[DTOF_FIFO_MAIN_NFLASH];
+
+    // 计算主噪声
+    result_info_p->ambient = dtof_div((distance_result[DTOF_FIFO_NOISE_LOW] + ((distance_result[DTOF_FIFO_NOISE_HIGH] & 0x3c) << 14)), (dtof_real32_t)DTOF_MAIN_NOISE_DIV);
+
+    // 判断是否合法帧
+    result_info_p->is_legal_frame = dtof_clac_confidence(result_info_p->first_target, result_info_p->first_intensity, result_info_p->ambient);
+
+    return DTOF_RET_SUCCESS;
+}

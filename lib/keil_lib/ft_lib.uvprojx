@@ -418,6 +418,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\soc\sdk\src\dev\dtof_confidence.c</FilePath>
             </File>
+            <File>
+              <FileName>dtof_swap_peak.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\soc\sdk\src\dev\dtof_swap_peak.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

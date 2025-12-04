@@ -221,6 +221,7 @@ int main(void)
     dtof_bool_t first_new_flag = DTOF_TRUE; // polling模式下, 不取第一帧, debug模式下需要特殊处理, 因为新的bypass交互流程
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
+    dtof_bool_t is_need_swap_peak = DTOF_TRUE;
 
     DTOF_CHECK_WARN(platform_init(), "platform init failed\n");
 
@@ -286,6 +287,21 @@ int main(void)
                     frame_cnt_flag = DTOF_TRUE;
                     is_init = DTOF_TRUE;
                     debug_flag = DTOF_TRUE;
+                    is_need_swap_peak = DTOF_TRUE;
+                }
+                else if (strcmp(uart_buf, "e_old") == 0)
+                {
+                    DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
+                    dtof_reg_burst_read(80, &reg80, 1);
+                    dtof_start_distance_measure();
+                    if (dev->chip_type == DTOF_CHIP_TYPE_A05)
+                    {
+                        DTOF_CHECK_WARN(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
+                    }
+                    frame_cnt_flag = DTOF_TRUE;
+                    is_init = DTOF_TRUE;
+                    debug_flag = DTOF_TRUE;
+                    is_need_swap_peak = DTOF_FALSE;
                 }
                 else if (strcmp(uart_buf, "t") == 0)
                 {
@@ -631,7 +647,13 @@ CLEAR_REV_BUFFER:
             if (dtof_get_interrupt_flag() == DTOF_TRUE)
             {
                 is_new_flag = DTOF_TRUE;
-                dtof_get_distance_result(&distance_result);
+                if (is_need_swap_peak) {
+                    dtof_get_distance_result(&distance_result);
+                } else {
+                    extern DTOF_RET dtof_get_distance_result_no_swap(dtof_distance_result_t *result_info_p);
+                    dtof_get_distance_result_no_swap(&distance_result);
+                }
+
                 dtof_set_interrupt_flag(DTOF_FALSE);
             }
 #elif defined(DTOF_POLLING_MODE)
