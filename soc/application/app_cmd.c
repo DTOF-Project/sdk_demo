@@ -213,7 +213,6 @@ void app_cmd_clear_cal_info(const char *cmd) {
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
 }
 
-static dtof_uint16_t is_to_sky_flag = 1;
 void app_cmd_do_ft_calibration(const char *cmd) {
     // stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
     // DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
