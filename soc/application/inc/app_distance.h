@@ -21,7 +21,7 @@ void app_distance_process(void);
 void app_set_distance_mode(int mode);
 int app_get_distance_mode(void);
 
-DTOF_RET dtof_enable_distance_debug_mode(void);
+DTOF_RET dtof_trigger_next_frame(void);
 
 #ifdef __cplusplus
 }

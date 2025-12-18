@@ -7,6 +7,7 @@
 #include "inc/dtof_api.h"
 #include "inc/dtof_log.h"
 #include "inc/dev/dtof_hal.h"
+#include "inc/dev/dtof_dev_api.h"
 
 #include "application/inc/app_distance.h"
 
@@ -86,42 +87,29 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
     return;
 }
 
-DTOF_RET dtof_enable_distance_debug_mode(void)
+DTOF_RET dtof_enter_debug_mode(void)
 {
-#define SPECIAL_BYPASS_VALUE 7
-    DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_WRITE_REG_ADDR, SPECIAL_BYPASS_VALUE), "enable debug mode failed\n");
-    return DTOF_RET_SUCCESS;
-}
+    dtof_uint16_t ram_fsm_state;
 
-DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag)
-{
-#define DTOF_WFI_STATUS_FLAG_ADDR 0x6e
-    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_WFI_STATUS_FLAG_ADDR, intr_control_flag, 1), "read reg 0x6e failed\n");
-    return DTOF_RET_SUCCESS;
-}
-
-DTOF_RET dtof_bypass_distance_debug_mode(void)
-{
-#define DTOF_WFI_STATUS_FLAG 0xab
-#define DTOF_WAIT_WFI_STATUS_DELAY 10
-#define DTOF_WAIT_WFI_STATUS_TRY_COUNT 4
-    dtof_int32_t try_count = 0;
-    dtof_uint16_t intr_control_flag;
-    dtof_uint16_t bypassvalue = 0x17b9;
-
-    // TODO: 第二次d / e的时候这里会出问题, 所以加了循环判断, 为什么？
-    do {
-        DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
-        dtof_sleep_ms(DTOF_WAIT_WFI_STATUS_DELAY);
-    } while((intr_control_flag != DTOF_WFI_STATUS_FLAG) && (try_count++ < DTOF_WAIT_WFI_STATUS_TRY_COUNT));
-
-    if (try_count >= DTOF_WAIT_WFI_STATUS_TRY_COUNT)
+    // 判断ram是否跑到wfi
+    DTOF_CHECK_RET(dtof_get_ram_fsm_state(&ram_fsm_state), "get ram fsm state failed\n");
+    if ((ram_fsm_state != RAM_STATE_RUNNING))
     {
-        DTOF_LOG_ERR("intr_control_flag is not 0xab, is 0x%x\n", intr_control_flag);
+        DTOF_LOG_ERR("ram not in running or idle state, state = %d\n", ram_fsm_state);
         return DTOF_RET_FAILED;
     }
 
-    DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
+    DTOF_CHECK_RET(dtof_bypass_inner_mcu_external(), "bypass inner mcu failed\n");
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_trigger_next_frame(void)
+{
+    // 唤醒mcu
+    DTOF_CHECK_RET(dtof_wakeup_inner_mcu_external(), "wakeup inner mcu failed\n");
+    // 给05中断退出wfi
+    DTOF_CHECK_RET(dtof_io_interaction(DTOF_CMD_NONE, DTOF_INVALID_CMD_VALUE), "send io cmd fail\n");
+
     return DTOF_RET_SUCCESS;
 }
 
@@ -138,7 +126,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
         }
         case DISTANCE_DEBUG_MODE:
         {
-            dtof_bypass_distance_debug_mode();
+            dtof_enter_debug_mode();
 
         #define TOTAL_REG_NUM 255
             dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
@@ -150,11 +138,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
             dump_hist_log(buffer, TOTAL_REG_NUM);
 
-            dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
-
-            dtof_io_interaction(0x30, 0x01);
-
-            dtof_enable_distance_debug_mode();
+            dtof_trigger_next_frame();
 
             printf("%d, %d, %d, %d, %.6f, 1\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
@@ -163,16 +147,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
         case DISTANCE_TEST_MODE:
         {
             static int test_frame_count = 0;
-            dtof_bypass_distance_debug_mode();
-
-            if (++test_frame_count >= DISTANCE_TEST_MODE_FRAME_NUM)
-            {
-                uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
-                app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
-                dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
-                // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
-                test_frame_count = 0;
-            }
+            dtof_enter_debug_mode();
 
         #define TOTAL_REG_NUM 255
             dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
@@ -184,11 +159,15 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
             dump_hist_log(buffer, TOTAL_REG_NUM);
 
-            dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
-
-            dtof_io_interaction(0x30, 0x01);
-
-            dtof_enable_distance_debug_mode();
+            if (++test_frame_count >= DISTANCE_TEST_MODE_FRAME_NUM)
+            {
+                DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+                test_frame_count = 0;
+            }
+            else
+            {
+                dtof_trigger_next_frame();
+            }
 
             printf("%d, %d, %d, %d, %.6f, 1\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
