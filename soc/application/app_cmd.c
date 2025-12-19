@@ -58,7 +58,7 @@ void app_cmd_start_distance_measure_test_mode(const char *cmd) {
 }
 
 void app_cmd_reg_burst_read(const char *cmd) {
-    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP), "set mcu sleep failed\n");
 
     int reg_addr, reg_num;
     dtof_uint16_t reg_max[255];
@@ -77,7 +77,7 @@ void app_cmd_reg_burst_read(const char *cmd) {
 
 void app_cmd_reg_burst_write(const char *cmd)
 {
-    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    DTOF_CHECK_WARN(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP), "set mcu sleep failed\n");
 
     int reg_addr, reg_num;
     dtof_uint16_t reg_values[255];
@@ -156,7 +156,7 @@ void app_cmd_print_chip_info(const char *cmd) {
     dtof_printf("\n");
     dtof_printf("otp list:\n");
     dtof_uint8_t otp_data[128];
-    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "mcu sleep failed");
+    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP), "mcu sleep failed");
     DTOF_CHECK_RET_VOID(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
     DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "mcu wakeup failed");
     for (int i = 0; i < 128; i++)
@@ -263,7 +263,7 @@ void app_cmd_set_refspad(const char *cmd) {
         dtof_printf("set refspad = %u\n", ref_spad);
         #define DTOF_FT_DATA_START 0x2000
         #define DTOF_FT_DATA_B_OFFSET 4
-        DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "MCU sleep failed");
+        DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP), "MCU sleep failed");
 
         dtof_uint16_t ram_data[2];
         dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
