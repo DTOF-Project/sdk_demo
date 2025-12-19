@@ -276,8 +276,6 @@ void app_cmd_set_refspad(const char *cmd) {
         DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
 
         DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
-
-        dtof_reload_ft_data();
     }
 }
 
