@@ -412,6 +412,24 @@ void app_cmd_debug_print(const char *cmd) {
     dtof_start_ft_calibrate();
 }
 
+void app_cmd_set_frame_rate(const char *cmd) {
+    dtof_uint16_t frame_rate;
+    if (sscanf(cmd, "rate,%hu", &frame_rate) == 1)
+    {
+        dtof_printf("set frame rate = %u Hz\n", frame_rate);
+        DTOF_CHECK_RET_VOID(dtof_change_frame_rate(frame_rate), "change frame rate failed\n");
+    }
+}
+
+void app_cmd_change_ram_algo(const char *cmd) {
+    dtof_uint16_t ram_algo_flag;
+    if (sscanf(cmd, "algo,%hu", &ram_algo_flag) == 1)
+    {
+        dtof_printf("set ram algo = %u\n", ram_algo_flag);
+        DTOF_CHECK_RET_VOID(dtof_switch_ram_algo(ram_algo_flag), "change ram algo failed\n");
+    }
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -431,6 +449,8 @@ cmd_entry_t cmd_table[] = {
     { "wft,", 1, app_cmd_write_ft_data },
     { "gm", 0, app_cmd_get_ram_fsm_status },
     { "debug", 0, app_cmd_debug_print },
+    { "rate", 1, app_cmd_set_frame_rate },
+    { "algo", 1, app_cmd_change_ram_algo },
 };
 
 // ========== 命令解析器 ==========
