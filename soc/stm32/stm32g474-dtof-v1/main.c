@@ -26,6 +26,23 @@
 #include "application/inc/app_cmd.h"
 #include "application/inc/app_distance.h"
 
+void zhuimi_spad_mask_config(void)
+{
+#define DTOF_SAPD_MASK_NUM 4
+    dtof_uint16_t sapd_mask[DTOF_SAPD_MASK_NUM] = {0x0000, 0x005a, 0x005a, 0x0000};
+    dtof_uint16_t temp = 0;
+
+    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(0xcc, sapd_mask, DTOF_SAPD_MASK_NUM), "write spad mask failed\n");
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(0xd1, &temp, 1), "set mskreq failed\n");
+    temp = 0x0001;
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(0xd1, &temp, 1), "set mskreq failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+    return;
+}
+
 
 /**
  * @brief
@@ -54,6 +71,8 @@ int main(void)
 
     // save chip type
     DTOF_CHECK_WARN(ds_get_chip_type(dtof_get_chip_config()->chip_id, &dev->chip_type), "get chip type failed\n");
+
+    zhuimi_spad_mask_config();
 
     uint8_t byte;
 
