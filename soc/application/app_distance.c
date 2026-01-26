@@ -79,7 +79,27 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
             dtof_set_interrupt_flag(DTOF_FALSE);
         }
     #elif defined(DTOF_POLLING_MODE)
-        dtof_get_distance_result_polling(distance_result, is_new_flag);
+        if(g_distance_mode == DISTANCE_NORMAL_MODE)
+        {
+            dtof_get_distance_result_polling(distance_result, is_new_flag);
+        }
+        else
+        {
+            extern dtof_uint16_t g_frame_id;
+            extern dtof_device_info_t* dtof_get_device_info_ptr(void);
+            static dtof_bool_t first_new_flag = DTOF_TRUE;
+            dtof_get_distance_result_polling(distance_result, is_new_flag);
+            if (first_new_flag == DTOF_TRUE)
+            {
+                if((distance_result->frame_id == 7) && ((distance_result->frame_id - g_frame_id) != 1))
+                {
+                    // debug模式下, 第一帧需要特殊处理
+                    // dtof_get_device_info_ptr()->frame_id_pre = distance_result->frame_id;
+                    *is_new_flag = DTOF_TRUE;
+                    first_new_flag = DTOF_FALSE;
+                }
+            }
+        }
     #endif
     }
 
@@ -158,13 +178,14 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             printf("%d, %d, %d, %d, %.6f, %d\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
+            break;
         }
         case DISTANCE_TEST_MODE:
         {
             static int test_frame_count = 0;
             dtof_bypass_distance_debug_mode();
 
-            if (++test_frame_count >= DISTANCE_TEST_MODE_FRAME_NUM)
+            if (++test_frame_count >= (DISTANCE_TEST_MODE_FRAME_NUM))
             {
                 uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
                 app_set_distance_mode(DISTANCE_UNKNOWN_MODE);

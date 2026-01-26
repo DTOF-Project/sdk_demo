@@ -26,6 +26,7 @@
 #include "application/inc/app_cmd.h"
 #include "application/inc/app_distance.h"
 
+dtof_uint16_t g_frame_id;
 
 /**
  * @brief
@@ -58,6 +59,8 @@ int main(void)
     uint8_t byte;
 
     dtof_set_interrupt_flag(DTOF_FALSE);
+
+    DTOF_CHECK_RET(dtof_reg_burst_read(DTOF_SAVE_RESULT_REG_ADDR, &g_frame_id, 1), "read frame id failed\n");
 
     while (1)
     {

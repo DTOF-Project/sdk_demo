@@ -58,6 +58,7 @@ void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
     app_set_distance_mode(DISTANCE_DEBUG_MODE);
     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
     DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
+    dtof_sleep_ms(1);
     DTOF_CHECK_WARN(dtof_enable_distance_debug_mode(), "enable debug mode failed\n");
 }
 
@@ -354,6 +355,22 @@ void app_cmd_write_ft_data(const char *cmd) {
     }
 }
 
+void app_cmd_reg_burst_read_d(const char *cmd) {
+
+    int reg_addr, reg_num;
+    dtof_uint16_t reg_max[255];
+
+    if (sscanf(cmd, "rr,%d,%d", &reg_addr, &reg_num) == 2) {
+        dtof_reg_burst_read(reg_addr, reg_max, reg_num);
+        dtof_printf("burst reg read 0x%04x:\n", reg_addr);
+        for (int i = 0; i < reg_num; i++) {
+            dtof_printf("%d, ", reg_max[i]);
+        }
+        dtof_printf("\n");
+    }
+
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -365,6 +382,7 @@ cmd_entry_t cmd_table[] = {
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
+    { "rr,", 1, app_cmd_reg_burst_read_d },
     { "ft,", 1, app_cmd_do_ft_calibration },
     {"refspad,", 1, app_cmd_set_refspad },
     {"rate,", 1, app_cmd_set_frame_rate },
