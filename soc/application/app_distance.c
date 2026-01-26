@@ -86,15 +86,13 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
         else
         {
             extern dtof_uint16_t g_frame_id;
-            extern dtof_device_info_t* dtof_get_device_info_ptr(void);
             static dtof_bool_t first_new_flag = DTOF_TRUE;
             dtof_get_distance_result_polling(distance_result, is_new_flag);
             if (first_new_flag == DTOF_TRUE)
             {
-                if((distance_result->frame_id == 7) && ((distance_result->frame_id - g_frame_id) != 1))
+                if(distance_result->frame_id != g_frame_id)
                 {
                     // debug模式下, 第一帧需要特殊处理
-                    // dtof_get_device_info_ptr()->frame_id_pre = distance_result->frame_id;
                     *is_new_flag = DTOF_TRUE;
                     first_new_flag = DTOF_FALSE;
                 }

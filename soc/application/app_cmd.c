@@ -170,6 +170,7 @@ void app_cmd_print_chip_info(const char *cmd) {
     }
     dtof_parse_inner_mcu_error_code();
     dtof_printf("running rate: %d Hz\n", g_running_rate);
+    dtof_sleep_ms(33); //TODO: 待优化
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
