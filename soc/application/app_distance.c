@@ -86,17 +86,16 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
         else
         {
             extern dtof_uint16_t g_frame_id;
-            static dtof_bool_t first_new_flag = DTOF_TRUE;
+            // static dtof_bool_t first_new_flag = DTOF_TRUE;
             dtof_get_distance_result_polling(distance_result, is_new_flag);
-            if (first_new_flag == DTOF_TRUE)
-            {
-                if(distance_result->frame_id != g_frame_id)
-                {
-                    // debug模式下, 第一帧需要特殊处理
-                    *is_new_flag = DTOF_TRUE;
-                    first_new_flag = DTOF_FALSE;
-                }
-            }
+            // // if (first_new_flag == DTOF_TRUE)
+            // // {
+            // if(distance_result->frame_id != g_frame_id)
+            // {
+            //     // debug模式下, 第一帧需要特殊处理
+            //     *is_new_flag = DTOF_TRUE;
+            // }
+            // // }
         }
     #endif
     }
@@ -186,7 +185,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             if (++test_frame_count >= (DISTANCE_TEST_MODE_FRAME_NUM))
             {
                 uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
-                // app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+                app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
                 dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
                 // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
                 test_frame_count = 0;
