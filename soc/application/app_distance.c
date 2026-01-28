@@ -10,6 +10,8 @@
 
 #include "application/inc/app_distance.h"
 
+DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag);
+
 int g_distance_mode = DISTANCE_UNKNOWN_MODE;
 
 void app_set_distance_mode(int mode)
@@ -79,23 +81,15 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
             dtof_set_interrupt_flag(DTOF_FALSE);
         }
     #elif defined(DTOF_POLLING_MODE)
-        if(g_distance_mode == DISTANCE_NORMAL_MODE)
+        dtof_get_distance_result_polling(distance_result, is_new_flag);
+        if (g_distance_mode != DISTANCE_NORMAL_MODE)
         {
-            dtof_get_distance_result_polling(distance_result, is_new_flag);
-        }
-        else
-        {
-            extern dtof_uint16_t g_frame_id;
-            // static dtof_bool_t first_new_flag = DTOF_TRUE;
-            dtof_get_distance_result_polling(distance_result, is_new_flag);
-            // // if (first_new_flag == DTOF_TRUE)
-            // // {
-            // if(distance_result->frame_id != g_frame_id)
-            // {
-            //     // debug模式下, 第一帧需要特殊处理
-            //     *is_new_flag = DTOF_TRUE;
-            // }
-            // // }
+            dtof_uint16_t intr_control_flag;
+            dtof_read_innermcu_intr_control_flag(&intr_control_flag);
+            if(intr_control_flag == 0xab)
+            {
+                *is_new_flag = DTOF_TRUE;
+            }
         }
     #endif
     }
@@ -187,6 +181,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
                 uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
                 app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
                 dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
+                dtof_init_polling_mode_device_info();
                 // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
                 test_frame_count = 0;
             }

@@ -49,9 +49,9 @@ void app_cmd_start_distance_measure(const char *cmd) {
 void app_cmd_stop_distance_measure(const char *cmd) {
     // app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
     DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
-    dtof_sleep_ms(33); //TODO: 待优化, 要等可能存在的上一帧跑完
-    dtof_set_interrupt_flag(DTOF_FALSE);
-    app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+    // dtof_sleep_ms(33); //TODO: 待优化, 要等可能存在的上一帧跑完
+    // dtof_set_interrupt_flag(DTOF_FALSE);
+    // app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
 }
 
 void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
