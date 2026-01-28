@@ -39,6 +39,18 @@ static void reset_uart_buffer(void) {
     memset(uart_buf, 0, sizeof(uart_buf));
 }
 
+DTOF_RET dtof_start_distance_measure_debug_mode(void)
+{
+    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+
+    uint16_t start_flag = DTOF_START_DISATNCE_MODE;
+    dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &start_flag, 1);
+
+    DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+    return DTOF_RET_SUCCESS;
+}
+
+
 // ========== 命令处理函数 ==========
 void app_cmd_start_distance_measure(const char *cmd) {
     app_set_distance_mode(DISTANCE_NORMAL_MODE);
@@ -57,17 +69,15 @@ void app_cmd_stop_distance_measure(const char *cmd) {
 void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
     app_set_distance_mode(DISTANCE_DEBUG_MODE);
     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
-    dtof_sleep_ms(1);
     DTOF_CHECK_WARN(dtof_enable_distance_debug_mode(), "enable debug mode failed\n");
+    DTOF_CHECK_WARN(dtof_start_distance_measure_debug_mode(), "dtof start distance mode failed\n");
 }
 
 void app_cmd_start_distance_measure_test_mode(const char *cmd) {
     app_set_distance_mode(DISTANCE_TEST_MODE);
     DTOF_CHECK_WARN(dtof_sensor_init(), "dtof sensor init failed\n");
-    DTOF_CHECK_WARN(dtof_start_distance_measure(), "dtof start distance mode failed\n");
-    dtof_sleep_ms(1);
     DTOF_CHECK_WARN(dtof_enable_distance_debug_mode(), "enable debug mode failed\n");
+    DTOF_CHECK_WARN(dtof_start_distance_measure_debug_mode(), "dtof start distance mode failed\n");
 }
 
 void app_cmd_reg_burst_read(const char *cmd) {

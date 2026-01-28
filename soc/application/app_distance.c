@@ -81,15 +81,19 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
             dtof_set_interrupt_flag(DTOF_FALSE);
         }
     #elif defined(DTOF_POLLING_MODE)
-        dtof_get_distance_result_polling(distance_result, is_new_flag);
         if (g_distance_mode != DISTANCE_NORMAL_MODE)
         {
             dtof_uint16_t intr_control_flag;
             dtof_read_innermcu_intr_control_flag(&intr_control_flag);
             if(intr_control_flag == 0xab)
             {
+                dtof_get_distance_result(distance_result);
                 *is_new_flag = DTOF_TRUE;
             }
+        }
+        else
+        {
+            dtof_get_distance_result_polling(distance_result, is_new_flag);
         }
     #endif
     }
@@ -114,25 +118,31 @@ DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag)
 DTOF_RET dtof_bypass_distance_debug_mode(void)
 {
 #define DTOF_WFI_STATUS_FLAG 0xab
-#define DTOF_WAIT_WFI_STATUS_DELAY 10
-#define DTOF_WAIT_WFI_STATUS_TRY_COUNT 4
-    dtof_int32_t try_count = 0;
     dtof_uint16_t intr_control_flag;
     dtof_uint16_t bypassvalue = 0x17b9;
 
-    // TODO: 第二次d / e的时候这里会出问题, 所以加了循环判断, 为什么？
-    do {
-        DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
-        dtof_sleep_ms(DTOF_WAIT_WFI_STATUS_DELAY);
-    } while((intr_control_flag != DTOF_WFI_STATUS_FLAG) && (try_count++ < DTOF_WAIT_WFI_STATUS_TRY_COUNT));
-
-    if (try_count >= DTOF_WAIT_WFI_STATUS_TRY_COUNT)
+    DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
+    if (intr_control_flag != DTOF_WFI_STATUS_FLAG)
     {
         DTOF_LOG_ERR("intr_control_flag is not 0xab, is 0x%x\n", intr_control_flag);
-        return DTOF_RET_FAILED;
     }
 
     DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_wakeup_distance_debug_mode(void)
+{
+#define DTOF_QUIT_WFI_STATUS_FLAG 0xba
+    // no use cmd, quit wfi status after wakeup inner mcu
+    dtof_io_interaction(0x30, 0x01);
+
+    dtof_uint16_t intr_control_flag;
+    DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
+    if (intr_control_flag != DTOF_QUIT_WFI_STATUS_FLAG)
+    {
+        DTOF_LOG_ERR("intr_control_flag is not 0xba, is 0x%x\n", intr_control_flag);
+    }
     return DTOF_RET_SUCCESS;
 }
 
@@ -163,7 +173,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
 
-            dtof_io_interaction(0x30, 0x01);
+            dtof_wakeup_distance_debug_mode();
 
             dtof_enable_distance_debug_mode();
 
@@ -198,7 +208,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
 
-            dtof_io_interaction(0x30, 0x01);
+            dtof_wakeup_distance_debug_mode();
 
             dtof_enable_distance_debug_mode();
 
