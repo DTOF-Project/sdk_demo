@@ -25,9 +25,10 @@
 static char uart_buf[UART_BUF_SIZE];
 static int buf_pos = 0;
 
-#define RUNNING_RATE_30HZ  30
-#define RUNNING_RATE_120HZ 120
-static int g_running_rate = RUNNING_RATE_30HZ;
+#define USR_RUNNING_MODE_30HZ      "30Hz"
+#define USR_RUNNING_MODE_120HZ_LP  "120Hz LP"
+#define USR_RUNNING_MODE_120HZ_LLP "120Hz LLP"
+static char* g_running_rate_p = USR_RUNNING_MODE_30HZ;
 
 
 static int is_end_of_command(char byte) {
@@ -179,7 +180,7 @@ void app_cmd_print_chip_info(const char *cmd) {
         }
     }
     dtof_parse_inner_mcu_error_code();
-    dtof_printf("running rate: %d Hz\n", g_running_rate);
+    dtof_printf("running mode = %s\n", g_running_rate_p);
     dtof_sleep_ms(33); //TODO: 待优化
 }
 
@@ -262,20 +263,38 @@ void app_cmd_set_refspad(const char *cmd) {
     }
 }
 
-void app_cmd_set_frame_rate(const char *cmd) {
-    dtof_uint16_t frame_rate;
-    if (sscanf(cmd, "rate,%hu", &frame_rate) == 1)
+void app_cmd_set_running_mode(const char *cmd) {
+    dtof_uint16_t running_mode;
+    if (sscanf(cmd, "mode,%hu", &running_mode) == 1)
     {
-        dtof_printf("set frame rate = %u Hz\n", frame_rate);
-        if (frame_rate == RUNNING_RATE_30HZ) {
-            dtof_switch_frame_rate(DTOF_30HZ_FRAME_CNT);
-            g_running_rate = RUNNING_RATE_30HZ;
-        } else if (frame_rate == RUNNING_RATE_120HZ) {
-            dtof_switch_frame_rate(DTOF_120HZ_FRAME_CNT);
-            g_running_rate = RUNNING_RATE_120HZ;
-        }
-        else {
-            dtof_printf("unsupported frame rate, only support 30Hz and 120Hz\n");
+        switch(running_mode)
+        {
+            case RUNNING_MODE_30HZ:
+            {
+                dtof_switch_running_mode(RUNNING_MODE_30HZ);
+                g_running_rate_p = USR_RUNNING_MODE_30HZ;
+                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                break;
+            }
+            case RUNNING_MODE_120HZ_LP:
+            {
+                dtof_switch_running_mode(RUNNING_MODE_120HZ_LP);
+                g_running_rate_p = USR_RUNNING_MODE_120HZ_LP;
+                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                break;
+            }
+            case RUNNING_MODE_120HZ_LLP:
+            {
+                dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP);
+                g_running_rate_p = USR_RUNNING_MODE_120HZ_LLP;
+                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                break;
+            }
+            default:
+            {
+                dtof_printf("unsupported running mode %u\n", running_mode);
+                return;
+            }
         }
     }
 }
@@ -396,7 +415,7 @@ cmd_entry_t cmd_table[] = {
     { "rr,", 1, app_cmd_reg_burst_read_d },
     { "ft,", 1, app_cmd_do_ft_calibration },
     {"refspad,", 1, app_cmd_set_refspad },
-    {"rate,", 1, app_cmd_set_frame_rate },
+    {"mode,", 1, app_cmd_set_running_mode },
     {"wft,", 1, app_cmd_write_ft_data },
 };
 
