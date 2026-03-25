@@ -127,27 +127,11 @@ void app_cmd_get_version(const char *cmd) {
     }
 }
 
-void app_cmd_print_chip_info(const char *cmd) {
-    dtof_printf("chip uuid: ");
-    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
-    {
-        dtof_printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
-    }
-    dtof_printf("\n");
-    dtof_printf("otp list:\n");
-    dtof_uint8_t otp_data[128];
-    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
-    DTOF_CHECK_WARN(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
-    dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP);
-    for (int i = 0; i < 128; i++)
-    {
-        dtof_printf("%d, ", otp_data[i]);
-    }
-    dtof_printf("\n");
-
+void print_ft_data_from_flash(dtof_run_mode_e run_mode)
+{
     dtof_ft_cali_param_t ft_data_read;
     dtof_bool_t is_legal_data = DTOF_FALSE;
-    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
+    dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), run_mode, &is_legal_data);
     if (is_legal_data == DTOF_FALSE)
     {
         dtof_printf("ft data is illegal, all 0xFF\n");
@@ -179,13 +163,87 @@ void app_cmd_print_chip_info(const char *cmd) {
             dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
         }
     }
+}
+
+void app_cmd_print_chip_info(const char *cmd) {
+    dtof_printf("chip uuid: ");
+    for (int i = 0; i < DTOF_UUID_LENGTH; i++)
+    {
+        dtof_printf("%d, ", dtof_get_chip_config()->chip_uuid[i]);
+    }
+    dtof_printf("\n");
+    dtof_printf("otp list:\n");
+    dtof_uint8_t otp_data[128];
+    dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT);
+    DTOF_CHECK_WARN(dtof_read_otp(0, otp_data, 128), "read otp failed\n");
+    dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP);
+    for (int i = 0; i < 128; i++)
+    {
+        dtof_printf("%d, ", otp_data[i]);
+    }
+    dtof_printf("\n");
+
     dtof_parse_inner_mcu_error_code();
-    dtof_printf("running mode = %s\n", g_running_rate_p);
+
+    dtof_run_mode_e running_mode;
+    DTOF_CHECK_WARN(dtof_read_running_mode(&running_mode), "read running mode failed\n");
+    dtof_printf("running mode = %d(0:30Hz, 1:120Hz LP, 2:120Hz LLP)\n", running_mode);
+
+    dtof_printf("\nft data 30Hz:\n");
+    print_ft_data_from_flash(RUNNING_MODE_30HZ);
+
+    dtof_printf("\nft data 120Hz LP:\n");
+    print_ft_data_from_flash(RUNNING_MODE_120HZ_LP);
+
+    dtof_printf("\nft data 120Hz LLP:\n");
+    print_ft_data_from_flash(RUNNING_MODE_120HZ_LLP);
+
     dtof_sleep_ms(33); //TODO: 待优化
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
+}
+
+void do_ft_calibration(dtof_run_mode_e running_mode, dtof_uint16_t ft_cali_type, dtof_uint16_t ft_actual_param) {
+    DTOF_RET ret = dtof_do_ft_calibration(running_mode, ft_cali_type, ft_actual_param);
+    if (ret == DTOF_RET_SUCCESS) {
+        dtof_ft_cali_param_t ft_cali_param;
+        dtof_bool_t is_legal_data = DTOF_FALSE;
+        dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode, &is_legal_data);
+        dtof_printf("FT success:\n");
+        if (is_legal_data != DTOF_TRUE)
+        {
+            dtof_printf("ft data is illegal\n");
+            return;
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+        {
+            dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+        {
+            dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+        {
+            dtof_printf("cg_reg: ");
+            dtof_uint16_t cg_reg;
+            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            {
+                cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
+                dtof_printf("%u, ", cg_reg);
+            }
+            dtof_printf("\n");
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+        {
+            dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
+        }
+    }
+    else{
+        dtof_printf("ft calibration failed\n");
+    }
 }
 
 void app_cmd_do_ft_calibration(const char *cmd) {
@@ -197,44 +255,13 @@ void app_cmd_do_ft_calibration(const char *cmd) {
     if (sscanf(cmd, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
     {
         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-        DTOF_RET ret = dtof_do_ft_calibration(ft_cali_type, ft_actual_param);
-        if (ret == DTOF_RET_SUCCESS) {
-            dtof_ft_cali_param_t ft_cali_param;
-            dtof_bool_t is_legal_data = DTOF_FALSE;
-            dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
-            dtof_printf("FT success:\n");
-            if (is_legal_data != DTOF_TRUE)
-            {
-                dtof_printf("ft data is illegal\n");
-                return;
-            }
-            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
-            {
-                dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
-            }
-            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
-            {
-                dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
-            }
-            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
-            {
-                dtof_printf("cg_reg: ");
-                dtof_uint16_t cg_reg;
-                for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
-                {
-                    cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
-                    dtof_printf("%u, ", cg_reg);
-                }
-                dtof_printf("\n");
-            }
-            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
-            {
-                dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
-            }
-        }
-        else{
-            dtof_printf("ft calibration failed\n");
-        }
+
+        // for zhumi: 校准低功耗和低低功耗的数据
+        DTOF_CHECK_WARN(dtof_switch_running_mode(RUNNING_MODE_120HZ_LP), "switch running mode failed\n");
+        do_ft_calibration(RUNNING_MODE_120HZ_LP, ft_cali_type, ft_actual_param);
+
+        DTOF_CHECK_WARN(dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP), "switch running mode failed\n");
+        do_ft_calibration(RUNNING_MODE_120HZ_LLP, ft_cali_type, ft_actual_param);
     }
 }
 
@@ -301,7 +328,7 @@ void app_cmd_set_running_mode(const char *cmd) {
 
 void app_cmd_write_ft_data(const char *cmd) {
     if (strncmp(cmd, "wft,", 4) == 0) {
-        #define FT_MAX_NUM 39 // type + 34cg+ binoffset + k + b + refspad
+        #define FT_MAX_NUM 40 // runmode + type + 34cg+ binoffset + k + b + refspad
         char buf_copy[128];
         strncpy(buf_copy, cmd, sizeof(buf_copy));
         buf_copy[sizeof(buf_copy) - 1] = '\0';
@@ -312,7 +339,7 @@ void app_cmd_write_ft_data(const char *cmd) {
 
         while ((token = strtok(NULL, ",")) != NULL) {
             if (count >= FT_MAX_NUM) {
-                printf("Too many numbers, need exactly 39\n");
+                printf("Too many numbers, need exactly 40\n");
                 continue;
             }
 
@@ -332,34 +359,36 @@ void app_cmd_write_ft_data(const char *cmd) {
             return;
         }
 
+        dtof_run_mode_e run_mode;
         dtof_uint16_t ft_cali_type;
         dtof_ft_cali_param_t ft_cali_param;
         dtof_bool_t is_legal_ft_data = DTOF_FALSE;
 
-        DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_cali_param, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+        run_mode = values[0];
+        ft_cali_type = values[1];
 
-        ft_cali_type = values[0];
+        DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)&ft_cali_param, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), run_mode, &is_legal_ft_data), "get ft data from flash failed\n");
 
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
         {
-            ft_cali_param.dtof_ft_data.bin_offset = values[1];
-            printf("set binoffset = %d\n", values[1]);
+            ft_cali_param.dtof_ft_data.bin_offset = values[2];
+            printf("set binoffset = %d\n", values[2]);
         }
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
         {
-            ft_cali_param.dtof_ft_data.ref_spad = values[1];
-            printf("set refspad = %d\n", values[1]);
+            ft_cali_param.dtof_ft_data.ref_spad = values[2];
+            printf("set refspad = %d\n", values[2]);
         }
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
         {
-            if (count < 18) {
-                printf("count < 18, = %d\n", count);
+            if (count < 19) {
+                printf("count < 19, = %d\n", count);
                 reset_uart_buffer();
                 return;
             }
 
             printf("set cg: ");
-            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            for (int i = 1; i < (DTOF_AC_NUM + 1); i++)
             {
                 ft_cali_param.dtof_ft_data.cg_data[i * 2] = values[i + 1] & 0xff;
                 ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] = (values[i + 1] & 0xff00) >> 8;
@@ -370,8 +399,8 @@ void app_cmd_write_ft_data(const char *cmd) {
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
         {
             ft_cali_param.dtof_ft_data.distance_k = 1197;
-            ft_cali_param.dtof_ft_data.distance_b = values[1];
-            printf("set b value = %d\n", values[1]);
+            ft_cali_param.dtof_ft_data.distance_b = values[2];
+            printf("set b value = %d\n", values[2]);
         }
 
         if (is_legal_ft_data == DTOF_TRUE) {
@@ -380,8 +409,8 @@ void app_cmd_write_ft_data(const char *cmd) {
             ft_cali_param.ft_calibration_type = ft_cali_type;
         }
         DTOF_CHECK_RET_VOID(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
-        dtof_set_ft_calibration_type(ft_cali_param.ft_calibration_type);
-        DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t)), "set ft data to flash failed\n");
+        dtof_set_ft_calibration_type(run_mode, ft_cali_param.ft_calibration_type);
+        DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t), run_mode), "set ft data to flash failed\n");
     }
 }
 
