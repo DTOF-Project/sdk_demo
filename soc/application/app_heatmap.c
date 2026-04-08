@@ -42,9 +42,9 @@ void app_heatmap_output(void)
             DTOF_CHECK_WARN(dtof_reg_burst_read(0, reg_all, DTOF_REG_NUM_ALL), "reg read failed\n");
 
             // save data
-            peak_cnt[spad_reg_index * DTOF_MAIN_SPAD_NUM_ONE_REG + spad_index] = dsp_fifo[1];
+            peak_cnt[spad_reg_index * DTOF_MAIN_SPAD_NUM_ONE_REG + spad_index] = dsp_fifo[1] / 2;
             nflash[spad_reg_index * DTOF_MAIN_SPAD_NUM_ONE_REG + spad_index] = dsp_fifo[9];
-            main_noise[spad_reg_index * DTOF_MAIN_SPAD_NUM_ONE_REG + spad_index] = dsp_fifo[4] + ((dsp_fifo[6] >> 12) / 16.0f);
+            main_noise[spad_reg_index * DTOF_MAIN_SPAD_NUM_ONE_REG + spad_index] = (dsp_fifo[4] + ((uint32_t)(dsp_fifo[6] & 0xf000) << 4)) / 32.0f;
 
             // debug print
             for(int i = 0; i < DTOF_SINGLE_FIFO_LEN; i++) {
