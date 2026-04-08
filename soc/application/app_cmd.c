@@ -14,6 +14,7 @@
 #include "application/inc/soc_version.h"
 #include "application/inc/app_cmd.h"
 #include "application/inc/app_distance.h"
+#include "application/inc/app_heatmap.h"
 
 #include "inc/dev/dtof_hal.h"
 #include "customer/dtof_customer.h"
@@ -388,11 +389,11 @@ void app_cmd_write_ft_data(const char *cmd) {
             }
 
             printf("set cg: ");
-            for (int i = 1; i < (DTOF_AC_NUM + 1); i++)
+            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
             {
-                ft_cali_param.dtof_ft_data.cg_data[i * 2] = values[i + 1] & 0xff;
-                ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] = (values[i + 1] & 0xff00) >> 8;
-                printf("%d, ", values[i + 1]);
+                ft_cali_param.dtof_ft_data.cg_data[i * 2] = values[i + 2] & 0xff;
+                ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] = (values[i + 2] & 0xff00) >> 8;
+                printf("%d, ", values[i + 2]);
             }
             printf("\n");
         }
@@ -430,6 +431,10 @@ void app_cmd_reg_burst_read_d(const char *cmd) {
 
 }
 
+void app_cmd_heatmap_output(const char *cmd) {
+    app_heatmap_output();
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -438,6 +443,7 @@ cmd_entry_t cmd_table[] = {
     { "clear", 0, app_cmd_clear_cal_info },
     { "v",   0, app_cmd_get_version },
     { "p",   0, app_cmd_print_chip_info },
+    { "heatmap",   0, app_cmd_heatmap_output },
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
