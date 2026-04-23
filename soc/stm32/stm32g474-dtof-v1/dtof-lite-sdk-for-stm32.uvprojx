@@ -623,6 +623,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sdk\src\dtof_calibration_ft.c</FilePath>
             </File>
+            <File>
+              <FileName>dtof_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sdk\src\dtof_common.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
