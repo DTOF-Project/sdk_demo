@@ -266,28 +266,47 @@ void app_cmd_do_ft_calibration(const char *cmd) {
     }
 }
 
-void app_cmd_set_refspad(const char *cmd) {
-    dtof_uint16_t ref_spad;
-    if (sscanf(cmd, "refspad,%hu", &ref_spad) == 1)
+void app_cmd_set_spad(const char *cmd) {
+    dtof_uint16_t reg_addr, reg_value;
+    if (sscanf(cmd, "spad,%hu,%hu", &reg_addr, &reg_value) == 2)
     {
-        dtof_printf("set refspad = %u\n", ref_spad);
+        #define DTOF_SPAD_REG_START_ADDR 204
+        #define DTOF_SPAD_REG_END_ADDR 208
         #define DTOF_FT_DATA_START 0x2000
         #define DTOF_FT_DATA_B_OFFSET 4
+
+        if(reg_addr < DTOF_SPAD_REG_START_ADDR || reg_addr > DTOF_SPAD_REG_END_ADDR)
+        {
+            dtof_printf("invalid spad reg addr %hu, should be between %d and %d\n", reg_addr, DTOF_SPAD_REG_START_ADDR, DTOF_SPAD_REG_END_ADDR);
+            return;
+        }
+        dtof_printf("set spad reg %hu = %hu\n", reg_addr, reg_value);
+
+        // 关闭软件低功耗, 目的是使用PLL时钟
+        DTOF_CHECK_RET_VOID(dtof_start_ft_calibrate(), "ft start failed\n");
         DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "MCU sleep failed");
 
-        dtof_uint16_t ram_data[2];
-        dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
+        if(reg_addr != DTOF_SPAD_REG_END_ADDR)
+        {
+            // main spad mask
+            DTOF_CHECK_RET_VOID(hal_spad_mask_config(reg_addr, reg_value), "spad mask config failed\n");
+            DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
+            DTOF_CHECK_RET_VOID(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+        } else {
+            // ref spad mask
+            dtof_uint16_t ram_data[2];
+            dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
 
-        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
-        DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
+            DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+            DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
 
-        ram_data[0] = ref_spad;
-        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
-        DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
+            ram_data[0] = reg_value;
+            DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+            DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_READ_RAM_START_REG_ADDR, ram_data, sizeof(ram_data)/sizeof(ram_data[0])), "read ft data failed\n");
 
-        DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
-
-        dtof_reload_ft_data();
+            DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
+            DTOF_CHECK_RET_VOID(dtof_reload_ft_data(), "reload ft data failed\n");
+        }
     }
 }
 
@@ -449,7 +468,7 @@ cmd_entry_t cmd_table[] = {
     { "rb,", 1, app_cmd_reg_burst_read },
     { "rr,", 1, app_cmd_reg_burst_read_d },
     { "ft,", 1, app_cmd_do_ft_calibration },
-    {"refspad,", 1, app_cmd_set_refspad },
+    {"spad,", 1, app_cmd_set_spad },
     {"mode,", 1, app_cmd_set_running_mode },
     {"wft,", 1, app_cmd_write_ft_data },
 };
