@@ -11,6 +11,7 @@
 #include "application/inc/app_distance.h"
 
 DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag);
+static void dtof_resume_debug_flow(void);
 
 int g_distance_mode = DISTANCE_UNKNOWN_MODE;
 
@@ -71,6 +72,17 @@ void dump_hist_log(dtof_uint16_t *hist_p, dtof_uint16_t len)
 
 void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *distance_result)
 {
+    static dtof_uint16_t last_frame_id = 0xffff;
+    static int last_distance_mode = DISTANCE_UNKNOWN_MODE;
+
+    *is_new_flag = DTOF_FALSE;
+
+    if (g_distance_mode != last_distance_mode)
+    {
+        last_frame_id = 0xffff;
+        last_distance_mode = g_distance_mode;
+    }
+
     if (g_distance_mode != DISTANCE_UNKNOWN_MODE)
     {
     #ifdef DTOF_INTERRUPT_MODE
@@ -84,11 +96,24 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
         if (g_distance_mode != DISTANCE_NORMAL_MODE)
         {
             dtof_uint16_t intr_control_flag;
-            dtof_read_innermcu_intr_control_flag(&intr_control_flag);
-            if(intr_control_flag == 0xab)
+            dtof_distance_result_t temp_result;
+
+            if (dtof_read_innermcu_intr_control_flag(&intr_control_flag) == DTOF_RET_SUCCESS)
             {
-                dtof_get_distance_result(distance_result);
-                *is_new_flag = DTOF_TRUE;
+                if(intr_control_flag == 0xab)
+                {
+                    dtof_get_distance_result(&temp_result);
+                    if (temp_result.frame_id != last_frame_id)
+                    {
+                        *distance_result = temp_result;
+                        last_frame_id = temp_result.frame_id;
+                        *is_new_flag = DTOF_TRUE;
+                    }
+                    else
+                    {
+                        dtof_resume_debug_flow();
+                    }
+                }
             }
         }
         else
@@ -173,11 +198,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
             dump_hist_log(buffer, TOTAL_REG_NUM);
 
-            dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
-
-            dtof_wakeup_distance_debug_mode();
-
-            dtof_enable_distance_debug_mode();
+            dtof_resume_debug_flow();
 
             printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
@@ -210,11 +231,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
             dump_hist_log(buffer, TOTAL_REG_NUM);
 
-            dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
-
-            dtof_wakeup_distance_debug_mode();
-
-            dtof_enable_distance_debug_mode();
+            dtof_resume_debug_flow();
 
             printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
@@ -226,6 +243,13 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
             break;
     }
     return;
+}
+
+static void dtof_resume_debug_flow(void)
+{
+    dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+    dtof_wakeup_distance_debug_mode();
+    dtof_enable_distance_debug_mode();
 }
 
 void app_distance_process(void)

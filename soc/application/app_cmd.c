@@ -26,12 +26,6 @@
 static char uart_buf[UART_BUF_SIZE];
 static int buf_pos = 0;
 
-#define USR_RUNNING_MODE_30HZ      "30Hz"
-#define USR_RUNNING_MODE_120HZ_LP  "120Hz LP"
-#define USR_RUNNING_MODE_120HZ_LLP "120Hz LLP"
-static char* g_running_rate_p = USR_RUNNING_MODE_30HZ;
-
-
 static int is_end_of_command(char byte) {
     return (byte == '\n' || byte == '\r');
 }
@@ -319,22 +313,19 @@ void app_cmd_set_running_mode(const char *cmd) {
             case RUNNING_MODE_30HZ:
             {
                 dtof_switch_running_mode(RUNNING_MODE_30HZ);
-                g_running_rate_p = USR_RUNNING_MODE_30HZ;
-                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                dtof_printf("set running mode = 30Hz\n");
                 break;
             }
             case RUNNING_MODE_120HZ_LP:
             {
                 dtof_switch_running_mode(RUNNING_MODE_120HZ_LP);
-                g_running_rate_p = USR_RUNNING_MODE_120HZ_LP;
-                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                dtof_printf("set running mode = 120Hz LP\n");
                 break;
             }
             case RUNNING_MODE_120HZ_LLP:
             {
                 dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP);
-                g_running_rate_p = USR_RUNNING_MODE_120HZ_LLP;
-                dtof_printf("set running mode = %s\n", g_running_rate_p);
+                dtof_printf("set running mode = 120Hz LLP\n");
                 break;
             }
             default:
