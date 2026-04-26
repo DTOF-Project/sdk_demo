@@ -196,6 +196,69 @@ void app_cmd_print_chip_info(const char *cmd) {
     dtof_sleep_ms(33); //TODO: 待优化
 }
 
+void app_cmd_print_ram_ft_data(const char *cmd) {
+    // DTOF_CHECK_RET_VOID(dtof_get_ft_slot_start_addr(&dtof_ft_data_start, DTOF_INNER_FT_SLOT_30HZ), "get ft slot addr failed\n");
+
+    dtof_uint16_t dtof_ft_data_start;
+    dtof_uint16_t dtof_ft_data_inner[DTOF_FT_DATA_LEN*4];
+    dtof_ft_data_t *dtof_ft_data_inner_p = (dtof_ft_data_t *)dtof_ft_data_inner;
+
+    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
+    // DTOF_CHECK_RET_VOID(dtof_get_active_ft_start_addr(&dtof_ft_data_start), "get active ft addr failed\n");
+    DTOF_CHECK_RET_VOID(dtof_get_ft_slot_start_addr(&dtof_ft_data_start, DTOF_INNER_FT_SLOT_30HZ), "get ft slot addr failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, dtof_ft_data_inner, DTOF_FT_DATA_LEN), "read ft data failed\n");
+
+    printf("ft data:\n");
+    for(int i = 0; i < DTOF_FT_DATA_LEN; i++)
+    {
+        printf("%d, ", dtof_ft_data_inner[i]);
+    }
+    printf("\n");
+
+
+    DTOF_CHECK_RET_VOID(dtof_get_ft_slot_start_addr(&dtof_ft_data_start, DTOF_INNER_FT_SLOT_120HZ_LP), "get ft slot addr failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, dtof_ft_data_inner, DTOF_FT_DATA_LEN), "read ft data failed\n");
+
+    printf("ft data:\n");
+    for(int i = 0; i < DTOF_FT_DATA_LEN; i++)
+    {
+        printf("%d, ", dtof_ft_data_inner[i]);
+    }
+    printf("\n");
+
+
+    DTOF_CHECK_RET_VOID(dtof_get_ft_slot_start_addr(&dtof_ft_data_start, DTOF_INNER_FT_SLOT_120HZ_LLP), "get ft slot addr failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, dtof_ft_data_inner, DTOF_FT_DATA_LEN), "read ft data failed\n");
+
+    printf("ft data:\n");
+    for(int i = 0; i < DTOF_FT_DATA_LEN; i++)
+    {
+        printf("%d, ", dtof_ft_data_inner[i]);
+    }
+    printf("\n");
+
+
+    DTOF_CHECK_RET_VOID(dtof_get_ft_slot_start_addr(&dtof_ft_data_start, DTOF_INNER_FT_SLOT_ACTIVE), "get ft slot addr failed\n");
+
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
+    DTOF_CHECK_RET_VOID(dtof_reg_burst_read(DTOF_READ_RAM_START_REG_ADDR, dtof_ft_data_inner, DTOF_FT_DATA_LEN), "read ft data failed\n");
+
+    printf("ft data:\n");
+    for(int i = 0; i < DTOF_FT_DATA_LEN; i++)
+    {
+        printf("%d, ", dtof_ft_data_inner[i]);
+    }
+    printf("\n");
+
+    DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "wakeup mcu failed\n");
+}
+
 void app_cmd_clear_cal_info(const char *cmd) {
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
 }
@@ -205,7 +268,7 @@ void do_ft_calibration(dtof_run_mode_e running_mode, dtof_uint16_t ft_cali_type,
     if (ret == DTOF_RET_SUCCESS) {
         dtof_ft_cali_param_t ft_cali_param;
         dtof_bool_t is_legal_data = DTOF_FALSE;
-        dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode, &is_legal_data);
+        DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode, &is_legal_data), "get ft data from flash failed\n");
         dtof_printf("FT success:\n");
         if (is_legal_data != DTOF_TRUE)
         {
@@ -252,10 +315,12 @@ void app_cmd_do_ft_calibration(const char *cmd) {
         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
 
         // for zhumi: 校准低功耗和低低功耗的数据
-        DTOF_CHECK_WARN(dtof_switch_running_mode(RUNNING_MODE_120HZ_LP), "switch running mode failed\n");
+        DTOF_CHECK_RET_VOID(dtof_switch_running_mode(RUNNING_MODE_120HZ_LP), "switch running mode failed\n");
+        dtof_sleep_ms(1);
         do_ft_calibration(RUNNING_MODE_120HZ_LP, ft_cali_type, ft_actual_param);
 
-        DTOF_CHECK_WARN(dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP), "switch running mode failed\n");
+        DTOF_CHECK_RET_VOID(dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP), "switch running mode failed\n");
+        dtof_sleep_ms(1);
         do_ft_calibration(RUNNING_MODE_120HZ_LLP, ft_cali_type, ft_actual_param);
     }
 }
@@ -288,6 +353,9 @@ void app_cmd_set_spad(const char *cmd) {
             DTOF_CHECK_RET_VOID(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
         } else {
             // ref spad mask
+            dtof_run_mode_e running_mode;
+            dtof_ft_cali_param_t ft_cali_param;
+            dtof_bool_t is_legal_ft_data = DTOF_FALSE;
             dtof_uint16_t ram_data[2];
             dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
 
@@ -300,6 +368,21 @@ void app_cmd_set_spad(const char *cmd) {
 
             DTOF_CHECK_RET_VOID(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU sleep failed");
             DTOF_CHECK_RET_VOID(dtof_reload_ft_data(), "reload ft data failed\n");
+
+            DTOF_CHECK_RET_VOID(dtof_read_running_mode(&running_mode), "read running mode failed\n");
+            DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)&ft_cali_param, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), running_mode, &is_legal_ft_data), "get ft data from flash failed\n");
+            DTOF_CHECK_RET_VOID(dtof_get_ft_data_from_ram(&ft_cali_param.dtof_ft_data), "get ft data from ram failed\n");
+            if (is_legal_ft_data == DTOF_TRUE)
+            {
+                ft_cali_param.ft_calibration_type |= DTOF_BIT(DTOF_FT_CALIBRATE_REFSPAD);
+            }
+            else
+            {
+                ft_cali_param.ft_calibration_type = DTOF_BIT(DTOF_FT_CALIBRATE_REFSPAD);
+            }
+            dtof_set_ft_calibration_type(running_mode, ft_cali_param.ft_calibration_type);
+            DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t *)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t), running_mode), "set ft data to flash failed\n");
+            DTOF_CHECK_RET_VOID(dtof_sync_ft_slot_by_mode(running_mode, &ft_cali_param.dtof_ft_data), "sync ft slot failed\n");
         }
     }
 }
@@ -312,19 +395,19 @@ void app_cmd_set_running_mode(const char *cmd) {
         {
             case RUNNING_MODE_30HZ:
             {
-                dtof_switch_running_mode(RUNNING_MODE_30HZ);
+                DTOF_CHECK_RET_VOID(dtof_switch_running_mode(RUNNING_MODE_30HZ), "switch running mode failed\n");
                 dtof_printf("set running mode = 30Hz\n");
                 break;
             }
             case RUNNING_MODE_120HZ_LP:
             {
-                dtof_switch_running_mode(RUNNING_MODE_120HZ_LP);
+                DTOF_CHECK_RET_VOID(dtof_switch_running_mode(RUNNING_MODE_120HZ_LP), "switch running mode failed\n");
                 dtof_printf("set running mode = 120Hz LP\n");
                 break;
             }
             case RUNNING_MODE_120HZ_LLP:
             {
-                dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP);
+                DTOF_CHECK_RET_VOID(dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP), "switch running mode failed\n");
                 dtof_printf("set running mode = 120Hz LLP\n");
                 break;
             }
@@ -422,6 +505,7 @@ void app_cmd_write_ft_data(const char *cmd) {
         DTOF_CHECK_RET_VOID(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
         dtof_set_ft_calibration_type(run_mode, ft_cali_param.ft_calibration_type);
         DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t), run_mode), "set ft data to flash failed\n");
+        DTOF_CHECK_RET_VOID(dtof_sync_ft_slot_by_mode(run_mode, &ft_cali_param.dtof_ft_data), "sync ft slot failed\n");
     }
 }
 
@@ -453,6 +537,7 @@ cmd_entry_t cmd_table[] = {
     { "clear", 0, app_cmd_clear_cal_info },
     { "v",   0, app_cmd_get_version },
     { "p",   0, app_cmd_print_chip_info },
+    {"ram", 0, app_cmd_print_ram_ft_data },
     { "heatmap",   0, app_cmd_heatmap_output },
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
