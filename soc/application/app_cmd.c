@@ -260,7 +260,7 @@ void app_cmd_print_ram_ft_data(const char *cmd) {
 }
 
 void app_cmd_clear_cal_info(const char *cmd) {
-    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
+    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, RUNNING_MODE_NUM);
 }
 
 void do_ft_calibration(dtof_run_mode_e running_mode, dtof_uint16_t ft_cali_type, dtof_uint16_t ft_actual_param) {
@@ -502,7 +502,6 @@ void app_cmd_write_ft_data(const char *cmd) {
         } else {
             ft_cali_param.ft_calibration_type = ft_cali_type;
         }
-        DTOF_CHECK_RET_VOID(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
         dtof_set_ft_calibration_type(run_mode, ft_cali_param.ft_calibration_type);
         DTOF_CHECK_RET_VOID(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t), run_mode), "set ft data to flash failed\n");
         DTOF_CHECK_RET_VOID(dtof_sync_ft_slot_by_mode(run_mode, &ft_cali_param.dtof_ft_data), "sync ft slot failed\n");
