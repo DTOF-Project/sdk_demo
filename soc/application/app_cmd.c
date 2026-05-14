@@ -35,6 +35,25 @@ static void reset_uart_buffer(void) {
     memset(uart_buf, 0, sizeof(uart_buf));
 }
 
+DTOF_RET dtof_set_auto_switch_mode(dtof_uint16_t auto_switch_mode)
+{
+#define ENABLE_AUTO_SWITCH_MODE 1
+#define DISABLE_AUTO_SWITCH_MODE 0
+#define DTOF_AUTO_SWITCH_MODE 0X0888          // 低12bit为0x888时, 代表要启用/禁用自动切换环境光模式
+    dtof_uint16_t dtof_auto_switch_mode_value;
+
+    if(auto_switch_mode != ENABLE_AUTO_SWITCH_MODE && auto_switch_mode != DISABLE_AUTO_SWITCH_MODE) {
+        dtof_printf("invalid auto switch mode: %d\n", auto_switch_mode);
+        return DTOF_RET_FAILED;
+    }
+
+    dtof_auto_switch_mode_value = DTOF_AUTO_SWITCH_MODE | (auto_switch_mode << 12);
+    dtof_printf("set auto switch mode: 0x%04x\n", dtof_auto_switch_mode_value);
+    DTOF_CHECK_RET(dtof_write_reg_running(DTOF_FRAME_CONTROL_REG, dtof_auto_switch_mode_value), "dtof swicth frame rate failed\n");
+    DTOF_CHECK_RET(dtof_wait_running_mode_switch_done(), "wait running mode switch done failed\n");
+    return DTOF_RET_SUCCESS;
+}
+
 DTOF_RET dtof_start_distance_measure_debug_mode(void)
 {
     DTOF_CHECK_RET(dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT), "set mcu sleep failed\n");
@@ -387,6 +406,16 @@ void app_cmd_set_spad(const char *cmd) {
     }
 }
 
+void app_cmd_set_auto_switch_mode(const char *cmd) {
+    dtof_uint16_t auto_switch_mode;
+    if (sscanf(cmd, "auto,%hu", &auto_switch_mode) == 1)
+    {
+        dtof_printf("set auto switch mode = %hu\n", auto_switch_mode);
+        dtof_set_auto_switch_mode(auto_switch_mode);
+    }
+}
+
+
 void app_cmd_set_running_mode(const char *cmd) {
     dtof_uint16_t running_mode;
     if (sscanf(cmd, "mode,%hu", &running_mode) == 1)
@@ -546,6 +575,7 @@ cmd_entry_t cmd_table[] = {
     {"spad,", 1, app_cmd_set_spad },
     {"mode,", 1, app_cmd_set_running_mode },
     {"wft,", 1, app_cmd_write_ft_data },
+    {"auto,", 1, app_cmd_set_auto_switch_mode },
 };
 
 // ========== 命令解析器 ==========
