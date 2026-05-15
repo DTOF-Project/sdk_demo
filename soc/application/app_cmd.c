@@ -33,6 +33,44 @@ static void reset_uart_buffer(void) {
     buf_pos = 0;
     memset(uart_buf, 0, sizeof(uart_buf));
 }
+// ========== ROM_FIRMWARE 命令处理函数 ==========
+// cmd_entry_t cmd_table[] = {
+//     { "s",   0, app_cmd_start_distance_measure },
+//     { "t",   0, app_cmd_stop_distance_measure },
+//     { "d",   0, app_cmd_start_distance_measure_debug_mode },
+//     { "e",   0, app_cmd_start_distance_measure_test_mode },
+//     { "clear", 0, app_cmd_clear_cal_info },
+//     { "v",   0, app_cmd_get_version },
+//     { "p",   0, app_cmd_print_chip_info },
+//     { "init",   0, app_cmd_dtof_init },
+//     { "ri,", 1, app_cmd_reg_read_running },
+//     { "wi,", 1, app_cmd_reg_write_running },
+//     { "rb,", 1, app_cmd_reg_burst_read },
+//     { "wb,", 1, app_cmd_reg_burst_write },
+//     { "ft,", 1, app_cmd_do_ft_calibration },
+//     {"refspad,", 1, app_cmd_set_refspad },
+//     { "h",   0, app_cmd_help },
+//     { "wft,", 1, app_cmd_write_ft_data },
+//     { "gm", 0, app_cmd_get_ram_fsm_status },
+//     { "debug", 0, app_cmd_debug_print },
+//     { "rate", 1, app_cmd_set_frame_rate },
+//     { "algo", 1, app_cmd_change_ram_algo },
+// };
+#ifndef RAM_RUNONCE
+void app_cmd_start_distance_measure(const char *cmd) {
+    app_set_distance_mode(DISTANCE_NORMAL_MODE);
+    // DTOF_CHECK_RET_VOID(dtof_sensor_init(), "dtof sensor init failed\n");
+    // dtof_global_reset();
+    DTOF_CHECK_RET_VOID(dtof_start_distance_measure(), "dtof start distance mode failed\n");
+
+}
+
+void app_cmd_stop_distance_measure(const char *cmd) {
+    DTOF_CHECK_RET_VOID(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+}
+#elif
+
+
 
 // ========== 命令处理函数 ==========
 void app_cmd_start_distance_measure(const char *cmd) {
@@ -44,6 +82,7 @@ void app_cmd_start_distance_measure(const char *cmd) {
 void app_cmd_stop_distance_measure(const char *cmd) {
     DTOF_CHECK_RET_VOID(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
 }
+#endif
 
 void app_cmd_start_distance_measure_debug_mode(const char *cmd) {
     app_set_distance_mode(DISTANCE_DEBUG_MODE);
