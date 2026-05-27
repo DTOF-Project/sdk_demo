@@ -628,6 +628,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\sdk\src\dtof_common.c</FilePath>
             </File>
+            <File>
+              <FileName>dtof_diag.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\sdk\diag\dtof_diag.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

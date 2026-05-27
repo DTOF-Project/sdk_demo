@@ -518,6 +518,11 @@ void app_cmd_heatmap_output(const char *cmd) {
     app_heatmap_output();
 }
 
+void app_cmd_test_base_function(const char *cmd) {
+    extern DTOF_RET dtof_diag_test(void);
+    dtof_diag_test();
+}
+
 cmd_entry_t cmd_table[] = {
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
@@ -528,6 +533,7 @@ cmd_entry_t cmd_table[] = {
     { "p",   0, app_cmd_print_chip_info },
     {"ram", 0, app_cmd_print_ram_ft_data },
     { "heatmap",   0, app_cmd_heatmap_output },
+    {"test", 0, app_cmd_test_base_function },
     { "ri,", 1, app_cmd_reg_read_running },
     { "wi,", 1, app_cmd_reg_write_running },
     { "rb,", 1, app_cmd_reg_burst_read },
