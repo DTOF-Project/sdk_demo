@@ -2,7 +2,7 @@ CC := aarch64-buildroot-linux-gnu-gcc
 
 CFLAGS := -fPIC -O2 -Wall -I./sdk
 LDFLAGS := -shared
-TARGET := libdtof.so
+TARGET := libdtof_ft.so
 
 SRCS := sdk/src/calibration/dtof_bin_width_calibrate.c \
 		sdk/src/calibration/dtof_calibration_cg.c \
