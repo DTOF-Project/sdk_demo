@@ -23,7 +23,7 @@
 #include <openssl/buffer.h>  // Add this for BUF_MEM
 #include <openssl/bio.h>
 #include <openssl/evp.h>
-#include "gpio_init.h"
+#include "device/gpio_init.h"
 #include "serial_init.h"
 
 #include "main.h"
@@ -34,7 +34,6 @@
 #include "inc/dtof_calibration_ft.h"
 #include "inc/dtof_global_config.h"
 #include "inc/dev/dtof_dev_api.h"
-#include "base/inc/mos_platform.h"
 #include "data_base/sensor_database.h"
 #include "customer/dtof_customer.h"
 
@@ -67,7 +66,6 @@ int main(void)
     dtof_bool_t is_init = DTOF_FALSE;
     dtof_bool_t debug_flag = DTOF_FALSE;
 
-    DTOF_CHECK_WARN(platform_init(), "platform init failed\n");
 
     DTOF_CHECK_WARN(dtof_peripheral_device_init(), "dtof_peripheral_device_init failed\n");
 

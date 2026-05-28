@@ -7,8 +7,8 @@
 
 #ifndef PLATFORM_RASPBERRY_PI_INCLUDE_USER_CONFIG_H
 #define PLATFORM_RASPBERRY_PI_INCLUDE_USER_CONFIG_H
-#include "sdk/inc/dtof_base_type.h"
-#include "sdk/inc/dtof_log.h"
+#include "../sdk/inc/dtof_base_type.h"
+#include "../sdk/inc/dtof_log.h"
 // GPIO 配置
 #define GPIO_CHIP_NAME      "gpiochip0"  // GPIO 控制器名称
 #define GPIO_INTR_LINE     14            // 中断引脚号，使用 GPIO14
