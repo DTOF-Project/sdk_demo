@@ -1,0 +1,33 @@
+# Raspberry Pi native build Makefile
+# Build shared library: raspi_dtof_ft.so
+
+CC := gcc
+
+CFLAGS := -Wall -O2 -g -fPIC -I./sdk
+LDFLAGS := -shared
+TARGET := raspi_dtof_ft.so
+
+SRCS := sdk/src/calibration/dtof_bin_width_calibrate.c \
+        sdk/src/calibration/dtof_calibration_cg.c \
+        sdk/src/calibration/dtof_calibration_common.c \
+        sdk/src/calibration/dtof_calibration_reference_spad.c \
+        sdk/src/calibration/dtof_refbinoffset.c \
+        sdk/src/dev/dtof_dev_api.c \
+        sdk/src/dev/dtof_confidence.c \
+        sdk/src/dev/dtof_hal.c \
+        sdk/src/dev/dtof_swap_peak.c
+
+OBJS := $(SRCS:.c=.o)
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET) $(OBJS)
