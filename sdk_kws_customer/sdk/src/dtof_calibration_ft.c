@@ -7,7 +7,7 @@
 #include "inc/dtof_driver.h"
 #include "inc/dtof_global_config.h"
 
-DTOF_RET dtof_do_ft_calibration(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_actual_param)
+DTOF_RET dtof_do_ft_calibration(dtof_run_mode_e run_mode, dtof_uint16_t ft_cali_type, dtof_uint16_t ft_actual_param)
 {
     DTOF_RET ret = DTOF_RET_SUCCESS;
     dtof_ft_cali_param_t ft_cali_param;
@@ -65,6 +65,9 @@ DTOF_RET dtof_do_ft_calibration(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_act
         #define DTOF_FT_DATA_START 0x2000
         #define DTOF_FT_DATA_B_OFFSET 5
 
+        // B值自带offset
+        #define DTOF_B_CAL_OFFSET 1
+
         dtof_uint16_t dtof_ft_data_start = DTOF_FT_DATA_START + dtof_get_chip_config()->version_lenth - DTOF_FT_DATA_B_OFFSET;
         dtof_int16_t dtof_b_value_otp;
 
@@ -77,7 +80,7 @@ DTOF_RET dtof_do_ft_calibration(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_act
         cal_data.kb_data.far_distance = ft_actual_param;
         ret = dtof_do_distance_calibration_b_use_sdk(cal_data.kb_data.far_distance, &cal_data.kb_data);
         DTOF_CHECK_RET(ret, "ft distance b cal failed\n");
-        ft_cali_param.dtof_ft_data.distance_b = dtof_b_value_otp + (dtof_int16_t)roundf(cal_data.kb_data.b);
+        ft_cali_param.dtof_ft_data.distance_b = (dtof_int16_t)roundf(dtof_b_value_otp + (cal_data.kb_data.b - DTOF_B_CAL_OFFSET) * DTOF_FT_B_MULTIPLE);
         ft_cali_param.dtof_ft_data.distance_k = (dtof_uint16_t)roundf(cal_data.kb_data.k * DTOF_FT_K_MULTIPLE);
     } else {
         DTOF_CHECK_RET(dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP), "MCU wakeup failed");
@@ -85,7 +88,7 @@ DTOF_RET dtof_do_ft_calibration(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_act
 
     DTOF_CHECK_RET(dtof_set_ft_data((dtof_uint16_t*)&ft_cali_param), "set ft data failed\n");
 
-    DTOF_CHECK_RET(dtof_get_ft_data_from_flash((dtof_uint16_t *)&ft_cali_param_temp, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), &is_legal_ft_data), "get ft data from flash failed\n");
+    DTOF_CHECK_RET(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)&ft_cali_param_temp, sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), run_mode, &is_legal_ft_data), "get ft data from flash failed\n");
 
     if (is_legal_ft_data == DTOF_FALSE)
     {
@@ -96,9 +99,55 @@ DTOF_RET dtof_do_ft_calibration(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_act
         ft_cali_param.ft_calibration_type = ft_cali_type | ft_cali_param_temp.ft_calibration_type;
     }
 
-    dtof_set_ft_calibration_type(ft_cali_param.ft_calibration_type);
+    dtof_set_ft_calibration_type(run_mode, ft_cali_param.ft_calibration_type);
 
-    DTOF_CHECK_RET(dtof_set_ft_data_to_flash((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t)), "set ft data to flash failed\n");
+    DTOF_CHECK_RET(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(ft_cali_param) / sizeof(dtof_uint16_t), run_mode), "set ft data to flash failed\n");
+    DTOF_CHECK_RET(dtof_sync_ft_slot_by_mode(run_mode, &ft_cali_param.dtof_ft_data), "sync ft slot failed\n");
 
     return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_do_ft_calibration_all_mode(dtof_uint16_t ft_cali_type, dtof_uint16_t ft_actual_param)
+{
+    DTOF_RET ret = DTOF_RET_SUCCESS;
+    dtof_uint16_t ft_cali_type_calc;
+    dtof_run_mode_e running_mode_before_cal;
+
+    ft_cali_type_calc = 1 << ft_cali_type;
+
+    DTOF_CHECK_RET(dtof_read_running_mode(&running_mode_before_cal), "read running mode failed\n");
+
+    ret = dtof_switch_running_mode(RUNNING_MODE_120HZ_LP);
+    if (ret != DTOF_RET_SUCCESS)
+    {
+        return ret;
+    }
+    dtof_sleep_ms(1);
+
+    ret = dtof_do_ft_calibration(RUNNING_MODE_120HZ_LP, ft_cali_type_calc, ft_actual_param);
+    if (ret != DTOF_RET_SUCCESS)
+    {
+        goto RESTORE_RUNNING_MODE;
+    }
+
+    ret = dtof_switch_running_mode(RUNNING_MODE_120HZ_LLP);
+    if (ret != DTOF_RET_SUCCESS)
+    {
+        goto RESTORE_RUNNING_MODE;
+    }
+    dtof_sleep_ms(1);
+
+    ret = dtof_do_ft_calibration(RUNNING_MODE_120HZ_LLP, ft_cali_type_calc, ft_actual_param);
+
+RESTORE_RUNNING_MODE:
+    if (running_mode_before_cal != RUNNING_MODE_120HZ_LLP)
+    {
+        DTOF_RET restore_ret = dtof_switch_running_mode(running_mode_before_cal);
+        if ((ret == DTOF_RET_SUCCESS) && (restore_ret != DTOF_RET_SUCCESS))
+        {
+            ret = restore_ret;
+        }
+    }
+
+    return ret;
 }

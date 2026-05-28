@@ -15,8 +15,8 @@
 extern "C" {
 #endif
 
-//#define DTOF_INTERRUPT_MODE
-// #define DTOF_POLLING_MODE
+// #define DTOF_INTERRUPT_MODE
+#define DTOF_POLLING_MODE
 
 #if defined(DTOF_INTERRUPT_MODE) && defined(DTOF_POLLING_MODE)
 #error "DTOF_INTERRUPT_MODE and DTOF_POLLING_MODE cannot be defined at the same time!"
@@ -32,6 +32,7 @@ extern "C" {
 #define DTOF_CHECK_CRC_REG_ADDR      0x6F
 #define DTOF_RESET_REG_ADDR          0x75
 #define DTOF_DEBUG_STATUS_REG_ADDR   0x88
+#define DTOF_SET_FRAME_RATE_REG      0xC9
 #define DTOF_FRAME_CONTROL_REG       0xCA
 #define DTOF_JMP_MODE_REG_ADDR       0xD3
 #define DTOF_TRIM_REG_ADDR           0xEB
@@ -76,6 +77,14 @@ typedef enum {
     DTOF_VAL_RAM_FIXED_ADDR   = 0x01,
     DTOF_VAL_RAM_ANY_ADDR     = 0x02
 } dtof_cmd_val_t;
+
+// mcu运行模式
+typedef enum {
+    RUNNING_MODE_30HZ = 0,
+    RUNNING_MODE_120HZ_LP = 1,
+    RUNNING_MODE_120HZ_LLP = 2,
+    RUNNING_MODE_NUM
+} dtof_run_mode_e;
 
 // 位操作宏优化
 #define DTOF_BIT_MAX              0xFFFF
@@ -136,6 +145,9 @@ typedef enum {
 #else
     #define DTOF_WEAK __WEAK
 #endif
+
+dtof_int32_t div_round_i32(dtof_int32_t value, dtof_int32_t div);
+dtof_int16_t div_round_i16(dtof_int16_t value, dtof_int16_t div);
 
 #ifdef __cplusplus
 }

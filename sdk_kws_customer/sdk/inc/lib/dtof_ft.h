@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "inc/dtof_base_type.h"
+#include "inc/dtof_api.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,6 +57,8 @@ DTOF_RET dtof_ref_spad_calibrate(dtof_uint16_t otp_ref_spad_mask, dtof_uint16_t 
 DTOF_RET dtof_do_cross_talk_calibration(cross_talk_data_t *cross_talk_data_p, dtof_uint16_t is_to_object);
 DTOF_RET dtof_do_distance_calibration_b(dtof_uint16_t distance, kb_data_t *calibrate_data_p);
 DTOF_RET dtof_do_distance_calibration_b_use_sdk(dtof_uint16_t distance, kb_data_t *calibrate_data_p);
+dtof_int32_t dtof_clac_confidence(dtof_int16_t first_target, dtof_uint16_t first_intensity, dtof_real32_t ambient);
+DTOF_RET dtof_swap_peak(dtof_uint16_t *distance_result_p, dtof_distance_result_t *result_info_p);
 
 #ifdef __cplusplus
 }

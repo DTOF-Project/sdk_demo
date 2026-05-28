@@ -24,8 +24,8 @@ DTOF_RET dtof_io_interaction(dtof_uint16_t cmd, dtof_uint16_t value);
 void dtof_set_interrupt_flag(dtof_bool_t flag);
 dtof_bool_t dtof_get_interrupt_flag(void);
 void dtof_sleep_ms(dtof_uint32_t time);
-DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data);
-DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len);
+DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode, dtof_bool_t *is_legal_data);
+DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode);
 
 #ifdef __cplusplus
 }

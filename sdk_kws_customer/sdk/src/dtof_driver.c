@@ -90,16 +90,16 @@ void DTOF_WEAK dtof_sleep_ms(dtof_uint32_t time)
     return;
 }
 
-DTOF_RET DTOF_WEAK dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
+DTOF_RET DTOF_WEAK dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode, dtof_bool_t *is_legal_data)
 {
-    DTOF_LOG("get ft data use weak func!\n");
+    DTOF_LOG("get ft data multi mode use weak func!\n");
 
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET DTOF_WEAK dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
+DTOF_RET DTOF_WEAK dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode)
 {
-    DTOF_LOG("set ft data use weak func!\n");
+    DTOF_LOG("set ft data multi mode use weak func!\n");
 
     return DTOF_RET_SUCCESS;
 }

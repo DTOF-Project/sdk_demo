@@ -37,6 +37,7 @@ extern "C" {
     #define dtof_memcpy      memcpy
     #define dtof_memset      memset
     #define dtof_memmove     memmove
+    #define dtof_memcmp      memcmp
 
     // 字符串操作
     #define dtof_strlen      strlen
