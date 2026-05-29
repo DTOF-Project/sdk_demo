@@ -433,14 +433,14 @@ void main_cmd_loop(int serial){
                         DTOF_RET ret = dtof_do_ft_calibration_all_mode(ft_cali_type, ft_actual_param);
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
-                            dtof_bool_t is_legal_data = DTOF_FALSE;
+                            // dtof_bool_t is_legal_data = DTOF_FALSE;
                             dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode);
                             dtof_printf("FT success:\n");
-                            if (is_legal_data != DTOF_TRUE)
-                            {
-                                dtof_printf("ft data is illegal\n");
-                                continue;
-                            }
+                            // if (is_legal_data != DTOF_TRUE)
+                            // {
+                            //     dtof_printf("ft data is illegal\n");
+                            //     continue;
+                            // }
                             if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
                             {
                                 dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);

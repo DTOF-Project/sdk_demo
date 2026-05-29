@@ -163,7 +163,7 @@ static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
     return DTOF_RET_SUCCESS;
 }
 
-static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
+static int file_read_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, dtof_int32_t *read_buf)
 {
    
     char file_path[256];
@@ -175,7 +175,7 @@ static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
 
     
 
-    snprintf(file_path, sizeof(file_path), "./data/data_%s.bin", uuid_str);
+    snprintf(file_path, sizeof(file_path), "./data/mode%d_%s.bin", runmode, uuid_str);
 
    
 
@@ -250,7 +250,7 @@ static int file_write(dtof_uint8_t uuid, const dtof_int32_t *write_buf)
     return DTOF_RET_SUCCESS;
 }
 
-static int file_write_2(dtof_uint8_t uuid[16], const dtof_int32_t *write_buf)
+static int file_write_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, const dtof_int32_t *write_buf)
 {
     // 确保数据目录存在
     if (ensure_data_directory_exists() != DTOF_RET_SUCCESS) {
@@ -264,7 +264,7 @@ static int file_write_2(dtof_uint8_t uuid[16], const dtof_int32_t *write_buf)
     {
     snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
      }
-    snprintf(file_path, sizeof(file_path), "./data/data_%s.bin", uuid_str);
+    snprintf(file_path, sizeof(file_path), "./data/mode%d_%s.bin", runmode, uuid_str);
 
     
     // 如果write_buf全为0，则删除文件
@@ -323,6 +323,7 @@ DTOF_RET dtof_get_distance_offset_from_flash(dtof_uint8_t device_id, dtof_int32_
     return ret;
 }
 
+// deperate
 DTOF_RET dtof_set_distance_offset_to_flash(dtof_uint8_t device_id, dtof_int32_t distance_offset)
 {
     DTOF_LOG("on raspi, save offset to file");
@@ -453,7 +454,7 @@ DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uin
     // int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
 
     // 调用file_read读取数据, 以此文件是否为空，即是否可以读取作为判断依据即可
-    int read_ret = file_read_2(chip_cfg->chip_uuid, read_buf);
+    int read_ret = file_read_2(chip_cfg->chip_uuid, run_mode， read_buf);
     if (read_ret != DTOF_RET_SUCCESS) {
         
         return DTOF_RET_ERROR;  
