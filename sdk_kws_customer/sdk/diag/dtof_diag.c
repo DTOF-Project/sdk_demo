@@ -118,8 +118,8 @@ DTOF_RET dtof_read_and_write_ft_data_test(void)
     {
         is_legal_data = DTOF_FALSE;
 
-        DTOF_CHECK_RET(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_write_data[i]), sizeof(dtof_ft_cali_param_t), i), "set ft data to flash failed\n");
-        DTOF_CHECK_RET(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_read_data[i]), sizeof(dtof_ft_cali_param_t), i, &is_legal_data), "get ft data from flash failed\n");
+        DTOF_CHECK_RET(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_write_data[i]), sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), i), "set ft data to flash failed\n");
+        DTOF_CHECK_RET(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_read_data[i]), sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), i, &is_legal_data), "get ft data from flash failed\n");
 
         if(is_legal_data == DTOF_FALSE)
         {

@@ -499,6 +499,5 @@ DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint1
     if (write_ret != DTOF_RET_SUCCESS){
         return DTOF_RET_ERROR;
     }
-
     return DTOF_RET_SUCCESS;
 }
