@@ -378,8 +378,10 @@ void main_cmd_loop(int serial){
                     printf("\n");
                     // dtof_read_otp
                     dtof_ft_cali_param_t ft_data_read;
+                    dtof_run_mode_e running_mode;
                     dtof_bool_t is_legal_data = DTOF_FALSE;
-                    dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                    DTOF_CHECK_RET_VOID(dtof_read_running_mode(&running_mode), "read running mode failed\n");
+                    dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), running_mode, &is_legal_data);
                     if (is_legal_data == DTOF_FALSE)
                     {
                         printf("ft data is illegal, all 0xFF\n");
