@@ -5,7 +5,7 @@ CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
 LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm64-64.lds \
-sdk/src/lib/dtof_ft.a
+sdk/src/lib/libraspi_dtof_ft.a
 
 # 目录设置
 BUILD_DIR = Build
@@ -29,7 +29,7 @@ SRC = $(wildcard raspinew/*.c)\
 # SRC := $(filter-out raspinew/command_receiver.c raspinew/dtof_frame_control.c raspinew/dtof_interrupt_handler.c, $(SRC))
 
 # INCLUDES = -I sdk -I raspinew -I . -I $(CJSON_DIR) 
-INCLUDES = -I sdk -I raspinew -I . -I ./l3_a05_30hz_sdk
+INCLUDES = -I sdk -I raspinew -I . -I ./sdk
 
 # 对象文件
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

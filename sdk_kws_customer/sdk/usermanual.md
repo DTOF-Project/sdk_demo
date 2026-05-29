@@ -20,7 +20,7 @@ ToF 传感器模块
 集成开发环境（如 Keil MDK、IAR Workbench 或 STM32CubeIDE）
 SDK 源代码包
 
-### 2.3 SDK 文件结构    
+### 2.3 SDK 文件结构
 
 ```
 soc/
