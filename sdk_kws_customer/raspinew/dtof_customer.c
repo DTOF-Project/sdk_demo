@@ -12,6 +12,7 @@
 #include "sdk/inc/dtof_log.h"
 #include "sdk/inc/dtof_global_config.h"
 #include "dtof_reg.h"
+#include "sdk/inc/dtof_api.h"
 extern device_driver_ops_t device_iic_driver_ops;
 
 static void dtof_convert_endian(uint16_t *data, uint16_t len)

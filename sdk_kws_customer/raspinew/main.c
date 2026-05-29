@@ -428,7 +428,7 @@ void main_cmd_loop(int serial){
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
                             dtof_bool_t is_legal_data = DTOF_FALSE;
-                            dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                            dtof_set_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
                             dtof_printf("FT success:\n");
                             if (is_legal_data != DTOF_TRUE)
                             {
