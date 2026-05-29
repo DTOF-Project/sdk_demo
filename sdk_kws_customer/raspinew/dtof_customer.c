@@ -496,7 +496,7 @@ DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint1
     }
 
     
-    int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
+    int write_ret =file_write_2(chip_cfg->chip_uuid, run_mode, write_buf);
     if (write_ret != DTOF_RET_SUCCESS){
         return DTOF_RET_ERROR;
     }
