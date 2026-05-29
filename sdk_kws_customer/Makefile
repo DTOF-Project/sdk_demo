@@ -5,7 +5,7 @@ CFLAGS = -Wall -O2 -g -fPIC
 
 # 链接器设置
 LDFLAGS = -lssl -lcrypto -lgpiod -lm -pthread -Wl,-T,raspinew/arm64-64.lds \
-sdk/src/lib/libraspi_dtof_ft.a
+sdk/src/lib/libraspi_dtof_ft.so
 
 # 目录设置
 BUILD_DIR = Build
