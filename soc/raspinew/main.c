@@ -18,13 +18,10 @@
 #include <signal.h>
 #include <string.h>
 #define DTOF_POLLING_MODE
-#include "i2c_init.h"
 // #include <cJSON.h>  // 添加在文件开头的其他include语句之后
 #include <openssl/buffer.h>  // Add this for BUF_MEM
 #include <openssl/bio.h>
 #include <openssl/evp.h>
-#include "device/gpio_init.h"
-#include "serial_init.h"
 
 #include "main.h"
 #include "inc/dtof_api.h"
@@ -39,9 +36,9 @@
 
 #include "inc/dev/dtof_hal.h"
 
-#include "user/device/ds_sal.h"
-#include "user/device/ds_dev.h"
-#include "user/device/device.h"
+#include "device/ds_sal.h"
+#include "device/ds_dev.h"
+#include "device/device.h"
 
 #include "application/inc/soc_version.h"
 #include "application/inc/app_cmd.h"

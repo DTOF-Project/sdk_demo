@@ -9,6 +9,8 @@
 #include <stdatomic.h>
 #include <stdarg.h>
 
+
+#include "device.h"
 #include "serial_init.h"
 
 int fd; // 串口文件描述符
@@ -140,3 +142,11 @@ int rpi_serial_receive(const int serial_hd, char *buffer, const size_t buf_size)
     
     return 0;
 }
+
+
+device_driver_ops_t device_uart_driver_ops = {
+    .init = stm32_uart_init,
+    .deinit = stm32_uart_deinit,
+    .write = stm32_uart_write,
+    .read = stm32_uart_read,
+};

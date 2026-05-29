@@ -78,8 +78,6 @@ static DTOF_RET _ds_device_peripheral_gpio_init(dtof_device_t *dev) {
     return ret;
 }
 
-extern DTOF_RET stm32_uart_init(int uart_id);
-
 static DTOF_RET _ds_device_peripheral_communication_init(dtof_device_t *dev) {
     DTOF_RET ret = DTOF_RET_SUCCESS;
     ds_sal_comm_cfg_t *comm_cfg_p = &dev->dsd_peripheral.common_cfg;
