@@ -40,9 +40,9 @@
 #include "device/ds_dev.h"
 #include "device/device.h"
 
-#include "application/inc/soc_version.h"
-#include "application/inc/app_cmd.h"
-#include "application/inc/app_distance.h"
+#include "../../application/inc/soc_version.h"
+#include "../../application/inc/app_cmd.h"
+#include "../../application/inc/app_distance.h"
 
 dtof_uint16_t g_frame_id;
 

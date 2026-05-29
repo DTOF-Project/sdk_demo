@@ -145,7 +145,7 @@ int rpi_serial_receive(const int serial_hd, char *buffer, const size_t buf_size)
 
 
 device_driver_ops_t device_uart_driver_ops = {
-    .init = stm32_uart_init,
+    .init = rpi_serial_init,
     .deinit = stm32_uart_deinit,
     .write = stm32_uart_write,
     .read = stm32_uart_read,
