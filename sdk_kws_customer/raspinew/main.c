@@ -254,6 +254,8 @@ void main_cmd_loop(int serial){
             // 解析命令并执行
             if (strcmp(cmd_buffer, "echo") == 0) {
                 // 复读串口发送的echo
+                extern DTOF_RET dtof_diag_test(void);
+                dtof_diag_test();
                 rpi_serial_printf(serial,"Receive command: %s\n", cmd_buffer);
                 // rpi_serial_send(serial, cmd_buffer, received);
             }
