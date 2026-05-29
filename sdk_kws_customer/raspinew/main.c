@@ -422,6 +422,8 @@ void main_cmd_loop(int serial){
                 {
                     dtof_uint16_t ft_cali_type;
                     dtof_uint16_t ft_actual_param;
+                    dtof_run_mode_e running_mode;
+                    DTOF_CHECK_RET_VOID(dtof_read_running_mode(&running_mode), "read running mode failed\n");
 
                     if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
                     {
@@ -430,7 +432,7 @@ void main_cmd_loop(int serial){
                         if (ret == DTOF_RET_SUCCESS) {
                             dtof_ft_cali_param_t ft_cali_param;
                             dtof_bool_t is_legal_data = DTOF_FALSE;
-                            dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                            dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode);
                             dtof_printf("FT success:\n");
                             if (is_legal_data != DTOF_TRUE)
                             {
