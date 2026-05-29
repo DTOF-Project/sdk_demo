@@ -454,7 +454,7 @@ DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uin
     // int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
 
     // 调用file_read读取数据, 以此文件是否为空，即是否可以读取作为判断依据即可
-    int read_ret = file_read_2(chip_cfg->chip_uuid, run_mode， read_buf);
+    int read_ret = file_read_2(chip_cfg->chip_uuid, run_mode, read_buf);
     if (read_ret != DTOF_RET_SUCCESS) {
         
         return DTOF_RET_ERROR;  
