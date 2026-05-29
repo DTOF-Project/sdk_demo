@@ -28,7 +28,8 @@ static void dtof_convert_endian(uint16_t *data, uint16_t len)
 extern dtof_chip_config_t dtof_chip_config;
 
 
-
+#define FT_DATA_NUM (sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t))
+#define FILE_BUFFER_SIZE FT_DATA_NUM
 
 
 
@@ -133,7 +134,7 @@ static int ensure_data_directory_exists(void)
     return DTOF_RET_SUCCESS;
 }
 
-#define FILE_BUFFER_SIZE 19
+// #define FILE_BUFFER_SIZE 19
 
 static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
 {
@@ -168,9 +169,8 @@ static int file_read_2(dtof_uint8_t uuid[16], dtof_int32_t *read_buf)
     char uuid_str[33] = {0}; // 16字节 * 2个字符/字节 + 终止符 '\0'
     for (int i = 0; i < 16; i++) 
     {
-       
-    snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
-     }
+        snprintf(uuid_str + i * 2, 3, "%02x", uuid[i]); // 每个字节格式化为2位十六进制
+    }
 
     
 
@@ -392,74 +392,74 @@ DTOF_RET dtof_set_xtalk_data_from_flash(dtof_uint8_t device_id, dtof_uint16_t *x
 
 
 
-#define FT_DATA_NUM 38
-#define FILE_BUFFER_SIZE2 50
+// #define FT_DATA_NUM 38
+// #define FILE_BUFFER_SIZE2 50
 
-/**
- * 从树莓派文件中读取FT数据（基于file_read函数，使用UUID定位）
- * @param ft_data 输出参数，用于存储读取的16位FT数据
- * @param len 输入参数，ft_data缓冲区的长度（应至少为FT_DATA_NUM）
- * @param is_legal_data 输出参数，指示数据是否合法（非全无效值）
- * @return DTOF_RET 操作结果
- */
-DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
-{   
+// /**
+//  * 从树莓派文件中读取FT数据（基于file_read函数，使用UUID定位）
+//  * @param ft_data 输出参数，用于存储读取的16位FT数据
+//  * @param len 输入参数，ft_data缓冲区的长度（应至少为FT_DATA_NUM）
+//  * @param is_legal_data 输出参数，指示数据是否合法（非全无效值）
+//  * @return DTOF_RET 操作结果
+//  */
+// DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_bool_t *is_legal_data)
+// {   
     
-    // 参数合法性检查
-    if (ft_data == NULL || is_legal_data == NULL) {
-        return DTOF_RET_INVALID_PARAM;  // 无效参数
-    }
-     if (len < FT_DATA_NUM) {
-        return DTOF_RET_LIMIT;  // 缓冲区不足
-    }
+//     // 参数合法性检查
+//     if (ft_data == NULL || is_legal_data == NULL) {
+//         return DTOF_RET_INVALID_PARAM;  // 无效参数
+//     }
+//      if (len < FT_DATA_NUM) {
+//         return DTOF_RET_LIMIT;  // 缓冲区不足
+//     }
 
     
-    *is_legal_data = DTOF_FALSE;
-dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
-    if (chip_cfg == NULL) {
+//     *is_legal_data = DTOF_FALSE;
+// dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
+//     if (chip_cfg == NULL) {
         
-        return DTOF_RET_ERROR;  
-    }
+//         return DTOF_RET_ERROR;  
+//     }
 
     
     
    
 
-    // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
-    dtof_int32_t read_buf[FILE_BUFFER_SIZE2];
-     dtof_int32_t write_buf[FILE_BUFFER_SIZE2];
-    int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
+//     // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
+//     dtof_int32_t read_buf[FILE_BUFFER_SIZE2];
+//      dtof_int32_t write_buf[FILE_BUFFER_SIZE2];
+//     int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
 
     
-    // 调用file_read读取数据
-    int read_ret = file_read_2(chip_cfg->chip_uuid, read_buf);
-    if (read_ret != DTOF_RET_SUCCESS) {
+//     // 调用file_read读取数据
+//     int read_ret = file_read_2(chip_cfg->chip_uuid, read_buf);
+//     if (read_ret != DTOF_RET_SUCCESS) {
         
-        return DTOF_RET_ERROR;  
-    }
+//         return DTOF_RET_ERROR;  
+//     }
 
-    // 检查数据是否合法：原逻辑判断是否存在非0xFFFFFFFFFFFFFFFF的值，
+//     // 检查数据是否合法：原逻辑判断是否存在非0xFFFFFFFFFFFFFFFF的值，
     
-    for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
-        if (read_buf[i] != 0xFFFFFFFF) { 
+//     for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
+//         if (read_buf[i] != 0xFFFFFFFF) { 
             
             
-            *is_legal_data = DTOF_TRUE;
-            break;
-        }
-    }
+//             *is_legal_data = DTOF_TRUE;
+//             break;
+//         }
+//     }
 
-    // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
-    if (*is_legal_data == DTOF_TRUE) {
-        for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
-            // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
-            ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
+//     // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
+//     if (*is_legal_data == DTOF_TRUE) {
+//         for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
+//             // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
+//             ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
             
-        }
-    }
+//         }
+//     }
 
-    return DTOF_RET_SUCCESS;
-}
+//     return DTOF_RET_SUCCESS;
+// }
 DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len)
 {
     dtof_uint16_t reg3;
@@ -493,4 +493,80 @@ DTOF_RET dtof_read_otp(dtof_uint8_t offset, dtof_uint8_t *buf, dtof_uint16_t len
     DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_REG3, &reg3, 1), "write reg 3 fail\n");
 
 	return DTOF_RET_SUCCESS;
+}
+
+
+
+
+DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode, dtof_bool_t *is_legal_data){
+    // 参数合法性检查
+    if (ft_data == NULL || is_legal_data == NULL) {
+        return DTOF_RET_INVALID_PARAM;  // 无效参数
+    }
+    // 判断 len > FT_DATA_NUM， 边界为FT 的最大值
+    if (len > FT_DATA_NUM) {
+        return DTOF_RET_LIMIT;  // 缓冲区不足
+    }
+
+    // 初始化 合法flag 的锁，当判断数据有效且写入成功时，表示成功
+    *is_legal_data = DTOF_FALSE;
+    dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
+    if (chip_cfg == NULL) {
+        return DTOF_RET_ERROR;
+    }
+
+    // 定义file_read的读取缓冲区（dtof_int32_t类型，与file_read参数匹配）
+    dtof_int32_t read_buf[FT_DATA_NUM];
+    // dtof_int32_t write_buf[FILE_BUFFER_SIZE2];
+    // int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
+
+    // 调用file_read读取数据, 以此文件是否为空，即是否可以读取作为判断依据即可
+    int read_ret = file_read_2(chip_cfg->chip_uuid, read_buf);
+    if (read_ret != DTOF_RET_SUCCESS) {
+        
+        return DTOF_RET_ERROR;  
+    }
+    *is_legal_data = DTOF_TRUE;
+
+
+    // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
+    if (*is_legal_data == DTOF_TRUE) {
+        for (dtof_uint16_t i = 0; i < FT_DATA_NUM; i++) {
+            // 假设文件中int32_t的低16位为有效数据（根据实际存储逻辑调整转换方式）
+            ft_data[i] = (dtof_uint16_t)(read_buf[i] & 0xFFFF);
+        }
+    }
+
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode){
+    // 参数合法性检查
+    if (ft_data == NULL) {
+        return DTOF_RET_INVALID_PARAM;  // 无效参数
+    }
+    // 判断 len > FT_DATA_NUM， 边界为FT 的最大值
+    if (len > FT_DATA_NUM) {
+        return DTOF_RET_LIMIT;  // 缓冲区不足
+    }
+
+    // 抓取chip id，
+    dtof_chip_config_t *chip_cfg = dtof_get_chip_config();
+    if (chip_cfg == NULL) {
+        return DTOF_RET_ERROR;
+    }
+    dtof_int32_t write_buf[FT_DATA_NUM];
+
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
+    {
+        write_buf[i] = (dtof_int32_t)(*(ft_data + i));
+    }
+
+    
+    int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
+    if (write_ret != DTOF_RET_SUCCESS){
+        return DTOF_RET_ERROR;
+    }
+
+    return DTOF_RET_SUCCESS;
 }

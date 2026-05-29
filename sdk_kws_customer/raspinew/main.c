@@ -377,9 +377,9 @@ void main_cmd_loop(int serial){
                     }
                     printf("\n");
                     // dtof_read_otp
-                    dtof_ft_data_t ft_data_read;
+                    dtof_ft_cali_param_t ft_data_read;
                     dtof_bool_t is_legal_data = DTOF_FALSE;
-                    dtof_get_ft_data_from_flash((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
+                    dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_data_t)/sizeof(dtof_uint16_t), &is_legal_data);
                     if (is_legal_data == DTOF_FALSE)
                     {
                         printf("ft data is illegal, all 0xFF\n");
@@ -387,23 +387,23 @@ void main_cmd_loop(int serial){
                     else
                     {
                         #ifdef DTOF_FT_CALIBRATE_BINOFFSET
-                        printf("bin_offset = %u\n", ft_data_read.bin_offset);
+                        printf("bin_offset = %u\n", ft_data_read.dtof_ft_data.bin_offset);
                         #endif
                         #ifdef DTOF_FT_CALIBRATE_REFSPAD
-                        printf("ref_spad = %u\n", ft_data_read.ref_spad);
+                        printf("ref_spad = %u\n", ft_data_read.dtof_ft_data.ref_spad);
                         #endif
                         #ifdef DTOF_FT_CALIBRATE_CG
                         printf("cg_reg: ");
                         dtof_uint16_t cg_reg;
                         for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
                         {
-                            cg_reg = ft_data_read.cg_data[i * 2 + 1] * 256 + ft_data_read.cg_data[i * 2];
+                            cg_reg = ft_data_read.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_data_read.dtof_ft_data.cg_data[i * 2];
                             printf("%u, ", cg_reg);
                         }
                         printf("\n");
                         #endif
                         #ifdef DTOF_FT_CALIBRATE_B
-                        printf("distance_k=%d, distance_b=%d\n", ft_data_read.distance_k, ft_data_read.distance_b);
+                        printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
                         #endif
                         }
                     parse_inner_mcu_error_code(status);
