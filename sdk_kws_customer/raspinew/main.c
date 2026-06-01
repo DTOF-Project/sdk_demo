@@ -484,7 +484,7 @@ void main_cmd_loop(int serial){
                     dtof_uint16_t ft_cali_type;
                     dtof_uint16_t ft_actual_param; // 可以是otp_ref_spad_mask, 也可以是distance, 目前这种设计下, 不能同时做两个或以上校准
 
-                    if (sscanf(cmd, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
+                    if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
                     {
                         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
 
