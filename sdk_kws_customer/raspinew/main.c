@@ -527,8 +527,11 @@ void main_cmd_loop(int serial){
             else if (strcmp(cmd_buffer, "v") == 0)
             {
                 // 输出版本信息
-                rpi_serial_printf(serial,"sdk version: %s\n",dtof_get_sdk_version());
-                rpi_serial_printf(serial,"chip version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
+                rpi_serial_printf(serial,"soc version: %s\n", SOC_VERSION_STRING);
+                rpi_serial_printf(serial,"sdk version: %s\n", dtof_get_sdk_version());
+                rpi_serial_printf(serial,"lib version: %s\n", dtof_get_lib_version());
+                rpi_serial_printf(serial,"ram version: %d\n", DTOF_SWAP16(dtof_get_chip_version()));
+                rpi_serial_printf(serial,"chip id: 0x%04x\n", dtof_get_chip_config()->chip_id);
                 // DTOF_LOG("soc commit: %s\n", GIT_COMMIT_HASH);
             }
 #endif
