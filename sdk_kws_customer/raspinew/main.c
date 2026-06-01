@@ -86,6 +86,48 @@ DTOF_RET dtof_debug_mode_bypass(dtof_uint16_t chip_type)
     }
     return ret;
 }
+
+
+
+void print_ft_data_from_flash(dtof_run_mode_e run_mode)
+{
+    dtof_ft_cali_param_t ft_data_read;
+    dtof_bool_t is_legal_data = DTOF_FALSE;
+    dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), run_mode, &is_legal_data);
+    if (is_legal_data == DTOF_FALSE)
+    {
+        dtof_printf("ft data is illegal, all 0xFF\n");
+    }
+    else
+    {
+        dtof_uint16_t ft_cali_type = ft_data_read.ft_calibration_type;
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
+        {
+            dtof_printf("bin_offset = %u\n", ft_data_read.dtof_ft_data.bin_offset);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
+        {
+            dtof_printf("ref_spad = %u\n", ft_data_read.dtof_ft_data.ref_spad);
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
+        {
+            dtof_printf("cg_reg: ");
+            dtof_uint16_t cg_reg;
+            for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
+            {
+                cg_reg = ft_data_read.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_data_read.dtof_ft_data.cg_data[i * 2];
+                dtof_printf("%u, ", cg_reg);
+            }
+            dtof_printf("\n");
+        }
+        if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
+        {
+            dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
+        }
+    }
+}
+
+
 void parse_inner_mcu_error_code(dtof_uint32_t error_code)
 {
 #define SYSTEM_ERROR_OTP_CPT_CHECKFAILED  0
@@ -421,50 +463,41 @@ void main_cmd_loop(int serial){
                 // stm32_flash_write_init(DTOF_B_DATA_FLASH_PAGE, DTOF_B_DATA_FLASH_PAGE_NUM); // deprecated
                 // stm32_flash_write_init(DTOF_CG_DATA_FLASH_PAGE, DTOF_CG_DATA_FLASH_PAGE_NUM); // deprecated
             }
-
+#define BIT_POS_LOOP(x)                \
+({                                     \
+    uint32_t _x = (x);                 \
+    uint32_t _p = 0;                   \
+    while (_x > 1)                     \
+    {                                  \
+        _x >>= 1;                      \
+        _p++;                          \
+    }                                  \
+    _p;                                \
+})
             else if (strncmp(cmd_buffer, "ft,", 3) == 0)
                 {
-                    dtof_uint16_t ft_cali_type;
-                    dtof_uint16_t ft_actual_param;
-                    dtof_run_mode_e running_mode;
-                    DTOF_CHECK_RET_VOID(dtof_read_running_mode(&running_mode), "read running mode failed\n");
+                    // dtof_uint16_t ft_cali_type;
+                    // dtof_uint16_t ft_actual_param;
+                    // dtof_run_mode_e running_mode;
+                    // DTOF_CHECK_RET_VOID(dtof_read_running_mode(&running_mode), "read running mode failed\n");
 
-                    if (sscanf(cmd_buffer, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
+                    dtof_uint16_t ft_cali_type;
+                    dtof_uint16_t ft_actual_param; // 可以是otp_ref_spad_mask, 也可以是distance, 目前这种设计下, 不能同时做两个或以上校准
+
+                    if (sscanf(cmd, "ft,%hu,%hu", &ft_cali_type, &ft_actual_param) == 2)
                     {
                         dtof_printf("start ft calibration, type=0x%04x\n", ft_cali_type);
-                        DTOF_RET ret = dtof_do_ft_calibration_all_mode(ft_cali_type, ft_actual_param);
-                        if (ret == DTOF_RET_SUCCESS) {
-                            dtof_ft_cali_param_t ft_cali_param;
-                            // dtof_bool_t is_legal_data = DTOF_FALSE;
-                            dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t*)&ft_cali_param, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), running_mode);
-                            dtof_printf("FT success:\n");
-                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_BINOFFSET))
-                            {
-                                dtof_printf("bin_offset = %u\n", ft_cali_param.dtof_ft_data.bin_offset);
-                            }
-                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_REFSPAD))
-                            {
-                                dtof_printf("ref_spad = %u\n", ft_cali_param.dtof_ft_data.ref_spad);
-                            }
-                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_CG))
-                            {
-                                dtof_printf("cg_reg: ");
-                                dtof_uint16_t cg_reg;
-                                for (int i = 0; i < (DTOF_AC_NUM + 1); i++)
-                                {
-                                    cg_reg = ft_cali_param.dtof_ft_data.cg_data[i * 2 + 1] * 256 + ft_cali_param.dtof_ft_data.cg_data[i * 2];
-                                    dtof_printf("%u, ", cg_reg);
-                                }
-                                dtof_printf("\n");
-                            }
-                            if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
-                            {
-                                dtof_printf("distance_k=%d, distance_b=%d\n", ft_cali_param.dtof_ft_data.distance_k, ft_cali_param.dtof_ft_data.distance_b);
-                            }
-                        }
-                        else{
-                            dtof_printf("ft calibration failed\n");
-                        }
+
+                        ft_cali_type = BIT_POS_LOOP(ft_cali_type);
+
+                        // for zhumi: 校准低功耗和低低功耗的数据
+                        DTOF_CHECK_RET_VOID(dtof_do_ft_calibration_all_mode(ft_cali_type, ft_actual_param), "ft calibration all mode failed\n");
+
+                        dtof_printf("120Hz LP FT success:\n");
+                        print_ft_data_from_flash(RUNNING_MODE_120HZ_LP);
+
+                        dtof_printf("\n120Hz LLP FT success:\n");
+                        print_ft_data_from_flash(RUNNING_MODE_120HZ_LLP);
                     }
                 }
             else if (strcmp(cmd_buffer, "x") == 0)
