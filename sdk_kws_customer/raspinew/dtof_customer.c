@@ -163,7 +163,7 @@ static int file_read(dtof_uint8_t uuid, dtof_int32_t *read_buf)
     return DTOF_RET_SUCCESS;
 }
 
-static int file_read_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, dtof_int32_t *read_buf)
+static int file_read_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, dtof_int32_t *read_buf, dtof_bool_t *is_legal_data)
 {
    
     char file_path[256];
@@ -181,8 +181,8 @@ static int file_read_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, dtof_int3
 
     FILE *filePointer = fopen(file_path, "rb");
     if (filePointer == NULL) {
-      
-        return DTOF_RET_FAILED;
+        *is_legal_data = DTOF_FALSE;
+        return DTOF_RET_SUCCESS;
     }
     
     // 读取文件内容
@@ -194,9 +194,10 @@ static int file_read_2(dtof_uint8_t uuid[16], dtof_run_mode_e runmode, dtof_int3
         
         DTOF_LOG("警告: 文件 %s 数据不完整，只读取了 %zu/%d 个元素\n", 
             file_path, elements_read, FILE_BUFFER_SIZE);
+            
         return DTOF_RET_FAILED;
     }
-    
+    *is_legal_data = DTOF_TRUE;
     return DTOF_RET_SUCCESS;
 }
 
@@ -454,12 +455,12 @@ DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uin
     // int write_ret =file_write_2(chip_cfg->chip_uuid,write_buf);
 
     // 调用file_read读取数据, 以此文件是否为空，即是否可以读取作为判断依据即可
-    int read_ret = file_read_2(chip_cfg->chip_uuid, run_mode, read_buf);
+    int read_ret = file_read_2(chip_cfg->chip_uuid, run_mode, read_buf,is_legal_data);
     if (read_ret != DTOF_RET_SUCCESS) {
         
         return DTOF_RET_ERROR;  
     }
-    *is_legal_data = DTOF_TRUE;
+    // *is_legal_data = DTOF_TRUE;
 
 
     // 若数据合法，转换为dtof_uint16_t存入输出缓冲区（取低16位，或直接强转，根据实际存储格式）
