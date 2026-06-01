@@ -46,13 +46,19 @@ DTOF_RET dtof_reg_read_and_write_test(void)
 
 DTOF_RET dtof_reg_burst_write_burn_test(void)
 {
-#define TEST_RAM_CODE_LEN 2228
+#define TEST_RAM_CODE_MAX_LEN 2250
     const dtof_uint16_t *ram_code_ptr;
     dtof_uint16_t ram_code_len;
     dtof_uint16_t dtof_ft_data_start = DTOF_RAM_START_ADDR;
-    dtof_uint16_t ram_data[TEST_RAM_CODE_LEN];
+    dtof_uint16_t ram_data[TEST_RAM_CODE_MAX_LEN];
 
     dtof_get_ram_code_table(2, &ram_code_ptr, &ram_code_len);
+
+    if (ram_code_len > TEST_RAM_CODE_MAX_LEN)
+    {
+        DTOF_LOG_ERR("test ram code length %d, exceed max length %d\n", ram_code_len, TEST_RAM_CODE_MAX_LEN);
+        return DTOF_RET_FAILED;
+    }
 
     DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_WRITE_RAM_START_REG_ADDR, &dtof_ft_data_start, 1), "write ram start addr failed\n");
     DTOF_CHECK_RET(dtof_reg_burst_write_burn(DTOF_READ_RAM_START_REG_ADDR, ram_code_ptr, ram_code_len), "write ft data failed\n");
@@ -67,7 +73,7 @@ DTOF_RET dtof_reg_burst_write_burn_test(void)
         if(ram_data[i] != ram_code_ptr[i])
         {
             DTOF_LOG_ERR("test reg burst write burn fail, ram data[%d] = 0x%04x, expected value = 0x%04x\n", i, ram_data[i], ram_code_ptr[i]);
-            return DTOF_RET_ERROR;
+            return DTOF_RET_FAILED;
         }
     }
 
