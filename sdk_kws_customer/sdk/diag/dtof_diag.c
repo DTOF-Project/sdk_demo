@@ -46,7 +46,7 @@ DTOF_RET dtof_reg_read_and_write_test(void)
 
 DTOF_RET dtof_reg_burst_write_burn_test(void)
 {
-#define TEST_RAM_CODE_LEN 2212
+#define TEST_RAM_CODE_LEN 2228
     const dtof_uint16_t *ram_code_ptr;
     dtof_uint16_t ram_code_len;
     dtof_uint16_t dtof_ft_data_start = DTOF_RAM_START_ADDR;
