@@ -375,3 +375,22 @@ dtof_do_ft_calibration_all_mode(DTOF_FT_CALIBRATE_B, distance)
 
 ---
 
+## 12. 版本查询接口
+
+### sdk版本
+
+```c
+const char *dtof_get_sdk_version(void);
+```
+
+### lib版本
+
+```c
+const char *dtof_get_lib_version(void);
+```
+
+### 芯片内部软件版本
+
+```c
+dtof_uint16_t dtof_get_chip_version(void);
+```

@@ -44,7 +44,7 @@ DTOF_RET dtof_reg_read_and_write_test(void)
     return DTOF_RET_SUCCESS;
 }
 
-DTOF_RET dtof_reg_reg_burst_write_burn_test(void)
+DTOF_RET dtof_reg_burst_write_burn_test(void)
 {
 #define TEST_RAM_CODE_LEN 2212
     const dtof_uint16_t *ram_code_ptr;
@@ -118,8 +118,8 @@ DTOF_RET dtof_read_and_write_ft_data_test(void)
     {
         is_legal_data = DTOF_FALSE;
 
-        DTOF_CHECK_RET(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_write_data[i]), sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), i), "set ft data to flash failed\n");
-        DTOF_CHECK_RET(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_read_data[i]), sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), i, &is_legal_data), "get ft data from flash failed\n");
+        DTOF_CHECK_RET(dtof_set_ft_data_to_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_write_data[i]), sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), i), "set ft data to flash failed\n");
+        DTOF_CHECK_RET(dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t *)(&dtof_ft_test_read_data[i]), sizeof(dtof_ft_cali_param_t) / sizeof(dtof_uint16_t), i, &is_legal_data), "get ft data from flash failed\n");
 
         if(is_legal_data == DTOF_FALSE)
         {
@@ -144,7 +144,7 @@ DTOF_RET dtof_diag_test(void)
 {
     DTOF_RET ret = DTOF_RET_SUCCESS;
     ret |= dtof_reg_read_and_write_test();
-    ret |= dtof_reg_reg_burst_write_burn_test();
+    ret |= dtof_reg_burst_write_burn_test();
     ret |= dtof_read_and_write_ft_data_test();
 
     if(ret == DTOF_RET_SUCCESS)
