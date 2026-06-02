@@ -153,8 +153,10 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
     {
         case DISTANCE_NORMAL_MODE:
         {
-            printf("%d, %d, %d, %d, %.6f, %d\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
+            printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+                            distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+                            distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
             break;
         }
         case DISTANCE_DEBUG_MODE:
@@ -177,8 +179,10 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_enable_distance_debug_mode();
 
-            printf("%d, %d, %d, %d, %.6f, %d\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
+            printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+                            distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+                            distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
             break;
         }
         case DISTANCE_TEST_MODE:
@@ -212,8 +216,10 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_enable_distance_debug_mode();
 
-            printf("%d, %d, %d, %d, %.6f, %d\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame);
+            printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+                            distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+                            distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
             break;
         }
         default:
