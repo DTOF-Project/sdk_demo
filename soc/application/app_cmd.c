@@ -175,7 +175,11 @@ void print_ft_data_from_flash(dtof_run_mode_e run_mode)
         }
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
         {
-            dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
+            // dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
+            dtof_printf("distance_k=%d\r\n",ft_data_read.dtof_ft_data.distance_k);
+            for (int i = 0; i < CAL_QUANTITY; i++){
+                dtof_printf("distance_b[%d] = %d\r\n",i,ft_data_read.dtof_ft_data.distance_b[i]);
+            }
         }
     }
 }
@@ -413,7 +417,7 @@ void app_cmd_set_running_mode(const char *cmd) {
 
 void app_cmd_write_ft_data(const char *cmd) {
     if (strncmp(cmd, "wft,", 4) == 0) {
-        #define FT_MAX_NUM 40 // runmode + type + 34cg+ binoffset + k + b + refspad
+        #define FT_MAX_NUM 43 // runmode + type + mode + 34cg+ binoffset + k + b + refspad
         char buf_copy[128];
         strncpy(buf_copy, cmd, sizeof(buf_copy));
         buf_copy[sizeof(buf_copy) - 1] = '\0';
@@ -483,9 +487,24 @@ void app_cmd_write_ft_data(const char *cmd) {
         }
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
         {
+            if (count < 4)
+            {
+                printf("need: runmode,type,index,b\n");
+                return;
+            }
+
+            uint8_t b_index[4] = values[2];
+
+            if (b_index >= CAL_QUANTITY)
+            {
+                printf("invalid b index = %d\n", b_index);
+                return;
+            }
             ft_cali_param.dtof_ft_data.distance_k = 1197;
-            ft_cali_param.dtof_ft_data.distance_b = values[2];
-            printf("set b value = %d\n", values[2]);
+            // ft_cali_param.dtof_ft_data.distance_b = values[2];
+            ft_cali_param.dtof_ft_data.distance_b[b_index] = values[3];
+            // printf("set b value = %d\n", values[2]);
+            printf("set distance_b[%d] = %d\n",b_index,values[3]);
         }
 
         if (is_legal_ft_data == DTOF_TRUE) {
