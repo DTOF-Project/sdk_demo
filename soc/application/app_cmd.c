@@ -145,6 +145,8 @@ void app_cmd_get_version(const char *cmd) {
 void print_ft_data_from_flash(dtof_run_mode_e run_mode)
 {
     dtof_ft_cali_param_t ft_data_read;
+    dtof_ft_cali_param_t ft_data_ram;
+
     dtof_bool_t is_legal_data = DTOF_FALSE;
     dtof_get_ft_data_from_flash_multi_mode((dtof_uint16_t*)&ft_data_read, sizeof(dtof_ft_cali_param_t)/sizeof(dtof_uint16_t), run_mode, &is_legal_data);
     if (is_legal_data == DTOF_FALSE)
@@ -176,11 +178,22 @@ void print_ft_data_from_flash(dtof_run_mode_e run_mode)
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
         {
             dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
-           dtof_printf("b array:");
+            dtof_printf("b array:");
             for(int i = 0; i < B_NUM; i++)
             {
-                dtof_printf(" %d", ft_data_read.distance_b[i]);
+                dtof_printf("%d ", ft_data_read.distance_b[i]);
             }
+            
+            DTOF_RET ret;
+						ret = dtof_get_ft_data_from_ram(&ft_data_ram.dtof_ft_data);
+						if (ret != DTOF_RET_SUCCESS)
+						{
+								DTOF_LOG_ERR("get ft data from ram failed: %d", ret);
+								return;
+						}
+						dtof_printf("\n");
+            dtof_printf("RAM FT data:");
+            dtof_printf("distance_k=%d, distance_b=%d\n",ft_data_ram.dtof_ft_data.distance_k,ft_data_ram.dtof_ft_data.distance_b);
             dtof_printf("\n");
         }
     }
