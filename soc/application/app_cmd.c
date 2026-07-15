@@ -176,6 +176,12 @@ void print_ft_data_from_flash(dtof_run_mode_e run_mode)
         if(DTOF_BIT_GET(ft_cali_type, DTOF_FT_CALIBRATE_B))
         {
             dtof_printf("distance_k=%d, distance_b=%d\n", ft_data_read.dtof_ft_data.distance_k, ft_data_read.dtof_ft_data.distance_b);
+           dtof_printf("b array:");
+            for(int i = 0; i < B_NUM; i++)
+            {
+                dtof_printf(" %d", ft_data_read.distance_b[i]);
+            }
+            dtof_printf("\n");
         }
     }
 }
