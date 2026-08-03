@@ -1,4 +1,4 @@
 
 [submodule "soc/sdk"]
 	path = soc/sdk
-	url = http://192.168.30.109/liuzihao/sdk_core.git
+	url = https://github.com/DTOF-Project/sdk_core.git
