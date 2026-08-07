@@ -2,7 +2,7 @@
 
 #define SOC_VERSION_MAJOR 2
 #define SOC_VERSION_MINOR 3
-#define SOC_VERSION_PATCH 14
+#define SOC_VERSION_PATCH 15
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
