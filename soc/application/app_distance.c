@@ -216,7 +216,7 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
                 uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
                 app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
                 dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
-                dtof_init_polling_mode_device_info();
+                //dtof_init_polling_mode_device_info();
                 // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
                 test_frame_count = 0;
             }

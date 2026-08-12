@@ -524,7 +524,361 @@ void app_cmd_test_base_function(const char *cmd) {
     dtof_diag_test();
 }
 
+void app_cmd_customer_api_test(const char *cmd)
+{
+    uint8_t ret;
+
+    /* =====================================================
+     * 3.1 初始化
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,init") == 0)
+    {
+        ret = SensorInit();
+        dtof_printf("SensorInit: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+    if (strcmp(cmd, "api,reinit") == 0)
+    {
+        ret = SensorReinit();
+        dtof_printf("SensorReinit: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.2 连续测距
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,start") == 0)
+    {
+        app_set_distance_mode(DISTANCE_NORMAL_MODE);
+
+        ret = SensorStartContinueRanging();
+
+        if (ret != 0U)
+        {
+            app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+        }
+
+        dtof_printf("SensorStartContinueRanging: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+    if (strcmp(cmd, "api,startdata") == 0)
+    {
+        /*
+        * Sensor启动测距，
+        * 但是不让原来的 app_distance_process() 取数据。
+        */
+        app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+
+        ret = SensorStartContinueRanging();
+
+        dtof_printf("Start data test: %s, ret=%d\n",
+                    (ret == 0U) ? "PASS" : "FAIL", ret);
+
+        return;
+    }
+
+
+    if (strncmp(cmd, "api,data,", 9) == 0)
+    {
+        unsigned int wait_mode;
+        uint8_t data_buff[64];
+        dtof_distance_result_t result_info;
+
+        if (sscanf(cmd, "api,data,%u", &wait_mode) != 1)
+        {
+            dtof_printf("invalid command\n");
+            return;
+        }
+
+        if (wait_mode > 1U)
+        {
+            dtof_printf("invalid wait_mode\n");
+            return;
+        }
+
+        ret = SensorGetMeasureData(data_buff, (uint8_t)wait_mode);
+
+        if (ret != 0U)
+        {
+            dtof_printf("SensorGetMeasureData: NO FRAME / FAIL, wait_mode=%u\n", wait_mode);
+            return;
+        }
+
+        memcpy(&result_info, data_buff, sizeof(dtof_distance_result_t));
+        dtof_printf("SensorGetMeasureData: PASS\n");
+        dtof_printf("frame_id = %d\n", result_info.frame_id);
+        dtof_printf("distance = %d\n", result_info.first_target);
+        dtof_printf("intensity = %d\n", result_info.first_intensity);
+        dtof_printf("legal = %d\n", result_info.is_legal_frame);
+        return;
+    }
+
+    if (strcmp(cmd, "api,stop") == 0)
+    {
+        ret = SensorStopContinueRanging();
+
+        app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+
+        dtof_printf("SensorStopContinueRanging: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.3 工作模式
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,near") == 0)
+    {
+        ret = SensorSetWorkMode(0xAAU);
+        dtof_printf("SensorSetWorkMode NEAR: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+    if (strcmp(cmd, "api,far") == 0)
+    {
+        ret = SensorSetWorkMode(0x55U);
+        dtof_printf("SensorSetWorkMode FAR: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+    if (strcmp(cmd, "api,mode") == 0)
+    {
+        uint8_t mode = SensorGetWorkMode();
+
+        if (mode == 0xAAU)
+        {
+            dtof_printf("SensorGetWorkMode: NEAR(0xAA) PASS\n");
+        }
+        else if (mode == 0x55U)
+        {
+            dtof_printf("SensorGetWorkMode: FAR(0x55) PASS\n");
+        }
+        else
+        {
+            dtof_printf("SensorGetWorkMode: FAIL, mode=0x%02x\n", mode);
+        }
+
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.5 Offset
+     *
+     * param[0~1] = LP B
+     * param[2~3] = LLP B
+     * param[4~5] = Active B
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,offset") == 0)
+    {
+        uint8_t param[32];
+
+        dtof_int16_t lp_b;
+        dtof_int16_t llp_b;
+        dtof_int16_t active_b;
+
+        uint8_t mode;
+
+        SensorGetOffsetParam(param);
+
+        memcpy(&lp_b, &param[0], sizeof(lp_b));
+        memcpy(&llp_b, &param[2], sizeof(llp_b));
+        memcpy(&active_b, &param[4], sizeof(active_b));
+
+        dtof_printf("LP B     = %d\n", lp_b);
+        dtof_printf("LLP B    = %d\n", llp_b);
+        dtof_printf("Active B = %d\n", active_b);
+
+        mode = SensorGetWorkMode();
+
+        if (mode == 0xAAU)
+        {
+            dtof_printf("Active == LP : %s\n", (active_b == lp_b) ? "PASS" : "FAIL");
+        }
+        else if (mode == 0x55U)
+        {
+            dtof_printf("Active == LLP: %s\n", (active_b == llp_b) ? "PASS" : "FAIL");
+        }
+
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.5 Xtalk
+     *
+     * Wrapper返回34 byte，
+     * 两个byte重新组成一个uint16_t。
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,xtalk") == 0)
+    {
+        uint8_t cg[CROSS_TALK_OTP_NUM];
+        dtof_uint16_t cg_value;
+        dtof_uint16_t i;
+
+        SensorGetXtalkParam(cg);
+
+        dtof_printf("Xtalk CG:\n");
+
+        for (i = 0U; i < (CROSS_TALK_OTP_NUM / 2U); i++)
+        {
+            cg_value = ((dtof_uint16_t)cg[i * 2U + 1U] << 8) | cg[i * 2U];
+            dtof_printf("%u, ", cg_value);
+        }
+
+        dtof_printf("\n");
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.6 SensorGetInfo
+     *
+     * [0~7]   = 0
+     * [8~9]   = chip id
+     * [10~11] = fw version
+     * [12~31] = sdk version
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,info") == 0)
+    {
+        uint8_t info[32];
+        dtof_uint16_t chip_id;
+        dtof_uint16_t fw_version;
+
+        ret = SensorGetInfo(info);
+
+        if (ret != 0U)
+        {
+            dtof_printf("SensorGetInfo: FAIL, ret=%d\n", ret);
+            return;
+        }
+
+        memcpy(&chip_id, &info[8], sizeof(chip_id));
+        memcpy(&fw_version, &info[10], sizeof(fw_version));
+
+        dtof_printf("SensorGetInfo: PASS\n");
+        dtof_printf("chip id     = 0x%04x\n", chip_id);
+        dtof_printf("fw version  = %u\n", fw_version);
+        dtof_printf("sdk version = %s\n", (char *)&info[12]);
+
+        return;
+    }
+
+    /* =====================================================
+     * 3.6 SN / UUID
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,sn") == 0)
+    {
+        uint8_t sn[32];
+        dtof_uint16_t i;
+
+        ret = SensorGetSnCode(sn);
+
+        if (ret != 0U)
+        {
+            dtof_printf("SensorGetSnCode: FAIL, ret=%d\n", ret);
+            return;
+        }
+
+        dtof_printf("SensorGetSnCode: PASS\n");
+        dtof_printf("UUID = ");
+
+        for (i = 0U; i < DTOF_UUID_LENGTH; i++)
+        {
+            dtof_printf("%u ", sn[i]);
+        }
+
+        dtof_printf("\n");
+        return;
+    }
+
+
+    /* =====================================================
+     * 3.4 B 标定
+     *
+     * 例如：
+     * api,b,300
+     * ===================================================== */
+
+    {
+        unsigned int distance;
+
+        if (sscanf(cmd, "api,b,%u", &distance) == 1)
+        {
+            float offset = 0.0f;
+
+            if (distance > 65535U)
+            {
+                dtof_printf("invalid distance\n");
+                return;
+            }
+
+            ret = SensorOffsetCalibration((uint16_t)distance, &offset);
+
+            if (ret == 0U)
+            {
+                dtof_printf("SensorOffsetCalibration: PASS\n");
+                printf("return offset/B = %f\n", offset);
+            }
+            else
+            {
+                dtof_printf("SensorOffsetCalibration: FAIL\n");
+            }
+
+            return;
+        }
+    }
+
+
+    /* =====================================================
+     * 3.4 Xtalk 标定
+     *
+     * api,cg
+     * ===================================================== */
+
+    if (strcmp(cmd, "api,cg") == 0)
+    {
+        uint8_t cg[CROSS_TALK_OTP_NUM];
+
+        dtof_uint16_t i;
+        dtof_uint16_t cg_value;
+
+        ret = SensorXtalkCalibration(cg);
+
+        if (ret != 0U)
+        {
+            dtof_printf("SensorXtalkCalibration: FAIL\n");
+            return;
+        }
+
+        dtof_printf("SensorXtalkCalibration: PASS\n");
+
+        for (i = 0U; i < (CROSS_TALK_OTP_NUM / 2U); i++)
+        {
+            cg_value = ((dtof_uint16_t)cg[i * 2U + 1U] << 8) | cg[i * 2U];
+            dtof_printf("%u, ", cg_value);
+        }
+
+        dtof_printf("\n");
+        return;
+    }
+    
+
+
+    dtof_printf("unknown api command: %s\n", cmd);
+}
+
 cmd_entry_t cmd_table[] = {
+    { "api,", 1, app_cmd_customer_api_test },
     { "s",   0, app_cmd_start_distance_measure },
     { "t",   0, app_cmd_stop_distance_measure },
     { "d",   0, app_cmd_start_distance_measure_debug_mode },
