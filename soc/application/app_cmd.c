@@ -910,7 +910,46 @@ void app_cmd_customer_api_test(const char *cmd)
             return;
         }
     }
+    {
+        unsigned int addr;
+        unsigned int value;
 
+        if (sscanf(cmd, "api,iicw1,%x,%x", &addr, &value) == 2)
+        {
+            if ((addr > 0xFFU) || (value > 0xFFU))
+            {
+                dtof_printf("invalid addr/value\n");
+                return;
+            }
+
+            Test_IIC_Write_One_Byte((uint8_t)addr, (uint8_t)value);
+
+            return;
+        }
+    }
+    {
+    unsigned int addr;
+    unsigned int tlen;
+    unsigned int d0, d1, d2, d3;
+    uint8_t data[4];
+
+        if (sscanf(cmd, "api,writex,%x,%u,%x,%x,%x,%x", &addr, &tlen, &d0, &d1, &d2, &d3) == 6)
+        {
+            if ((addr > 0xFFU) || (tlen != 4U))
+            {
+                dtof_printf("invalid param\n");
+                return;
+            }
+
+            data[0] = (uint8_t)d0;
+            data[1] = (uint8_t)d1;
+            data[2] = (uint8_t)d2;
+            data[3] = (uint8_t)d3;
+
+            Test_IIC_Write_X_Bytes((uint8_t)addr, data, (uint16_t)tlen);
+            return;
+        }
+    }
     dtof_printf("unknown api command: %s\n", cmd);
 }
 
