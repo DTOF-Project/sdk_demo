@@ -871,7 +871,22 @@ void app_cmd_customer_api_test(const char *cmd)
         dtof_printf("\n");
         return;
     }
-    
+
+    {
+    unsigned int reg_addr;
+
+    if (sscanf(cmd, "api,onebyte,%x", &reg_addr) == 1)
+    {
+        if (reg_addr > 0xFFU)
+        {
+            dtof_printf("invalid reg addr\n");
+            return;
+        }
+
+        Test_IIC_Read_Compare((uint8_t)reg_addr);
+        return;
+    }
+    }
 
 
     dtof_printf("unknown api command: %s\n", cmd);

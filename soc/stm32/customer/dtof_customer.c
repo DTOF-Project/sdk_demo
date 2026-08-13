@@ -18,9 +18,13 @@
 #include "inc/dtof_float.h"
 #include "inc/lib/dtof_ft.h"
 #include "inc/dtof_calibration_ft.h"
+#include "inc/dtof_driver.h"
 
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
+
+volatile uint32_t irq_cnt = 0;
+volatile uint32_t get_cnt = 0;
 
 // 字节序转换辅助函数
 static void dtof_convert_endian(uint16_t *data, uint16_t len)
@@ -289,4 +293,64 @@ DTOF_RET dtof_get_distance_result_no_swap(dtof_distance_result_t *result_info_p)
     }
 
     return DTOF_RET_SUCCESS;
+}
+
+
+Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
+{
+    dtof_uint16_t reg_data = 0U;
+    dtof_uint8_t reg_addr;
+
+    if (value == NULL)
+    {
+        return SENSOR_STATUS_ERROR;
+    }
+
+    reg_addr =(dtof_uint8_t)(addr >> 1);
+
+    if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_STATUS_ERROR;
+    }
+
+    if ((addr & 0x01U) == 0U)
+    {
+        *value =(dtof_uint8_t)(reg_data & 0x00FFU);
+    }
+
+    else
+    {
+        *value =(dtof_uint8_t)((reg_data >> 8)& 0x00FFU);
+    }
+
+    return SENSOR_STATUS_OK;
+}
+
+void Test_IIC_Read_Compare(uint8_t reg_addr)
+{
+    dtof_uint16_t word_data = 0U;
+    uint8_t byte0 = 0U;
+    uint8_t byte1 = 0U;
+
+    if (dtof_reg_burst_read(reg_addr, &word_data, 1U) != DTOF_RET_SUCCESS)
+    {
+        dtof_printf("dtof_reg_burst_read FAIL\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U), &byte0) != SENSOR_STATUS_OK)
+    {
+        dtof_printf("byte0 FAIL\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U + 1U), &byte1) != SENSOR_STATUS_OK)
+    {
+        dtof_printf("byte1 FAIL\n");
+        return;
+    }
+
+    dtof_printf("word  = 0x%04X\n", word_data);
+    dtof_printf("byte0 = 0x%02X\n", byte0);
+    dtof_printf("byte1 = 0x%02X\n", byte1);
 }
