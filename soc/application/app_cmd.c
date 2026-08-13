@@ -888,6 +888,28 @@ void app_cmd_customer_api_test(const char *cmd)
     }
     }
 
+    {
+    unsigned int addr;
+    unsigned int tlen;
+
+        if (sscanf(cmd, "api,xbyte,%x,%u", &addr, &tlen) == 2)
+        {
+            if (addr > 0xFFU)
+            {
+                dtof_printf("invalid addr\n");
+                return;
+            }
+
+            if ((tlen == 0U) || (tlen > 32U))
+            {
+                dtof_printf("invalid len\n");
+                return;
+            }
+
+            Test_IIC_Read_X_Bytes((uint8_t)addr, (uint16_t)tlen);
+            return;
+        }
+    }
 
     dtof_printf("unknown api command: %s\n", cmd);
 }

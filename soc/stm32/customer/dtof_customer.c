@@ -354,3 +354,69 @@ void Test_IIC_Read_Compare(uint8_t reg_addr)
     dtof_printf("byte0 = 0x%02X\n", byte0);
     dtof_printf("byte1 = 0x%02X\n", byte1);
 }
+
+
+/**
+ * @brief I2C 读取多个字节
+ *
+ * 当前为了 Wrapper 简洁，
+ * 直接复用单字节读取。
+ *
+ * 自动处理奇偶地址。
+ */
+Sensor_Status Sensor_IIC_Read_X_Bytes(
+   uint8_t addr,
+   uint8_t *value,
+   uint16_t tlen)
+{
+   dtof_uint16_t i;
+
+
+   if ((value == NULL) ||
+       (tlen == 0U))
+   {
+       return SENSOR_STATUS_FAILED;
+   }
+
+
+   for (i = 0U;
+        i < tlen;
+        i++)
+   {
+       if (Sensor_IIC_Read_One_Byte(
+               (dtof_uint8_t)(addr + i),
+               &value[i])
+           != SENSOR_STATUS_SUCCESS)
+       {
+           return SENSOR_STATUS_FAILED;
+       }
+   }
+
+
+   return SENSOR_STATUS_SUCCESS;
+}
+
+void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen)
+{
+    uint8_t data[32];
+    uint16_t i;
+
+    if ((tlen == 0U) || (tlen > sizeof(data)))
+    {
+        dtof_printf("invalid len\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_X_Bytes(addr, data, tlen) != SENSOR_STATUS_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Read_X_Bytes: FAIL\n");
+        return;
+    }
+
+    dtof_printf("Sensor_IIC_Read_X_Bytes: PASS\n");
+
+    for (i = 0U; i < tlen; i++)
+    {
+        dtof_printf("addr=0x%02X data=0x%02X\n", (uint8_t)(addr + i), data[i]);
+    }
+}
