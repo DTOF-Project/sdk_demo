@@ -303,14 +303,14 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
 
     if (value == NULL)
     {
-        return SENSOR_STATUS_ERROR;
+        return SENSOR_STATUS_FAILED;
     }
 
     reg_addr =(dtof_uint8_t)(addr >> 1);
 
     if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
     {
-        return SENSOR_STATUS_ERROR;
+        return SENSOR_STATUS_FAILED;
     }
 
     if ((addr & 0x01U) == 0U)
@@ -323,7 +323,7 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
         *value =(dtof_uint8_t)((reg_data >> 8)& 0x00FFU);
     }
 
-    return SENSOR_STATUS_OK;
+    return SENSOR_STATUS_SUCCESS;
 }
 
 void Test_IIC_Read_Compare(uint8_t reg_addr)
@@ -338,13 +338,13 @@ void Test_IIC_Read_Compare(uint8_t reg_addr)
         return;
     }
 
-    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U), &byte0) != SENSOR_STATUS_OK)
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U), &byte0) != SENSOR_STATUS_SUCCESS)
     {
         dtof_printf("byte0 FAIL\n");
         return;
     }
 
-    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U + 1U), &byte1) != SENSOR_STATUS_OK)
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U + 1U), &byte1) != SENSOR_STATUS_SUCCESS)
     {
         dtof_printf("byte1 FAIL\n");
         return;
