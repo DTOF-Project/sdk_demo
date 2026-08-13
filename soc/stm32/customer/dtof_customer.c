@@ -564,10 +564,7 @@ void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen)
 /**
  * @brief 毫秒级延时
  */
-void Sensor_Delay_Ms(
-    uint16_t nMs)
+void Sensor_Delay_Ms(uint16_t nMs)
 {
-    dtof_sleep_ms(
-        (dtof_uint32_t)nMs
-    );
+    dtof_sleep_ms((dtof_uint32_t)nMs);
 }
