@@ -367,25 +367,18 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
 {
    dtof_uint16_t i;
 
-   if ((value == NULL) ||
-       (tlen == 0U))
+   if ((value == NULL) || (tlen == 0U))
    {
        return SENSOR_RET_FAILED;
    }
 
-   for (i = 0U;
-        i < tlen;
-        i++)
+   for (i = 0U; i < tlen; i++)
    {
-       if (Sensor_IIC_Read_One_Byte(
-               (dtof_uint8_t)(addr + i),
-               &value[i])
-           != SENSOR_RET_SUCCESS)
+       if (Sensor_IIC_Read_One_Byte((dtof_uint8_t)(addr + i),&value[i]) != SENSOR_RET_SUCCESS)
        {
            return SENSOR_RET_FAILED;
        }
    }
-
 
    return SENSOR_RET_SUCCESS;
 }
