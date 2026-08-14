@@ -22,7 +22,11 @@ void app_set_distance_mode(int mode);
 int app_get_distance_mode(void);
 
 DTOF_RET dtof_enable_distance_debug_mode(void);
-
+DTOF_RET dtof_enable_distance_debug_mode(void);
+DTOF_RET dtof_start_distance_measure_debug_mode(void);
+DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag);
+DTOF_RET dtof_bypass_distance_debug_mode(void);
+DTOF_RET dtof_wakeup_distance_debug_mode(void);
 #ifdef __cplusplus
 }
 #endif
