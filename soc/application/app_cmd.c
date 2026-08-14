@@ -1008,6 +1008,15 @@ void app_cmd_customer_api_test(const char *cmd)
             return;
         }
     }
+        if (strcmp(cmd, "api,single") == 0)
+    {
+        app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+
+        ret = Sensor_Start_Single_Ranging_Cmd();
+
+        dtof_printf("Sensor_Start_Single_Ranging_Cmd: %s, ret=%d\n", (ret == SENSOR_RET_SUCCESS) ? "PASS" : "FAIL", ret);
+        return;
+    }
     dtof_printf("unknown api command: %s\n", cmd);
 }
 
