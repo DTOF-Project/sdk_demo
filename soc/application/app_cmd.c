@@ -678,33 +678,17 @@ void app_cmd_customer_api_test(const char *cmd)
     if (strcmp(cmd, "api,offset") == 0)
     {
         uint8_t param[32];
-
-        dtof_int16_t lp_b;
-        dtof_int16_t llp_b;
         dtof_int16_t active_b;
-
         uint8_t mode;
 
         SensorGetOffsetParam(param);
 
-        memcpy(&lp_b, &param[0], sizeof(lp_b));
-        memcpy(&llp_b, &param[2], sizeof(llp_b));
-        memcpy(&active_b, &param[4], sizeof(active_b));
-
-        dtof_printf("LP B     = %d\n", lp_b);
-        dtof_printf("LLP B    = %d\n", llp_b);
-        dtof_printf("Active B = %d\n", active_b);
+        memcpy(&active_b, &param[0], sizeof(active_b));
 
         mode = SensorGetWorkMode();
 
-        if (mode == 0xAAU)
-        {
-            dtof_printf("Active == LP : %s\n", (active_b == lp_b) ? "PASS" : "FAIL");
-        }
-        else if (mode == 0x55U)
-        {
-            dtof_printf("Active == LLP: %s\n", (active_b == llp_b) ? "PASS" : "FAIL");
-        }
+        dtof_printf("Active B = %d\n", active_b);
+        dtof_printf("Work Mode = 0x%02X\n", mode);
 
         return;
     }
