@@ -9,7 +9,7 @@
 #include "inc/dev/dtof_hal.h"
 
 #include "application/inc/app_distance.h"
-extern volatile uint32_t get_cnt;
+
 
 DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag);
 static void dtof_resume_debug_flow(void);
@@ -89,7 +89,6 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
     #ifdef DTOF_INTERRUPT_MODE
         if (dtof_get_interrupt_flag() == DTOF_TRUE)
         {
-					  get_cnt++;
             *is_new_flag = DTOF_TRUE;
             dtof_get_distance_result(distance_result);
             dtof_set_interrupt_flag(DTOF_FALSE);

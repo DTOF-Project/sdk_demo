@@ -19,7 +19,6 @@
 #include "base/inc/mos_def.h"
 #include "platform_user_config.h"
 
-extern volatile uint32_t irq_cnt;
 
 // typedef DTOF_RET (*gpio_isr_fn)(int irq, void *context, void *priv);
 typedef DTOF_RET (*_gpio_isr_fn)(int irq, void *context, void *priv);
@@ -33,7 +32,6 @@ dtof_bool_t g_use_iic = DTOF_TRUE;
 /***********************************************************************************/
 static DTOF_RET _gpio_irq_isr(int irq, void *context, void *priv)
 {
-	   irq_cnt++;
     dtof_set_interrupt_flag(DTOF_TRUE);
     return DTOF_RET_OK;
 }

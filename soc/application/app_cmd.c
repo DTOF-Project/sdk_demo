@@ -950,6 +950,80 @@ void app_cmd_customer_api_test(const char *cmd)
             return;
         }
     }
+        /* =========================
+    * Sensor_Xtalk_Calibration
+    * 命令：
+    * api,xtalk,<mode>
+    * 例如：
+    * api,xtalk,1
+    * ========================= */
+    {
+        unsigned int mode;
+
+        if (sscanf(cmd, "api,xtalk,%u", &mode) == 1)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Xtalk_Calibration((uint8_t)mode);
+
+            dtof_printf("Sensor_Xtalk_Calibration: mode=%u ret=%d\r\n",
+                        mode,
+                        ret);
+            return;
+        }
+    }
+
+
+    /* =========================
+    * Sensor_Offset_Calibration
+    * 命令：
+    * api,offset,<mode>,<mili>
+    * 例如：
+    * api,offset,1,500
+    * ========================= */
+    {
+        unsigned int mode;
+        float mili;
+
+        if (sscanf(cmd, "api,offset,%u,%f", &mode, &mili) == 2)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Offset_Calibration(
+                        (uint8_t)mode,
+                        mili);
+
+            dtof_printf(
+                "Sensor_Offset_Calibration: mode=%u mili=%.2f ret=%d\r\n",
+                mode,
+                mili,
+                ret);
+
+            return;
+        }
+    }
+
+
+    /* =========================
+    * Sensor_Set_Calibration_Data
+    * 命令：
+    * api,setcali,<offset>,<offset_normal>
+    * 例如：
+    * api,setcali,12.5,-3.2
+    * ========================= */
+    {
+        float cali_offset;
+        float cali_offset_normal;
+
+        if (sscanf(cmd,"api,setcali,%f,%f",&cali_offset,&cali_offset_normal) == 2)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Set_Calibration_Data(cali_offset,cali_offset_normal);
+
+            return;
+        }
+    }
     dtof_printf("unknown api command: %s\n", cmd);
 }
 
