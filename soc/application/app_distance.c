@@ -10,6 +10,7 @@
 
 #include "application/inc/app_distance.h"
 
+
 DTOF_RET dtof_read_innermcu_intr_control_flag(dtof_uint16_t *intr_control_flag);
 static void dtof_resume_debug_flow(void);
 

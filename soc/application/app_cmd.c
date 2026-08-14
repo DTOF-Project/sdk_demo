@@ -871,9 +871,159 @@ void app_cmd_customer_api_test(const char *cmd)
         dtof_printf("\n");
         return;
     }
-    
+
+    {
+    unsigned int reg_addr;
+
+    if (sscanf(cmd, "api,onebyte,%x", &reg_addr) == 1)
+    {
+        if (reg_addr > 0xFFU)
+        {
+            dtof_printf("invalid reg addr\n");
+            return;
+        }
+
+        Test_IIC_Read_Compare((uint8_t)reg_addr);
+        return;
+    }
+    }
+
+    {
+    unsigned int addr;
+    unsigned int tlen;
+
+        if (sscanf(cmd, "api,xbyte,%x,%u", &addr, &tlen) == 2)
+        {
+            if (addr > 0xFFU)
+            {
+                dtof_printf("invalid addr\n");
+                return;
+            }
+
+            if ((tlen == 0U) || (tlen > 32U))
+            {
+                dtof_printf("invalid len\n");
+                return;
+            }
+
+            Test_IIC_Read_X_Bytes((uint8_t)addr, (uint16_t)tlen);
+            return;
+        }
+    }
+    {
+        unsigned int addr;
+        unsigned int value;
+
+        if (sscanf(cmd, "api,iicw1,%x,%x", &addr, &value) == 2)
+        {
+            if ((addr > 0xFFU) || (value > 0xFFU))
+            {
+                dtof_printf("invalid addr/value\n");
+                return;
+            }
+
+            Test_IIC_Write_One_Byte((uint8_t)addr, (uint8_t)value);
+
+            return;
+        }
+    }
+    {
+    unsigned int addr;
+    unsigned int tlen;
+    unsigned int d0, d1, d2, d3;
+    uint8_t data[4];
+
+        if (sscanf(cmd, "api,writex,%x,%u,%x,%x,%x,%x", &addr, &tlen, &d0, &d1, &d2, &d3) == 6)
+        {
+            if ((addr > 0xFFU) || (tlen != 4U))
+            {
+                dtof_printf("invalid param\n");
+                return;
+            }
+
+            data[0] = (uint8_t)d0;
+            data[1] = (uint8_t)d1;
+            data[2] = (uint8_t)d2;
+            data[3] = (uint8_t)d3;
+
+            Test_IIC_Write_X_Bytes((uint8_t)addr, data, (uint16_t)tlen);
+            return;
+        }
+    }
+        /* =========================
+    * Sensor_Xtalk_Calibration
+    * 命令：
+    * api,xtalk,<mode>
+    * 例如：
+    * api,xtalk,1
+    * ========================= */
+    {
+        unsigned int mode;
+
+        if (sscanf(cmd, "api,xtalk,%u", &mode) == 1)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Xtalk_Calibration((uint8_t)mode);
+
+            dtof_printf("Sensor_Xtalk_Calibration: mode=%u ret=%d\r\n",
+                        mode,
+                        ret);
+            return;
+        }
+    }
 
 
+    /* =========================
+    * Sensor_Offset_Calibration
+    * 命令：
+    * api,offset,<mode>,<mili>
+    * 例如：
+    * api,offset,1,500
+    * ========================= */
+    {
+        unsigned int mode;
+        float mili;
+
+        if (sscanf(cmd, "api,offset,%u,%f", &mode, &mili) == 2)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Offset_Calibration(
+                        (uint8_t)mode,
+                        mili);
+
+            dtof_printf(
+                "Sensor_Offset_Calibration: mode=%u mili=%.2f ret=%d\r\n",
+                mode,
+                mili,
+                ret);
+
+            return;
+        }
+    }
+
+
+    /* =========================
+    * Sensor_Set_Calibration_Data
+    * 命令：
+    * api,setcali,<offset>,<offset_normal>
+    * 例如：
+    * api,setcali,12.5,-3.2
+    * ========================= */
+    {
+        float cali_offset;
+        float cali_offset_normal;
+
+        if (sscanf(cmd,"api,setcali,%f,%f",&cali_offset,&cali_offset_normal) == 2)
+        {
+            Sensor_Status ret;
+
+            ret = Sensor_Set_Calibration_Data(cali_offset,cali_offset_normal);
+
+            return;
+        }
+    }
     dtof_printf("unknown api command: %s\n", cmd);
 }
 

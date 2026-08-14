@@ -18,9 +18,12 @@
 #include "inc/dtof_float.h"
 #include "inc/lib/dtof_ft.h"
 #include "inc/dtof_calibration_ft.h"
+#include "inc/dtof_driver.h"
 
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
+
+
 
 // 字节序转换辅助函数
 static void dtof_convert_endian(uint16_t *data, uint16_t len)
@@ -289,4 +292,273 @@ DTOF_RET dtof_get_distance_result_no_swap(dtof_distance_result_t *result_info_p)
     }
 
     return DTOF_RET_SUCCESS;
+}
+
+
+Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
+{
+    dtof_uint16_t reg_data = 0U;
+    dtof_uint8_t reg_addr;
+
+    if (value == NULL)
+    {
+        return SENSOR_RET_FAILED;
+    }
+
+    reg_addr =(dtof_uint8_t)(addr >> 1);
+
+    if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
+
+    if ((addr & 0x01U) == 0U)
+    {
+        *value =(dtof_uint8_t)(reg_data & 0x00FFU);
+    }
+
+    else
+    {
+        *value =(dtof_uint8_t)((reg_data >> 8)& 0x00FFU);
+    }
+
+    return SENSOR_RET_SUCCESS;
+}
+
+void Test_IIC_Read_Compare(uint8_t reg_addr)
+{
+    dtof_uint16_t word_data = 0U;
+    uint8_t byte0 = 0U;
+    uint8_t byte1 = 0U;
+
+    if (dtof_reg_burst_read(reg_addr, &word_data, 1U) != DTOF_RET_SUCCESS)
+    {
+        dtof_printf("dtof_reg_burst_read FAIL\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U), &byte0) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("byte0 FAIL\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U + 1U), &byte1) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("byte1 FAIL\n");
+        return;
+    }
+
+    dtof_printf("word  = 0x%04X\n", word_data);
+    dtof_printf("byte0 = 0x%02X\n", byte0);
+    dtof_printf("byte1 = 0x%02X\n", byte1);
+}
+
+
+/**
+ * @brief I2C 读取多个字节
+ *
+ * 当前为了 Wrapper 简洁，
+ * 直接复用单字节读取。
+ *
+ * 自动处理奇偶地址。
+ */
+Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
+{
+   dtof_uint16_t i;
+
+   if ((value == NULL) ||
+       (tlen == 0U))
+   {
+       return SENSOR_RET_FAILED;
+   }
+
+   for (i = 0U;
+        i < tlen;
+        i++)
+   {
+       if (Sensor_IIC_Read_One_Byte(
+               (dtof_uint8_t)(addr + i),
+               &value[i])
+           != SENSOR_RET_SUCCESS)
+       {
+           return SENSOR_RET_FAILED;
+       }
+   }
+
+
+   return SENSOR_RET_SUCCESS;
+}
+
+void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen)
+{
+    uint8_t data[32];
+    uint16_t i;
+
+    if ((tlen == 0U) || (tlen > sizeof(data)))
+    {
+        dtof_printf("invalid len\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_X_Bytes(addr, data, tlen) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Read_X_Bytes: FAIL\n");
+        return;
+    }
+
+    dtof_printf("Sensor_IIC_Read_X_Bytes: PASS\n");
+
+    for (i = 0U; i < tlen; i++)
+    {
+        dtof_printf("addr=0x%02X data=0x%02X\n", (uint8_t)(addr + i), data[i]);
+    }
+}
+
+
+Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
+{
+    dtof_uint16_t reg_data = 0U;
+
+    dtof_uint8_t reg_addr;
+    DTOF_RET ret;
+
+    reg_addr =(dtof_uint8_t)(addr >> 1);
+
+
+    if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
+
+
+    if ((addr & 0x01U) == 0U)
+    {
+        reg_data =(dtof_uint16_t)((reg_data & 0xFF00U) | value);
+    }
+
+
+    else
+    {
+        reg_data =(dtof_uint16_t)((reg_data & 0x00FFU) | ((dtof_uint16_t)value << 8));
+    }
+
+    ret = dtof_reg_burst_write(reg_addr, &reg_data, 1U);
+    
+    
+
+    return (ret == DTOF_RET_SUCCESS)? SENSOR_RET_SUCCESS: SENSOR_RET_FAILED;
+}
+
+void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
+{
+    uint8_t read_value;
+    uint16_t reg_before;
+    uint16_t reg_after;
+    uint8_t reg_addr = (uint8_t)(addr >> 1);
+    
+     dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);
+
+    dtof_reg_burst_read(reg_addr, &reg_before, 1U);
+
+    dtof_printf("before reg[0x%02X]=0x%04X\n", reg_addr, reg_before);
+
+    if (Sensor_IIC_Write_One_Byte(addr, value) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Write_One_Byte: FAIL\n");
+        return;
+    }
+
+    dtof_reg_burst_read(reg_addr, &reg_after, 1U);
+
+    dtof_printf("after  reg[0x%02X]=0x%04X\n", reg_addr, reg_after);
+
+    if (Sensor_IIC_Read_One_Byte(addr, &read_value) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Read_One_Byte: FAIL\n");
+        return;
+    }
+    
+     dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+
+    dtof_printf("write=0x%02X read=0x%02X\n", value, read_value);
+}
+
+Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen)
+{
+    dtof_uint16_t i;
+
+
+    if ((pValue == NULL) ||(tlen == 0U))
+    {
+        return SENSOR_RET_FAILED;
+    }
+
+
+    for (i = 0U; i < tlen; i++)
+    {
+        if (Sensor_IIC_Write_One_Byte((dtof_uint8_t)(addr + i),pValue[i])!= SENSOR_RET_SUCCESS)
+        {
+            return SENSOR_RET_FAILED;
+        }
+    }
+
+
+    return SENSOR_RET_SUCCESS;
+}
+
+void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen)
+{
+    uint8_t read_data[32];
+    uint16_t i;
+
+    if ((write_data == NULL) || (tlen == 0U) || (tlen > sizeof(read_data)))
+    {
+        dtof_printf("invalid param\n");
+        return;
+    }
+
+    dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);
+
+    if (Sensor_IIC_Write_X_Bytes(addr, write_data, tlen) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Write_X_Bytes: FAIL\n");
+        return;
+    }
+
+    if (Sensor_IIC_Read_X_Bytes(addr, read_data, tlen) != SENSOR_RET_SUCCESS)
+    {
+        dtof_printf("Sensor_IIC_Read_X_Bytes: FAIL\n");
+        return;
+    }
+
+    dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+
+    for (i = 0U; i < tlen; i++)
+    {
+        dtof_printf("addr=0x%02X write=0x%02X read=0x%02X\n",
+                    (uint8_t)(addr + i),
+                    write_data[i],
+                    read_data[i]);
+
+        if (write_data[i] != read_data[i])
+        {
+            dtof_printf("Compare: FAIL\n");
+            return;
+        }
+    }
+
+    dtof_printf("Sensor_IIC_Write_X_Bytes: PASS\n");
+}
+
+/* ============================================================================
+ * 4.2 延时接口
+ * ==========================================================================*/
+
+/**
+ * @brief 毫秒级延时
+ */
+void Sensor_Delay_Ms(uint16_t nMs)
+{
+    dtof_sleep_ms((dtof_uint32_t)nMs);
 }

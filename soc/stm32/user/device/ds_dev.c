@@ -20,7 +20,6 @@
 #include "platform_user_config.h"
 
 
-
 // typedef DTOF_RET (*gpio_isr_fn)(int irq, void *context, void *priv);
 typedef DTOF_RET (*_gpio_isr_fn)(int irq, void *context, void *priv);
 
