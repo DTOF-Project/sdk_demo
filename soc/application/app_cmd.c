@@ -890,30 +890,7 @@ void app_cmd_customer_api_test(const char *cmd)
         dtof_printf("\n");
         return;
     }
-    
-    /* =========================
-    * Test_IIC_Read_Compare
-    * 命令：
-    * api,onebyte,<addr>
-    *
-    * 例如：
-    * api,onebyte,0
-    * ========================= */
-    {
-    unsigned int reg_addr;
 
-    if (sscanf(cmd, "api,onebyte,%x", &reg_addr) == 1)
-    {
-        if (reg_addr > 0xFFU)
-        {
-            dtof_printf("invalid reg addr\n");
-            return;
-        }
-
-        Test_IIC_Read_Compare((uint8_t)reg_addr);
-        return;
-    }
-    }
 
 
     /* =========================
@@ -943,32 +920,6 @@ void app_cmd_customer_api_test(const char *cmd)
             }
 
             Test_IIC_Read_X_Bytes((uint8_t)addr, (uint16_t)tlen);
-            return;
-        }
-    }
-
-    /* =========================
-    * Test_IIC_Write_One_Byte
-    * 命令：
-    * api,iicw1,<addr>,<value>
-    *
-    * 例如：
-    * api,iicw1,10,55
-    * ========================= */
-    {
-        unsigned int addr;
-        unsigned int value;
-
-        if (sscanf(cmd, "api,iicw1,%x,%x", &addr, &value) == 2)
-        {
-            if ((addr > 0xFFU) || (value > 0xFFU))
-            {
-                dtof_printf("invalid addr/value\n");
-                return;
-            }
-
-            Test_IIC_Write_One_Byte((uint8_t)addr, (uint8_t)value);
-
             return;
         }
     }

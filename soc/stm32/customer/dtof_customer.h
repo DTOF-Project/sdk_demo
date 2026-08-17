@@ -71,14 +71,9 @@ DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint1
 
 void stm32_flash_write_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
 void stm32_flash_read_u64(uint32_t offset, uint64_t *context, uint16_t num_words);
-void Test_IIC_Read_Compare(uint8_t reg_addr);
 void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen);
-void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value);
-void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen);
 void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen);
 Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen);
-Sensor_Status Sensor_IIC_Write_One_Byte(uint16_t addr,uint8_t value);
-Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value);
 Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen);
 
 #ifdef __cplusplus
