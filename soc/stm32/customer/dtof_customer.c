@@ -307,6 +307,11 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
 
     reg_addr =(dtof_uint8_t)(addr >> 1);
 
+	  if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
+		
     if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
     {
         return SENSOR_RET_FAILED;
@@ -322,6 +327,11 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
         *value =(dtof_uint8_t)((reg_data >> 8)& 0x00FFU);
     }
 
+	  if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
+		
     return SENSOR_RET_SUCCESS;
 }
 
@@ -371,7 +381,12 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
    {
        return SENSOR_RET_FAILED;
    }
-
+	 
+   if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
+		
    for (i = 0U; i < tlen; i++)
    {
        if (Sensor_IIC_Read_One_Byte((dtof_uint8_t)(addr + i),&value[i]) != SENSOR_RET_SUCCESS)
@@ -380,6 +395,10 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
        }
    }
 
+	 if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP)!= DTOF_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
+    }
    return SENSOR_RET_SUCCESS;
 }
 
