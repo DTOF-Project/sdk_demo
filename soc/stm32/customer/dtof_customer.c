@@ -307,10 +307,6 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
 
     reg_addr =(dtof_uint8_t)(addr >> 1);
 
-	  if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT)!= DTOF_RET_SUCCESS)
-    {
-        return SENSOR_RET_FAILED;
-    }
 		
     if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
     {
@@ -327,10 +323,6 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
         *value =(dtof_uint8_t)((reg_data >> 8)& 0x00FFU);
     }
 
-	  if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP)!= DTOF_RET_SUCCESS)
-    {
-        return SENSOR_RET_FAILED;
-    }
 		
     return SENSOR_RET_SUCCESS;
 }
@@ -340,7 +332,7 @@ void Test_IIC_Read_Compare(uint8_t reg_addr)
     dtof_uint16_t word_data = 0U;
     uint8_t byte0 = 0U;
     uint8_t byte1 = 0U;
-
+    dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);  
     if (dtof_reg_burst_read(reg_addr, &word_data, 1U) != DTOF_RET_SUCCESS)
     {
         dtof_printf("dtof_reg_burst_read FAIL\n");
@@ -359,6 +351,7 @@ void Test_IIC_Read_Compare(uint8_t reg_addr)
         return;
     }
 
+    dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
     dtof_printf("word  = 0x%04X\n", word_data);
     dtof_printf("byte0 = 0x%02X\n", byte0);
     dtof_printf("byte1 = 0x%02X\n", byte1);
@@ -382,10 +375,7 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
        return SENSOR_RET_FAILED;
    }
 	 
-   if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_SLEEP_DIRECT)!= DTOF_RET_SUCCESS)
-    {
-        return SENSOR_RET_FAILED;
-    }
+
 		
    for (i = 0U; i < tlen; i++)
    {
@@ -395,10 +385,7 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
        }
    }
 
-	 if (dtof_set_mcu_status_ram(DTOF_MCU_STATE_WAKEUP)!= DTOF_RET_SUCCESS)
-    {
-        return SENSOR_RET_FAILED;
-    }
+
    return SENSOR_RET_SUCCESS;
 }
 
@@ -413,14 +400,18 @@ void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen)
         return;
     }
 
+    dtof_set_mcu_status(DTOF_MCU_STATE_SLEEP_DIRECT);  
+
     if (Sensor_IIC_Read_X_Bytes(addr, data, tlen) != SENSOR_RET_SUCCESS)
     {
         dtof_printf("Sensor_IIC_Read_X_Bytes: FAIL\n");
         return;
     }
 
-    dtof_printf("Sensor_IIC_Read_X_Bytes: PASS\n");
+    dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
 
+    dtof_printf("Sensor_IIC_Read_X_Bytes: PASS\n");
+    
     for (i = 0U; i < tlen; i++)
     {
         dtof_printf("addr=0x%02X data=0x%02X\n", (uint8_t)(addr + i), data[i]);
@@ -428,7 +419,7 @@ void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen)
 }
 
 
-Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
+Sensor_Status Sensor_IIC_Write_One_Byte(uint16_t addr,uint8_t value)
 {
     dtof_uint16_t reg_data = 0U;
 
@@ -436,6 +427,7 @@ Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
     DTOF_RET ret;
 
     reg_addr =(dtof_uint8_t)(addr >> 1);
+
 
 
     if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
@@ -456,8 +448,7 @@ Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
     }
 
     ret = dtof_reg_burst_write(reg_addr, &reg_data, 1U);
-    
-    
+
 
     return (ret == DTOF_RET_SUCCESS)? SENSOR_RET_SUCCESS: SENSOR_RET_FAILED;
 }
@@ -499,8 +490,8 @@ void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
 Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen)
 {
     dtof_uint16_t i;
-
-
+    dtof_uint16_t byte_addr;
+ 
     if ((pValue == NULL) ||(tlen == 0U))
     {
         return SENSOR_RET_FAILED;
@@ -509,7 +500,8 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
 
     for (i = 0U; i < tlen; i++)
     {
-        if (Sensor_IIC_Write_One_Byte((dtof_uint8_t)(addr + i),pValue[i])!= SENSOR_RET_SUCCESS)
+        byte_addr =((dtof_uint16_t)addr << 1) + i;
+        if (Sensor_IIC_Write_One_Byte(byte_addr,pValue[i])!= SENSOR_RET_SUCCESS)
         {
             return SENSOR_RET_FAILED;
         }

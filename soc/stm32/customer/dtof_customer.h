@@ -77,7 +77,7 @@ void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value);
 void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen);
 void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen);
 Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen);
-Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value);
+Sensor_Status Sensor_IIC_Write_One_Byte(uint16_t addr,uint8_t value);
 Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value);
 Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen);
 
