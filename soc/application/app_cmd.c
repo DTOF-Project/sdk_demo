@@ -528,17 +528,22 @@ void app_cmd_customer_api_test(const char *cmd)
 {
     uint8_t ret;
 
-    /* =====================================================
-     * 3.1 初始化
-     * ===================================================== */
-
+    /* =========================
+    * SensorInit
+    * 命令：
+    * api,init
+    * ========================= */
     if (strcmp(cmd, "api,init") == 0)
     {
         ret = SensorInit();
         dtof_printf("SensorInit: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
         return;
     }
-
+    /* =========================
+    * SensorReinit
+    * 命令：
+    * api,reinit
+    * ========================= */
     if (strcmp(cmd, "api,reinit") == 0)
     {
         ret = SensorReinit();
@@ -547,10 +552,11 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.2 连续测距
-     * ===================================================== */
-
+    /* =========================
+    * SensorStartContinueRanging
+    * 命令：
+    * api,start
+    * ========================= */
     if (strcmp(cmd, "api,start") == 0)
     {
         app_set_distance_mode(DISTANCE_NORMAL_MODE);
@@ -565,6 +571,15 @@ void app_cmd_customer_api_test(const char *cmd)
         dtof_printf("SensorStartContinueRanging: %s, ret=%d\n", (ret == 0U) ? "PASS" : "FAIL", ret);
         return;
     }
+
+        /* =========================
+    * SensorStartContinueRanging
+    * 命令：
+    * api,startdata
+    *
+    * 仅用于手动测试 SensorGetMeasureData，
+    * 不让 app_distance_process() 自动取帧
+    * ========================= */
     if (strcmp(cmd, "api,startdata") == 0)
     {
         /*
@@ -581,7 +596,15 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
-
+    /* =========================
+    * SensorGetMeasureData
+    * 命令：
+    * api,data,<wait_mode>
+    *
+    * 例如：
+    * api,data,0
+    * api,data,1
+    * ========================= */
     if (strncmp(cmd, "api,data,", 9) == 0)
     {
         unsigned int wait_mode;
@@ -617,6 +640,11 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
+        /* =========================
+    * SensorStopContinueRanging
+    * 命令：
+    * api,stop
+    * ========================= */
     if (strcmp(cmd, "api,stop") == 0)
     {
         ret = SensorStopContinueRanging();
@@ -628,10 +656,13 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.3 工作模式
-     * ===================================================== */
-
+    /* =========================
+    * SensorSetWorkMode
+    * 命令：
+    * api,near
+    *
+    * 0xAA = 近距离
+    * ========================= */
     if (strcmp(cmd, "api,near") == 0)
     {
         ret = SensorSetWorkMode(0xAAU);
@@ -639,6 +670,13 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
+    /* =========================
+    * SensorSetWorkMode
+    * 命令：
+    * api,far
+    *
+    * 0x55 = 远距离
+    * ========================= */
     if (strcmp(cmd, "api,far") == 0)
     {
         ret = SensorSetWorkMode(0x55U);
@@ -646,6 +684,11 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
+    /* =========================
+    * SensorGetWorkMode
+    * 命令：
+    * api,mode
+    * ========================= */
     if (strcmp(cmd, "api,mode") == 0)
     {
         uint8_t mode = SensorGetWorkMode();
@@ -667,14 +710,11 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.5 Offset
-     *
-     * param[0~1] = LP B
-     * param[2~3] = LLP B
-     * param[4~5] = Active B
-     * ===================================================== */
-
+    /* =========================
+    * SensorGetOffsetParam
+    * 命令：
+    * api,offset
+    * ========================= */
     if (strcmp(cmd, "api,offset") == 0)
     {
         uint8_t param[32];
@@ -694,13 +734,11 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.5 Xtalk
-     *
-     * Wrapper返回34 byte，
-     * 两个byte重新组成一个uint16_t。
-     * ===================================================== */
-
+    /* =========================
+    * SensorGetXtalkParam
+    * 命令：
+    * api,xtalk
+    * ========================= */
     if (strcmp(cmd, "api,xtalk") == 0)
     {
         uint8_t cg[CROSS_TALK_OTP_NUM];
@@ -722,15 +760,11 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.6 SensorGetInfo
-     *
-     * [0~7]   = 0
-     * [8~9]   = chip id
-     * [10~11] = fw version
-     * [12~31] = sdk version
-     * ===================================================== */
-
+    /* =========================
+    * SensorGetInfo
+    * 命令：
+    * api,info
+    * ========================= */
     if (strcmp(cmd, "api,info") == 0)
     {
         uint8_t info[32];
@@ -756,10 +790,11 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
-    /* =====================================================
-     * 3.6 SN / UUID
-     * ===================================================== */
-
+    /* =========================
+    * SensorGetSnCode
+    * 命令：
+    * api,sn
+    * ========================= */
     if (strcmp(cmd, "api,sn") == 0)
     {
         uint8_t sn[32];
@@ -786,13 +821,14 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.4 B 标定
-     *
-     * 例如：
-     * api,b,300
-     * ===================================================== */
-
+    /* =========================
+    * SensorOffsetCalibration
+    * 命令：
+    * api,b,<distance>
+    *
+    * 例如：
+    * api,b,300
+    * ========================= */
     {
         unsigned int distance;
 
@@ -823,12 +859,11 @@ void app_cmd_customer_api_test(const char *cmd)
     }
 
 
-    /* =====================================================
-     * 3.4 Xtalk 标定
-     *
-     * api,cg
-     * ===================================================== */
-
+    /* =========================
+    * SensorXtalkCalibration
+    * 命令：
+    * api,cg
+    * ========================= */
     if (strcmp(cmd, "api,cg") == 0)
     {
         uint8_t cg[CROSS_TALK_OTP_NUM];
@@ -856,22 +891,16 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
-    {
-    unsigned int reg_addr;
 
-    if (sscanf(cmd, "api,onebyte,%x", &reg_addr) == 1)
-    {
-        if (reg_addr > 0xFFU)
-        {
-            dtof_printf("invalid reg addr\n");
-            return;
-        }
 
-        Test_IIC_Read_Compare((uint8_t)reg_addr);
-        return;
-    }
-    }
-
+    /* =========================
+    * Test_IIC_Read_X_Bytes
+    * 命令：
+    * api,xbyte,<addr>,<tlen>
+    *
+    * 例如：
+    * api,xbyte,0,2
+    * ========================= */
     {
     unsigned int addr;
     unsigned int tlen;
@@ -894,23 +923,15 @@ void app_cmd_customer_api_test(const char *cmd)
             return;
         }
     }
-    {
-        unsigned int addr;
-        unsigned int value;
 
-        if (sscanf(cmd, "api,iicw1,%x,%x", &addr, &value) == 2)
-        {
-            if ((addr > 0xFFU) || (value > 0xFFU))
-            {
-                dtof_printf("invalid addr/value\n");
-                return;
-            }
-
-            Test_IIC_Write_One_Byte((uint8_t)addr, (uint8_t)value);
-
-            return;
-        }
-    }
+    /* =========================
+    * Test_IIC_Write_X_Bytes
+    * 命令：
+    * api,writex,<addr>,4,<d0>,<d1>,<d2>,<d3>
+    *
+    * 例如：
+    * api,writex,10,4,11,22,33,44
+    * ========================= */  
     {
     unsigned int addr;
     unsigned int tlen;
@@ -934,7 +955,7 @@ void app_cmd_customer_api_test(const char *cmd)
             return;
         }
     }
-        /* =========================
+    /* =========================
     * Sensor_Xtalk_Calibration
     * 命令：
     * api,xtalk,<mode>
@@ -1015,6 +1036,63 @@ void app_cmd_customer_api_test(const char *cmd)
         ret = Sensor_Start_Single_Ranging_Cmd();
 
         dtof_printf("Sensor_Start_Single_Ranging_Cmd: %s, ret=%d\n", (ret == SENSOR_RET_SUCCESS) ? "PASS" : "FAIL", ret);
+        return;
+    }
+
+    /* =========================
+     * Sensor_Get_ChipID
+     * 命令：
+     * api,chipid
+     * ========================= */
+    if (strcmp(cmd, "api,chipid") == 0)
+    {
+        uint8_t chipid[32] = {0};
+
+        ret = Sensor_Get_ChipID(chipid);
+
+        if (ret != SENSOR_RET_SUCCESS)
+        {
+            dtof_printf("Sensor_Get_ChipID: FAIL, ret=%d\n", ret);
+            return;
+        }
+
+        dtof_printf("Sensor_Get_ChipID: PASS\n");
+        dtof_printf("chipid = %s\n", (char *)chipid);
+
+        return;
+    }
+
+    /* =========================
+     * SensorIdCheck
+     * 命令：
+     * api,idcheck
+     * ========================= */
+    if (strcmp(cmd, "api,idcheck") == 0)
+    {
+        ret = SensorIdCheck();
+
+        dtof_printf("SensorIdCheck: %s, ret=%d\n",
+                    (ret == 0U) ? "PASS" : "FAIL",
+                    ret);
+
+        return;
+    }
+
+    /* =========================
+     * Sensor_Chip_SWReset
+     * 命令：
+     * api,reset
+     * ========================= */
+    if (strcmp(cmd, "api,reset") == 0)
+    {
+        ret = Sensor_Chip_SWReset();
+
+        dtof_printf(
+            "Sensor_Chip_SWReset: %s, ret=%d\n",
+            (ret == SENSOR_RET_SUCCESS) ? "PASS" : "FAIL",
+            ret
+        );
+
         return;
     }
     dtof_printf("unknown api command: %s\n", cmd);
