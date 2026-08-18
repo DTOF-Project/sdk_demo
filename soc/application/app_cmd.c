@@ -1078,6 +1078,23 @@ void app_cmd_customer_api_test(const char *cmd)
         return;
     }
 
+    /* =========================
+     * Sensor_Chip_SWReset
+     * 命令：
+     * api,reset
+     * ========================= */
+    if (strcmp(cmd, "api,reset") == 0)
+    {
+        ret = Sensor_Chip_SWReset();
+
+        dtof_printf(
+            "Sensor_Chip_SWReset: %s, ret=%d\n",
+            (ret == SENSOR_RET_SUCCESS) ? "PASS" : "FAIL",
+            ret
+        );
+
+        return;
+    }
     dtof_printf("unknown api command: %s\n", cmd);
 }
 
