@@ -140,10 +140,10 @@ dtof_bool_t dtof_get_interrupt_flag(void)
     return g_interrupt_flag;
 }
 
-void dtof_sleep_ms(dtof_uint32_t time)
-{
-    usleep(time * 1000);
-}
+// void dtof_sleep_ms(dtof_uint32_t time)
+// {
+//     usleep(time * 1000);
+// }
 
 void stm32_flash_write_init(uint32_t page, uint32_t page_num)
 {
@@ -301,6 +301,7 @@ DTOF_RET dtof_get_distance_result_no_swap(dtof_distance_result_t *result_info_p)
 Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
 {
     int ret;
+    int sensor_state;
     dtof_device_t *dev_p;
 
     // 参数检查
@@ -325,40 +326,14 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
         dtof_convert_endian((dtof_uint16_t *)value, 1U);
+        sensor_state = SENSOR_RET_SUCCESS;
     }
     else
     {
-        return SENSOR_RET_SUCCESS;
-    }
-}
-
-void Test_IIC_Read_Compare(uint8_t reg_addr)
-{
-    dtof_uint16_t word_data = 0U;
-    uint8_t byte0 = 0U;
-    uint8_t byte1 = 0U;
-
-    if (dtof_reg_burst_read(reg_addr, &word_data, 1U) != DTOF_RET_SUCCESS)
-    {
-        dtof_printf("dtof_reg_burst_read FAIL\n");
-        return;
+        sensor_state = SENSOR_RET_FAILED;
     }
 
-    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U), &byte0) != SENSOR_RET_SUCCESS)
-    {
-        dtof_printf("byte0 FAIL\n");
-        return;
-    }
-
-    if (Sensor_IIC_Read_One_Byte((uint8_t)(reg_addr * 2U + 1U), &byte1) != SENSOR_RET_SUCCESS)
-    {
-        dtof_printf("byte1 FAIL\n");
-        return;
-    }
-
-    dtof_printf("word  = 0x%04X\n", word_data);
-    dtof_printf("byte0 = 0x%02X\n", byte0);
-    dtof_printf("byte1 = 0x%02X\n", byte1);
+    return sensor_state;
 }
 
 
@@ -373,6 +348,7 @@ void Test_IIC_Read_Compare(uint8_t reg_addr)
 Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
 {
     int ret;
+    int sensor_state;
     dtof_device_t *dev_p;
 
     // 参数检查
@@ -397,76 +373,19 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
         dtof_convert_endian((dtof_uint16_t *)value, tlen);
-        ret = SENSOR_RET_SUCCESS;
+        sensor_state = SENSOR_RET_SUCCESS;
     }
     else{
-        ret = SENSOR_RET_FAILED;
+        sensor_state = SENSOR_RET_FAILED;
     }
 
-    return ret;
+    return sensor_state;
 }
 
-void Test_IIC_Read_X_Bytes(uint8_t addr, uint16_t tlen)
-{
-    uint8_t data[32];
-    uint16_t i;
-
-    if ((tlen == 0U) || (tlen > sizeof(data)))
-    {
-        dtof_printf("invalid len\n");
-        return;
-    }
-
-    if (Sensor_IIC_Read_X_Bytes(addr, data, tlen) != SENSOR_RET_SUCCESS)
-    {
-        dtof_printf("Sensor_IIC_Read_X_Bytes: FAIL\n");
-        return;
-    }
-
-    dtof_printf("Sensor_IIC_Read_X_Bytes: PASS\n");
-
-    for (i = 0U; i < tlen; i++)
-    {
-        dtof_printf("addr=0x%02X data=0x%02X\n", (uint8_t)(addr + i), data[i]);
-    }
-}
-
-
-Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
-{
-    dtof_uint16_t reg_data = 0U;
-
-    dtof_uint8_t reg_addr;
-    DTOF_RET ret;
-
-    reg_addr =(dtof_uint8_t)(addr >> 1);
-
-
-    if (dtof_reg_burst_read(reg_addr,&reg_data,1U)!= DTOF_RET_SUCCESS)
-    {
-        return SENSOR_RET_FAILED;
-    }
-
-
-    if ((addr & 0x01U) == 0U)
-    {
-        reg_data =(dtof_uint16_t)((reg_data & 0xFF00U) | value);
-    }
-
-
-    else
-    {
-        reg_data =(dtof_uint16_t)((reg_data & 0x00FFU) | ((dtof_uint16_t)value << 8));
-    }
-
-    ret = dtof_reg_burst_write(reg_addr, &reg_data, 1U);
-    
-    return (ret == DTOF_RET_SUCCESS)? SENSOR_RET_SUCCESS: SENSOR_RET_FAILED;
-}
-
-void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
+Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t *value)
 {
     int ret;
+    int sensor_state;
     dtof_device_t *dev_p;
 
     // 参数检查
@@ -491,11 +410,14 @@ void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
         dtof_convert_endian((dtof_uint16_t *)value, 1U);
+        sensor_state = SENSOR_RET_SUCCESS;
     }
     else{
-        
-        return SENSOR_RET_SUCCESS;
+
+        sensor_state = SENSOR_RET_FAILED;
     }
+
+    return sensor_state;
 }
 
 Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen)
@@ -526,7 +448,7 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
         dtof_convert_endian((dtof_uint16_t *)pValue, tlen);
-        int sensor_state = SENSOR_RET_SUCCESS;
+        sensor_state = SENSOR_RET_SUCCESS;
     }
     else{
 
@@ -534,11 +456,6 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
     }
 
     return ret;
-}
-
-void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen)
-{
-    
 }
 
 /**

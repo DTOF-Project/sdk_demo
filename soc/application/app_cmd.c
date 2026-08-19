@@ -919,7 +919,7 @@ void app_cmd_customer_api_test(const char *cmd)
                 return;
             }
 
-            Test_IIC_Read_X_Bytes((uint8_t)addr, (uint16_t)tlen);
+            // Test_IIC_Read_X_Bytes((uint8_t)addr, (uint16_t)tlen);
             return;
         }
     }
@@ -951,7 +951,7 @@ void app_cmd_customer_api_test(const char *cmd)
             data[2] = (uint8_t)d2;
             data[3] = (uint8_t)d3;
 
-            Test_IIC_Write_X_Bytes((uint8_t)addr, data, (uint16_t)tlen);
+            // Test_IIC_Write_X_Bytes((uint8_t)addr, data, (uint16_t)tlen);
             return;
         }
     }
