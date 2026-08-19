@@ -33,6 +33,25 @@ static void dtof_convert_endian(uint16_t *data, uint16_t len)
     }
 }
 
+DTOF_RET dtof_platform_endian_convert(uint16_t *reg_data_p, uint16_t len)
+{
+    dtof_device_t *dev_p;
+    int ret;
+
+    // 字节序转换
+    if (DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) 
+    {
+        dtof_convert_endian(reg_data_p, len);
+        ret = DTOF_RET_SUCCESS;
+    }
+    else
+    {
+        ret = DTOF_RET_FAILED;
+    }
+
+    return ret;
+}
+
 #if 0
 int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
 {
@@ -69,7 +88,6 @@ int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
 
     return ret;
 }
-#endif
 
 int dtof_reg_burst_write_burn(uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len)
 {
@@ -97,7 +115,6 @@ int dtof_reg_burst_write_burn(uint8_t reg_addr, const uint16_t *reg_data_p, uint
     return ret;
 }
 
-#if 0
 int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
 {
     int ret;
@@ -369,17 +386,22 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
         tlen
     );
 
-    // 字节序转换
-    if (ret == DTOF_RET_SUCCESS &&
-        DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian((dtof_uint16_t *)value, tlen);
-        sensor_state = SENSOR_RET_SUCCESS;
-    }
-    else{
-        sensor_state = SENSOR_RET_FAILED;
+    // // 字节序转换
+    // if (ret == DTOF_RET_SUCCESS &&
+    //     DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
+    //     dtof_convert_endian((dtof_uint16_t *)value, tlen);
+    //     sensor_state = SENSOR_RET_SUCCESS;
+    // }
+    // else{
+    //     sensor_state = SENSOR_RET_FAILED;
+    // }
+
+    if(ret != SENSOR_RET_SUCCESS)
+    {
+        return SENSOR_RET_FAILED;
     }
 
-    return sensor_state;
+    return SENSOR_RET_SUCCESS;
 }
 
 Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
@@ -444,18 +466,23 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
         tlen
     );
 
-    // 字节序转换
-    if (ret == DTOF_RET_SUCCESS &&
-        DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian((dtof_uint16_t *)pValue, tlen);
-        sensor_state = SENSOR_RET_SUCCESS;
-    }
-    else{
+    // // 字节序转换
+    // if (ret == DTOF_RET_SUCCESS &&
+    //     DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
+    //     dtof_convert_endian((dtof_uint16_t *)pValue, tlen);
+    //     sensor_state = SENSOR_RET_SUCCESS;
+    // }
+    // else{
 
+    //     return SENSOR_RET_FAILED;
+    // }
+
+    if(ret != SENSOR_RET_SUCCESS)
+    {
         return SENSOR_RET_FAILED;
     }
 
-    return ret;
+    return SENSOR_RET_SUCCESS;
 }
 
 /**

@@ -77,6 +77,8 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
 Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen);
 void Sensor_Delay_Ms(uint16_t nMs);
 
+DTOF_RET dtof_platform_endian_convert(uint16_t *reg_data_p, uint16_t len);
+
 #ifdef __cplusplus
 }
 #endif
