@@ -458,6 +458,14 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
         return DTOF_RET_DEVICE_ERROR;
     }
 
+    if (DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN))
+    {
+        dtof_convert_endian(
+            (dtof_uint16_t *)pValue,
+            tlen
+        );
+    }
+
     // 读取数据
     ret = device_write_block(
         dev_p->dsd_peripheral.common_cfg.comm_channel_id,
