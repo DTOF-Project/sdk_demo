@@ -382,16 +382,16 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
     return sensor_state;
 }
 
-Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t *value)
+Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t value)
 {
     int ret;
     int sensor_state;
     dtof_device_t *dev_p;
 
-    // 参数检查
-    if (!value) {
-        return DTOF_RET_INVALID_PARAM;
-    }
+    // // 参数检查
+    // if (!value) {
+    //     return DTOF_RET_INVALID_PARAM;
+    // }
 
     dev_p = ds_device_get();
     if (!dev_p) {
@@ -402,14 +402,14 @@ Sensor_Status Sensor_IIC_Write_One_Byte(uint8_t addr,uint8_t *value)
     ret = device_write_block(
         dev_p->dsd_peripheral.common_cfg.comm_channel_id,
         addr,
-        value,
+        &value,
         1U
     );
 
     // 字节序转换
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian((dtof_uint16_t *)value, 1U);
+        dtof_convert_endian((dtof_uint16_t *)&value, 1U);
         sensor_state = SENSOR_RET_SUCCESS;
     }
     else{
