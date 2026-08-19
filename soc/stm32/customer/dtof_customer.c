@@ -38,6 +38,16 @@ DTOF_RET dtof_platform_endian_convert(uint16_t *reg_data_p, uint16_t len)
     dtof_device_t *dev_p;
     int ret;
 
+    if (!reg_data_p || len == 0) {
+        return DTOF_RET_INVALID_PARAM;
+    }
+
+    dev_p = ds_device_get();
+
+    if (!dev_p) {
+        return DTOF_RET_DEVICE_ERROR;
+    }
+
     // 字节序转换
     if (DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) 
     {
