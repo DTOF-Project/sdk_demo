@@ -70,36 +70,6 @@ int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
     return ret;
 }
 #endif
-int dtof_reg_burst_write(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
-{
-    dtof_device_t *dev_p;
-    Sensor_Status ret;
-
-    if (!reg_data_p || len == 0U)
-    {
-        return DTOF_RET_INVALID_PARAM;
-    }
-
-    dev_p = ds_device_get();
-    if (!dev_p)
-    {
-        return DTOF_RET_DEVICE_ERROR;
-    }
-
-    if (DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN))
-    {
-        dtof_convert_endian(reg_data_p, len);
-    }
-
-    ret = Sensor_IIC_Write_X_Bytes(reg_addr, (uint8_t *)reg_data_p, len);
-
-    if (DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN))
-    {
-        dtof_convert_endian(reg_data_p, len);
-    }
-
-    return (ret == SENSOR_RET_SUCCESS) ? DTOF_RET_SUCCESS : DTOF_RET_DEVICE_ERROR;
-}
 
 int dtof_reg_burst_write_burn(uint8_t reg_addr, const uint16_t *reg_data_p, uint16_t len)
 {
@@ -159,20 +129,6 @@ int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
     return ret;
 }
 #endif
-int dtof_reg_burst_read(uint8_t reg_addr, uint16_t *reg_data_p, uint16_t len)
-{
-    if (!reg_data_p || len == 0U)
-    {
-        return DTOF_RET_INVALID_PARAM;
-    }
-
-    if (Sensor_IIC_Read_X_Bytes(reg_addr, (uint8_t *)reg_data_p, len) != SENSOR_RET_SUCCESS)
-    {
-        return DTOF_RET_DEVICE_ERROR;
-    }
-
-    return DTOF_RET_SUCCESS;
-}
 
 void dtof_set_interrupt_flag(dtof_bool_t flag)
 {
@@ -368,7 +324,7 @@ Sensor_Status Sensor_IIC_Read_One_Byte(uint8_t addr,uint8_t *value)
     // 字节序转换
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian(value, 1U);
+        dtof_convert_endian((dtof_uint16_t *)value, 1U);
     }
     else
     {
@@ -440,8 +396,13 @@ Sensor_Status Sensor_IIC_Read_X_Bytes(uint8_t addr,uint8_t *value,uint16_t tlen)
     // 字节序转换
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian(value, tlen);
+        dtof_convert_endian((dtof_uint16_t *)value, tlen);
+        ret = SENSOR_RET_SUCCESS;
     }
+    else{
+        ret = SENSOR_RET_FAILED;
+    }
+
     return ret;
 }
 
@@ -529,7 +490,7 @@ void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
     // 字节序转换
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian(value, 1U);
+        dtof_convert_endian((dtof_uint16_t *)value, 1U);
     }
     else{
         
@@ -540,6 +501,7 @@ void Test_IIC_Write_One_Byte(uint8_t addr, uint8_t value)
 Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tlen)
 {
     int ret;
+    int sensor_state;
     dtof_device_t *dev_p;
 
     // 参数检查
@@ -563,12 +525,15 @@ Sensor_Status Sensor_IIC_Write_X_Bytes(uint8_t addr,uint8_t *pValue,uint16_t tle
     // 字节序转换
     if (ret == DTOF_RET_SUCCESS &&
         DTOF_BIT_CHECK(dev_p->sensor_flags, SENSOR_F_LITTLEENDIAN)) {
-        dtof_convert_endian(pValue, tlen);
+        dtof_convert_endian((dtof_uint16_t *)pValue, tlen);
+        int sensor_state = SENSOR_RET_SUCCESS;
     }
     else{
 
-        return SENSOR_RET_SUCCESS;
+        return SENSOR_RET_FAILED;
     }
+
+    return ret;
 }
 
 void Test_IIC_Write_X_Bytes(uint8_t addr, uint8_t *write_data, uint16_t tlen)
