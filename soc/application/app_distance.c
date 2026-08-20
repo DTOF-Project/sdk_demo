@@ -119,8 +119,15 @@ void dtof_determine_new_frame(dtof_bool_t *is_new_flag, dtof_distance_result_t *
         }
         else
         {
-            dtof_get_distance_result_polling(distance_result, is_new_flag);
+            // dtof_get_distance_result_polling(distance_result, is_new_flag);
+
+        if (SensorGetMeasureData((uint8_t *)distance_result, 1U) == 0U)
+        {
+            *is_new_flag = DTOF_TRUE;
         }
+        
+        }
+  
     #endif
     }
 
