@@ -901,13 +901,13 @@ void app_cmd_customer_api_test(const char *cmd)
     {
         unsigned int mode;
 
-        if (sscanf(cmd, "api,xtalk,%u", &mode) == 1)
+        if (sscanf(cmd, "api,xtalk,%x", &mode) == 1)
         {
             Sensor_Status ret;
 
             ret = Sensor_Xtalk_Calibration((uint8_t)mode);
 
-            dtof_printf("Sensor_Xtalk_Calibration: mode=%u ret=%d\r\n",
+            dtof_printf("Sensor_Xtalk_Calibration: mode=%x ret=%d\r\n",
                         mode,
                         ret);
             return;
@@ -926,7 +926,7 @@ void app_cmd_customer_api_test(const char *cmd)
         unsigned int mode;
         float mili;
 
-        if (sscanf(cmd, "api,offset,%u,%f", &mode, &mili) == 2)
+        if (sscanf(cmd, "api,offset,%x,%f", &mode, &mili) == 2)
         {
             Sensor_Status ret;
 
@@ -935,7 +935,7 @@ void app_cmd_customer_api_test(const char *cmd)
                         mili);
 
             dtof_printf(
-                "Sensor_Offset_Calibration: mode=%u mili=%.2f ret=%d\r\n",
+                "Sensor_Offset_Calibration: mode=%x mili=%.2f ret=%d\r\n",
                 mode,
                 mili,
                 ret);
