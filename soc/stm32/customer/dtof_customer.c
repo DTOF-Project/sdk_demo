@@ -15,7 +15,10 @@
 #include "base/inc/mos_platform.h"
 #include "platform_user_config.h"
 #include "inc/dtof_api.h"
-
+#include "inc/dtof_float.h"
+#include "inc/lib/dtof_lib.h"
+#include "inc/dtof_calibration_ft.h"
+#include "inc/dtof_driver.h"
 // 中断状态标志
 volatile dtof_bool_t g_interrupt_flag = DTOF_FALSE;
 
@@ -207,6 +210,28 @@ DTOF_RET dtof_get_ft_data_from_flash(dtof_uint16_t *ft_data, dtof_uint16_t len, 
     return DTOF_RET_SUCCESS;
 }
 
+DTOF_RET dtof_get_ft_data_from_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode, dtof_bool_t *is_legal_data)
+{
+    uint64_t ft_data64[FT_DATA_NUM];
+    stm32_flash_read_u64((0x08000000 + (DTOF_FT_DATA_FLASH_PAGE + run_mode) * FLASH_PAGE_SIZE), ft_data64, FT_DATA_NUM);
+
+    *is_legal_data = DTOF_FALSE;
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
+    {
+        if (ft_data64[i] != 0xFFFFFFFFFFFFFFFF)
+        {
+            *is_legal_data = DTOF_TRUE;
+            break;
+        }
+    }
+
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
+    {
+        *(ft_data+i) = (dtof_uint16_t)ft_data64[i];
+    }
+
+    return DTOF_RET_SUCCESS;
+}
 
 DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
 {
@@ -219,6 +244,21 @@ DTOF_RET dtof_set_ft_data_to_flash(dtof_uint16_t *ft_data, dtof_uint16_t len)
 
     stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE, DTOF_FT_DATA_FLASH_PAGE_NUM);
     stm32_flash_write_u64(DTOF_FT_DATA_FLASH_PAGE_START_ADDR, ft_data64, FT_DATA_NUM);
+
+    return DTOF_RET_SUCCESS;
+}
+
+DTOF_RET dtof_set_ft_data_to_flash_multi_mode(dtof_uint16_t *ft_data, dtof_uint16_t len, dtof_run_mode_e run_mode)
+{
+    uint64_t ft_data64[FT_DATA_NUM];
+
+    for(dtof_uint16_t i = 0; i < FT_DATA_NUM; i++)
+    {
+        ft_data64[i] = (uint64_t)(*(ft_data + i));
+    }
+
+    stm32_flash_write_init(DTOF_FT_DATA_FLASH_PAGE + run_mode, DTOF_FT_DATA_FLASH_PAGE_NUM);
+    stm32_flash_write_u64((0x08000000 + (DTOF_FT_DATA_FLASH_PAGE + run_mode) * FLASH_PAGE_SIZE), ft_data64, FT_DATA_NUM);
 
     return DTOF_RET_SUCCESS;
 }

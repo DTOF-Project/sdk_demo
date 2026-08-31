@@ -7,6 +7,18 @@
 extern "C" {
 #endif
 
+#define BIT_POS_LOOP(x)                \
+({                                     \
+    uint32_t _x = (x);                 \
+    uint32_t _p = 0;                   \
+    while (_x > 1)                     \
+    {                                  \
+        _x >>= 1;                      \
+        _p++;                          \
+    }                                  \
+    _p;                                \
+})
+
 typedef void (*cmd_handler_t)(const char *cmd);
 
 typedef struct {

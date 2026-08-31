@@ -113,6 +113,22 @@ DTOF_RET dtof_trigger_next_frame(void)
     return DTOF_RET_SUCCESS;
 }
 
+// DTOF_RET dtof_bypass_distance_debug_mode(void)
+// {
+// #define DTOF_WFI_STATUS_FLAG 0xab
+//     dtof_uint16_t intr_control_flag;
+//     dtof_uint16_t bypassvalue = 0x17b9;
+
+//     DTOF_CHECK_RET(dtof_read_innermcu_intr_control_flag(&intr_control_flag), "read inner mcu status failed\n");
+//     if (intr_control_flag != DTOF_WFI_STATUS_FLAG)
+//     {
+//         DTOF_LOG_ERR("intr_control_flag is not 0xab, is 0x%x\n", intr_control_flag);
+//     }
+
+//     // DTOF_CHECK_RET(dtof_reg_burst_write(DTOF_IO_CTRL_REG_ADDR, &bypassvalue, 1), "write bypass value failed\n");
+//     return DTOF_RET_SUCCESS;
+// }
+
 void dtof_output_distance_result(dtof_distance_result_t distance_result)
 {
     dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
@@ -120,8 +136,10 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
     {
         case DISTANCE_NORMAL_MODE:
         {
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+            printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+                            distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+                            distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
             break;
         }
         case DISTANCE_DEBUG_MODE:
@@ -140,8 +158,10 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
 
             dtof_trigger_next_frame();
 
-            printf("%d, %d, %d, %d, %.6f, 1\n",
-                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient);
+            printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+                            distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+                            distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+                            distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
             break;
         }
         case DISTANCE_TEST_MODE:
@@ -179,6 +199,87 @@ void dtof_output_distance_result(dtof_distance_result_t distance_result)
     }
     return;
 }
+
+// void dtof_output_distance_result(dtof_distance_result_t distance_result)
+// {
+//     dtof_uint16_t buffer[DTOF_SINGLE_MAIN_HISTGRAM_LEN + 64];
+//     switch (g_distance_mode)
+//     {
+//         case DISTANCE_NORMAL_MODE:
+//         {
+//             printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+//                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+//                             distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+//                             distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
+//             break;
+//         }
+//         case DISTANCE_DEBUG_MODE:
+//         {
+//             dtof_bypass_distance_debug_mode();
+
+//         #define TOTAL_REG_NUM 255
+//             dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+//             dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+//             dtof_dsp_fifo_read(0, buffer, DTOF_SINGLE_FIFO_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_FIFO_LEN);
+//             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
+//             dump_hist_log(buffer, TOTAL_REG_NUM);
+
+//             dtof_resume_debug_flow();
+
+//             printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+//                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+//                             distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+//                             distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
+//             break;
+//         }
+//         case DISTANCE_TEST_MODE:
+//         {
+//             static int test_frame_count = 0;
+//             dtof_bypass_distance_debug_mode();
+
+//             if (++test_frame_count >= (DISTANCE_TEST_MODE_FRAME_NUM))
+//             {
+//                 uint16_t stop_flag = DTOF_STOP_DISATNCE_MODE;
+//                 app_set_distance_mode(DISTANCE_UNKNOWN_MODE);
+//                 dtof_reg_burst_write(DTOF_FRAME_CONTROL_REG, &stop_flag, 1); // TODO: 使用running的写会唤醒mcu
+//                 //dtof_init_polling_mode_device_info();
+//                 // DTOF_CHECK_WARN(dtof_stop_distance_measure(), "dtof stop distance mode failed\n");
+//                 test_frame_count = 0;
+//             }
+
+//         #define TOTAL_REG_NUM 255
+//             dtof_histgram_io_read(DTOF_SINGLE_MAIN_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_MAIN_HISTGRAM_LEN);
+//             dtof_histgram_io_read(DTOF_SINGLE_REF_HISTGRAM_OFFSET, buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_REF_HISTGRAM_LEN);
+//             dtof_dsp_fifo_read(0, buffer, DTOF_SINGLE_FIFO_LEN);
+//             dump_hist_log(buffer, DTOF_SINGLE_FIFO_LEN);
+//             dtof_reg_burst_read(0x00, buffer, TOTAL_REG_NUM);
+//             dump_hist_log(buffer, TOTAL_REG_NUM);
+
+//             dtof_resume_debug_flow();
+
+//             printf("%d, %d, %d, %d, %.6f, %d, %.6f, %.6f, %.6f, %.6f, %d, %f, %f, %f, %d\n",
+//                             distance_result.frame_id, distance_result.first_target, distance_result.first_intensity, distance_result.main_nflash, distance_result.ambient, distance_result.is_legal_frame,
+//                             distance_result.main_peak_pos, distance_result.second_peak_pos, distance_result.ref_peak_pos, distance_result.ref_peak_pos_smooth,
+//                             distance_result.ref_peak_hist, distance_result.first_target_raw, distance_result.reflect_compensation, distance_result.ambient_compensation, distance_result.is_swap_peak);
+//             break;
+//         }
+//         default:
+//             break;
+//     }
+//     return;
+// }
+
+// static void dtof_resume_debug_flow(void)
+// {
+//     dtof_set_mcu_status(DTOF_MCU_STATE_WAKEUP);
+//     dtof_wakeup_distance_debug_mode();
+//     dtof_enable_distance_debug_mode();
+// }
 
 void app_distance_process(void)
 {
